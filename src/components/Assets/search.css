@@ -1,0 +1,456 @@
+/*sibendra*/
+.dataTables_scrollHeadInner,
+.table {
+  width: 100% !important;
+}
+
+
+
+/*Gandeshwari UI Backend*/
+.font-mid-sm {
+  font-size: 13px !important;
+}
+
+.font-medium {
+  font-size: 14px;
+}
+
+.font-six {
+  font-weight: 600;
+}
+
+.navbar-gd {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.navbar-gd a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.select2-drop-active {
+  margin-top: -25px;
+}
+
+.dropdown-gd {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown-gd .dropbtn-gd {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.navbar-gd a:hover,
+.dropdown-gd:hover .dropbtn-gd {
+  background-color: red;
+}
+
+.dropdown-content-gd {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  width: 100%;
+  padding: 0 15px;
+  z-index: 1;
+}
+
+.dropdown-content-gd .header-gd {
+  background: red;
+  padding: 16px;
+  color: white;
+}
+
+.dropdown-gd:hover .dropdown-content-gd {
+  display: block;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background-color: rgb(231, 231, 231);
+}
+
+.column a {
+  float: none;
+  color: black;
+  padding: 4px 6px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.column a:hover {
+  background-color: rgb(247, 247, 247);
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/*Sub dropdown*/
+.sub-drop {
+  position: relative;
+}
+
+.sub-drop-content {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  display: none;
+  box-shadow: 0px 0px 10px 0px #888888;
+  z-index: 9;
+}
+
+.sub-drop:hover {
+  box-shadow: 0px 0px 6px 0px #888888;
+}
+
+.sub-drop:hover>.sub-drop-content {
+  display: block;
+}
+
+/*Sub dropdown*/
+
+/*Custom fieldset*/
+.cus-field-set {
+  position: relative;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.cus-legend {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background-color: #fff;
+  padding: 0px 7px;
+}
+
+/* /Custom fieldset*/
+
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 767px) {
+  .column {
+    width: 100%;
+    height: auto;
+  }
+
+  .sub-drop-content {
+    top: 100%;
+    left: 0;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .dropdown-content-gd {
+    left: 35px;
+    right: 35px;
+  }
+}
+
+.v-align-middle {
+  vertical-align: middle !important;
+}
+
+/* /Gandeshwari UI Backend*/
+
+abbr {
+  text-decoration: none !important;
+}
+
+abbr:hover {
+  cursor: pointer;
+  color: #007bff;
+  transition: 0.2s ease-in-out;
+}
+
+.cs-sm-modal {
+  position: relative;
+}
+
+.cs-sm-modal-content {
+  position: absolute;
+  background-color: #fbfbfb;
+  padding: 15px;
+  bottom: -30%;
+  right: 0px;
+  width: 750px;
+  z-index: 1;
+  border: 1px solid rgb(172, 172, 172);
+  border-radius: 5px;
+  display: none;
+}
+
+.cs-sm-modal-mmrp {
+  position: absolute;
+  background-color: #fbfbfb;
+  padding: 15px;
+  left: 520px;
+  z-index: 1;
+  box-shadow: 1px 3px 100px #333333;
+  border: 1px solid rgb(172, 172, 172);
+  border-radius: 5px;
+  display: none;
+}
+
+/*sibendra*/
+/*filter*/
+
+.sidenav {
+  height: 70%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .d-full-md {
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 2024px) {
+
+  div.filter-res {
+    display: none
+  }
+
+  /* hide it elsewhere */
+}
+
+@media screen and (min-width: 0px) and (max-width: 992px) {
+  div.filter {
+    display: none
+  }
+
+  div.filter-res {
+    display: block
+  }
+
+  /* show it on small screens */
+}
+
+/*filter*/
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+
+
+.dropdown a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+/*share*/
+.centered {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.top-centered {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+.doc {
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  color: rgba(255, 255, 0, 1);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #000;
+  padding: 20px;
+  margin: auto;
+  background: rgba(34, 34, 34, 0.8);
+}
+
+.appointment {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  color: rgba(255, 255, 0, 1);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #000;
+  padding: 20px;
+  margin: auto;
+  background: rgba(34, 34, 34, 0.8);
+}
+
+.doc-join {
+  position: absolute;
+  top: 85%;
+  left: 45%;
+  color: rgba(255, 255, 0, 1);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #000;
+  padding: 10px;
+  margin: auto;
+  background: rgba(34, 34, 34, 0.8);
+}
+
+.feature-centered {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #000;
+  padding: 20px;
+  margin: auto;
+  background: rgba(255, 255, 0, 0.8);
+}
+
+.bottom-centered {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+  box-sizing: border-box;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+
+@media(max-width:478px) {
+  .doc {
+    padding: 5px;
+    top: 30%;
+    left: 40%;
+  }
+}
+
+@media(max-width:424px) {
+  .doc {
+    padding: 2px;
+  }
+
+  .feature-centered {
+    padding: 5px;
+    top: 80%;
+    left: 35%;
+    background: rgba(255, 255, 0, 0.7);
+  }
+}
+
+.showSugstionOuterDiv {
+  position: relative;
+  display: inline-block;
+}
+.showSugstion {
+  cursor: pointer;
+  border-left: 1px solid #818181;
+  border-right: 1px solid #818181;
+}
+.showSugstion:hover {
+  background-color: lemonchiffon;
+}
