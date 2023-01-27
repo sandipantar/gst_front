@@ -2,7 +2,27 @@ import React,{ useRef, useState, useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
 import Header from '../../Headers/Header';
 import Topnav from '../../Headers/Topnav';
+import AutoSelect from 'react-select';
+import TableRows from "../test/TableRows";
+import Pdf from "react-to-pdf";
 import { Card,Row,Col,Form,Button,Tabs,Tab,Table,Badge,Modal,InputGroup,FormControl } from 'react-bootstrap-v5';
+
+const ref = React.createRef();
+const party = [
+    { value: 'ab', label: 'A&B Co.' },
+    { value: 'cd', label: 'C&D Co.' },
+    { value: 'ef', label: 'E&F Co.' },
+    { value: 'hi', label: 'H&I Co.' },
+    { value: 'jk', label: 'J&K Co.' },
+    { value: 'lm', label: 'L&M Co.' }
+  ];
+  const locationData = [
+    { id: 1, name: "Raipur", image: "imh" },
+    { id: 2, name: "Kolkata", image: "imh" },
+    { id: 3, name: "New Delhi", image: "imh" },
+    { id: 4, name: "Indore", image: "imh" },
+    { id: 5, name: "Chennai", image: "imh" },
+  ];
 
 const Sale = () => {
     const barcodeEntryFocusInput = useRef();
@@ -21,6 +41,34 @@ const Sale = () => {
     const prohandleClose = () => setProShow(false);
     const prohandleShow = () => setProShow(true);
 
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const [rowsData, setRowsData] = useState([]);
+ 
+    const addTableRows = ()=>{
+  
+        const rowsInput={
+            fullName:'',
+            emailAddress:'',
+            salary:''  
+        } 
+        setRowsData([...rowsData, rowsInput])
+      
+    }
+   const deleteTableRows = (index)=>{
+        const rows = [...rowsData];
+        rows.splice(index, 1);
+        setRowsData(rows);
+   }
+ 
+   const handleChange = (index, evnt)=>{
+    const { name, value } = evnt.target;
+    const rowsInput = [...rowsData];
+    rowsInput[index][name] = value;
+    setRowsData(rowsInput);
+    }
+
+
     return(
         <>
         <div id="wrapper">
@@ -30,16 +78,30 @@ const Sale = () => {
                     {/* <Topnav /> */}
                     <div className="container-fluid">                  
                         <Form>
-                            <div className="d-sm-flex align-items-center justify-content-between mb-2 mt-1">
-                                <h2 className="h3 mb-0 text-gray-800">Sale Entry Form</h2>
-                                <Button variant="danger" size="sm">
-                                    <i className="fa fa-times"></i> Cancel (F2)
-                                </Button>
-                                <Button variant="success" size="sm" onClick={handleShow}>
-                                <i className="fa fa-check"></i> Save (F10)
-                                </Button>
-                            </div>  
                             <Row>
+                                <Col>
+                                    <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
+                                </Col>
+                                <Col>
+
+                                </Col>
+                                <Col>
+                                    <Button variant="danger" size="sm">
+                                        <i className="fa fa-times"></i> Cancel (F2)
+                                    </Button>
+                                </Col>
+                                <Col>
+                                <Pdf targetRef={ref} filename="code-example.pdf">
+                                    {({ toPdf }) => 
+                                        <Button variant="success" size="sm" onClick={toPdf}>
+                                        {/* handleShow */}
+                                        <i className="fa fa-check"></i> Save (F10)
+                                        </Button>
+                                    }
+                                    </Pdf>
+                                </Col>
+                            </Row>  
+                            {/* <Row>
                                 <Col md={3}>
                                 <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
                                     <Form.Label>Doc.No.</Form.Label>
@@ -76,18 +138,83 @@ const Sale = () => {
                                     </Form.Group>
                                 </Col>
                                 <Col md={3}>
-                                    {/* <Col className="d-flex justify-content-between">
-                                        <Button variant="danger">
-                                            <i className="fa fa-times"></i> Cancel (F2)
-                                        </Button>
-                                        <Button variant="success" onClick={handleShow}>
-                                        <i className="fa fa-check"></i> Save (F10)
-                                        </Button>
-                                    </Col> */}
                                     <Form.Group as={Row}  style={{paddingTop:'28px'}} controlId="formPlaintextVnumber">
                                         <Form.Label>Barcode Entry</Form.Label>
                                         <Form.Control type="text" />
                                     </Form.Group>
+                                </Col>
+                            </Row> */}
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Invoice No : </Form.Label><br/>
+                                    <label>ATC/001/2022-23</label>
+                                </Col>
+                                <Col md={3}>
+                                <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
+                                    <Form.Label>Bill To : </Form.Label>
+                                    <AutoSelect 
+                                        defaultValue={selectedOption}
+                                        onChange={setSelectedOption}
+                                        options={party}
+                                    />
+                                </Form.Group>
+                                </Col>
+                                <Col md={3}>
+                                <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
+                                    <Form.Label>Shipped To : </Form.Label>
+                                    <AutoSelect 
+                                        defaultValue={selectedOption}
+                                        onChange={setSelectedOption}
+                                        options={party}
+                                    />
+                                </Form.Group>
+                                </Col>
+                                <Col md={3}>
+                                    <Form.Label>Date : </Form.Label>
+                                    <Form.Control type="date" defaultValue={datee}/>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Challan No : </Form.Label>
+                                    <Form.Control type="text" name='challanNo'/>
+                                </Col>
+                                <Col md={3}>
+                                    <Form.Label>Date : </Form.Label>
+                                    <Form.Control type="date" defaultValue={datee}/>
+                                </Col>
+                                <Col md={3}>
+                                    <Form.Label>Place of Supply : </Form.Label>
+                                    <AutoSelect 
+                                        defaultValue={selectedOption}
+                                        onChange={setSelectedOption}
+                                        options={party}
+                                    />
+                                </Col>
+                                <Col md={3}>
+                                    <Form.Label>Destination : </Form.Label>
+                                    <Form.Control type="text" name='destination'/>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Label>Despatch Through : </Form.Label>
+                                    <Form.Control type="text" name='despatchThrough'/>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Label>Vehicle No : </Form.Label>
+                                    <Form.Control type="text" name='vehicleNo'/>
+                                </Col>
+                                {/*<Col md={7}>
+                                             <Form.Label>TMCO No : 8268682492</Form.Label><br/>
+                                            <Form.Label>FSSAI LIC No : 8268682492</Form.Label> 
+                                        </Col>*/}
+                                <Col md={4}>
+                                    <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
+                                    <Form.Select aria-label="Default select example">
+                                        <option value="cash">Cash</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                    </Form.Select> 
                                 </Col>
                             </Row>
                             <Tabs
@@ -98,58 +225,107 @@ const Sale = () => {
                                 className="mb-3"
                                 >
                                 <Tab eventKey="sale" title="Product Detail">
+                                <div ref={ref}>
                                 <Table size="sm" className="tableclass">
                                     <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th className='bg-success' colSpan={2}>Base Qty</th>
+                                        
+                                        <th className='bg-success' colSpan={2}>Alt.Qty</th>
+                                        
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th rowSpan={2}><a className="btn btn-outline-success" onClick={addTableRows} >+</a></th>
+                                    </tr>
                                     <tr className="bg-success">
-                                        <th>SL</th>
-                                        <th >Barcode</th>
-                                        <th>Product</th>
+                                        <th rowSpan={2}>SL</th>
+                                        <th>Particulars</th>
                                         <th>HSN / SAC</th>
-                                        <th>MRP</th>
-                                        <th>Quantity</th>
-                                        <th>Prd. Val.</th>
-                                        <th>CDisc %</th>
-                                        <th>CD-Amount</th>
-                                        <th>Tax</th>
-                                        <th>Net</th>
+                                        <th>Invoice NO</th>
+                                        <th>Qty</th>
+                                        <th>Unit</th>
+                                        <th>Qty</th>
+                                        <th>Unit</th>
+                                        <th>Rate</th>
+                                        <th>Disc %</th>
+                                        <th>Discount</th>
+                                        <th>Amount</th>
+                                        
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    {/* <tr>
                                         <td>1</td>
-                                        <td>123456789074396</td>
                                         <td>
                                             <Form.Group controlId="formPlaintextVnumber" onClick={prohandleShow}>
-                                                <Form.Control type="text" />
+                                                <Form.Control type="text" name="productName"/>
                                             </Form.Group>
                                         </td>
-                                        <td>102322</td>
-                                        <td>10765</td>
+                                        <td>
+                                            <Form.Group controlId="formPlaintextVnumber">
+                                                <Form.Control type="text" name="hsn" value="90240"/>
+                                            </Form.Group>
+                                        </td>
+                                        <td>
+                                            <Form.Group controlId="formPlaintextVnumber">
+                                                <Form.Control type="text" name="invoiceNo"/>
+                                            </Form.Group>
+                                        </td>
+                                        <td>
+                                            <Form.Group controlId="formPlaintextVnumber">
+                                                <Form.Control type="number" name="baseQty"/>
+                                            </Form.Group>
+                                        </td>
                                         <td style={{width:'8%'}}>
                                             <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
+                                                <Form.Select aria-label="Default select example" name="baseUnit">
+                                                    <option value="kg">KG</option>
+                                                    <option value="gm">GM</option>
+                                                </Form.Select>
                                             </Form.Group>
                                         </td>
-                                        <td>687658</td>
+                                        <td>
+                                        <Form.Group controlId="formPlaintextVnumber">
+                                                <Form.Control type="number" name="altQty"/>
+                                            </Form.Group>
+                                        </td>
                                         <td style={{width:'8%'}}>
                                             <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
+                                                <Form.Select aria-label="Default select example" name="altUnit">
+                                                    <option value="bag">BAG</option>
+                                                    <option value="pac">PAC</option>
+                                                </Form.Select>
                                             </Form.Group>
                                         </td>
                                         <td style={{width:'8%'}}>
                                             <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
+                                                <Form.Control type="number" name="rate"/>
                                             </Form.Group>
                                         </td>
-                                        <td>77687</td>
-                                        <td>8756587</td>
-                                    </tr>
-                                    
-                                    
+                                        <td>
+                                            <Form.Group controlId="formPlaintextVnumber">
+                                                <Form.Control type="number" name="discountPercentage"/>
+                                            </Form.Group>
+                                        </td>
+                                        <td>
+                                            <label>121231</label>
+                                        </td>
+                                        <td>
+                                        <label>121231</label>
+                                        </td>
+                                    </tr> */}
+                                    <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
                                     </tbody>
                                 </Table>
+                                </div>
                                 </Tab>
-                                <Tab eventKey="exchange" title="Exchange">
+                                {/* <Tab eventKey="exchange" title="Exchange">
                                 <Table size="sm" className="tableclass">
                                     <thead>
                                     <tr className="bg-info">
@@ -243,7 +419,7 @@ const Sale = () => {
                                         <Form.Label>Remark</Form.Label>
                                         <Form.Control type="text" />
                                     </Form.Group>
-                                {/* </Col> */}
+                                
                                 <Col md={3}>
                                     <Col className="d-flex justify-content-between">
                                         <Button variant="danger">
@@ -316,9 +492,8 @@ const Sale = () => {
                                     </tr>
                                     </tbody>
                                 </Table>
-                                </Tab>
+                                </Tab> */}
                             </Tabs>
-                            {/* billsave */}
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header className="bg-primary text-white" closeButton>
                                 <Modal.Title>Sale Bill</Modal.Title>
@@ -407,8 +582,6 @@ const Sale = () => {
                                 </Button>
                                 </Modal.Footer>
                             </Modal>
-                            {/* billsave */}
-                            {/* produt Detail */}
                             <Modal show={proshow} onHide={prohandleClose} size="xl">
                                 <Modal.Header closeButton>
                                     <Modal.Title>Search Your Product Details</Modal.Title>
@@ -912,7 +1085,6 @@ const Sale = () => {
                                 </Tabs>
                                 </Modal.Body>
                                 </Modal> 
-                            {/* product details */}
                         </Form>
                     </div>
                 </div>
