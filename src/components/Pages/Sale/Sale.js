@@ -4,7 +4,8 @@ import Header from '../../Headers/Header';
 import Topnav from '../../Headers/Topnav';
 import AutoSelect from 'react-select';
 import TableRows from "../test/TableRows";
-import Pdf from "react-to-pdf";
+import Pdf from 'react-to-pdf';
+import printable from 'react-print';
 import { Card,Row,Col,Form,Button,Tabs,Tab,Table,Badge,Modal,InputGroup,FormControl } from 'react-bootstrap-v5';
 
 const ref = React.createRef();
@@ -30,6 +31,19 @@ const Sale = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [fullscreen, setFullscreen] = useState(true);
+    const [show4, setShow4] = useState(false);
+    const handleClose4 = () => setShow4(false);
+    const handleShow4 = () => setShow4(true);
+    
+    const [checked, setChecked] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // alert(`The name you entered was: ${name}`);
+    }
+
     // var today = new Date(),
     // datee = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const today = new Date();
@@ -83,6 +97,28 @@ const Sale = () => {
                                     <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
                                 </Col>
                                 <Col>
+                                <div className="text-center">
+                                        <Form.Check
+                                            inline
+                                            label="Gst"
+                                            name="bill_type"
+                                            type="radio"
+                                            defaultChecked={true}
+                                            id="Gst"
+                                            onChange={(e) => setChecked(false)}
+                                        />
+                                        <Form.Check
+                                            inline
+                                            label="Non Gst"
+                                            name="bill_type"
+                                            type="radio"
+                                            id="checked"
+                                            onChange={(e) => setChecked(e.target.id)}
+                                        />
+                                        {/* <button type="reset">Reset form</button> */}
+                                    </div>
+                                </Col>
+                                <Col>
 
                                 </Col>
                                 <Col>
@@ -91,16 +127,34 @@ const Sale = () => {
                                     </Button>
                                 </Col>
                                 <Col>
-                                <Pdf targetRef={ref} filename="code-example.pdf">
-                                    {({ toPdf }) => 
-                                        <Button variant="success" size="sm" onClick={toPdf}>
+                                
+                                        <Button variant="success" size="sm" onClick={handleShow4}>
                                         {/* handleShow */}
                                         <i className="fa fa-check"></i> Save (F10)
                                         </Button>
-                                    }
-                                    </Pdf>
+                                    
                                 </Col>
                             </Row>  
+
+                            {/* events modal */}
+                            <Modal show={show4} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
+                            <Modal.Header closeButton>
+                                <Modal.Title>Photo Gallery of Nikhil Regency, Bhilai</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                            <Pdf targetRef={ref} filename="testgst.pdf">
+                                    {({ toPdf }) => 
+                                    <Button variant="success" onClick={toPdf}>Print PDF</Button>
+                                    }
+                            </Pdf>
+                            <button onClick={() => window.print()}>PRINT</button>
+                            <div ref={ref}>
+                                hi its fine and workin
+                            </div>
+                            </Modal.Body>
+                            </Modal>
+                            {/* events modal */}
+
                             {/* <Row>
                                 <Col md={3}>
                                 <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -147,7 +201,8 @@ const Sale = () => {
                             <Row>
                                 <Col md={3}>
                                     <Form.Label>Invoice No : </Form.Label><br/>
-                                    <label>ATC/001/2022-23</label>
+                                    
+                                    {checked? (<label>ATCN/001/2022-23</label>):(<label>ATC/001/2022-23</label>)}
                                 </Col>
                                 <Col md={3}>
                                 <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -225,7 +280,6 @@ const Sale = () => {
                                 className="mb-3"
                                 >
                                 <Tab eventKey="sale" title="Product Detail">
-                                <div ref={ref}>
                                 <Table size="sm" className="tableclass">
                                     <thead>
                                     <tr>
@@ -323,7 +377,6 @@ const Sale = () => {
                                     <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
                                     </tbody>
                                 </Table>
-                                </div>
                                 </Tab>
                                 {/* <Tab eventKey="exchange" title="Exchange">
                                 <Table size="sm" className="tableclass">
