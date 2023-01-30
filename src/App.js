@@ -13,7 +13,7 @@ import Logina from './components/Pages/Logina/Logina';
 import Register from './components/Pages/Register/Register';
 import ForgotPassword from './components/Pages/ForgotPassword/ForgotPassword';
 import Card from './components/Pages/Card/Card';
-import AddDeleteableRows from './components/Pages/test/AddDeleteTableRows';
+import Submitmodal from './components/Pages/test/Submitmodal';
 import '../src/components/Assets/sb-admin-2.css'; 
 
 function App() { 
@@ -30,7 +30,7 @@ function App() {
         <Route exact path="/category" element={<Category />}/>
         <Route exact path="/units" element={<Unit />}/>
         <Route exact path="/units" element={<Unit />}/>*/}
-        <Route exact path="/tr" element={<AddDeleteableRows />}/> 
+        <Route exact path="/tr" element={<Submitmodal />}/> 
         <Route exact path="/purchase" element={<Purchase />}/>
         <Route exact path="/sale" element={<Sale />}/>
         <Route exact path="/product" element={<Product />}/>
