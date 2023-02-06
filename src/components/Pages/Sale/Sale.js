@@ -6,6 +6,7 @@ import AutoSelect from 'react-select';
 import TableRows from "../test/TableRows";
 import Pdf from 'react-to-pdf';
 import printable from 'react-print';
+import logo from '../../../img/AROMIST_LOGO.png';
 import { Card,Row,Col,Form,Button,Tabs,Tab,Table,Badge,Modal,InputGroup,FormControl } from 'react-bootstrap-v5';
 
 const ref = React.createRef();
@@ -81,7 +82,17 @@ const Sale = () => {
     rowsInput[index][name] = value;
     setRowsData(rowsInput);
     }
+    const [salesdata,setSalesdata] = useState({
+        invno:"",billto:"",shipto:"",billdate:"",challanNo:"",challanDate:"",placeOfSupply:"",destination:"",despatchThrough:"",vehicleNo:"",paymentMode:"",
+    });
+     
+    let name, value;
+    const handleInputs = (e) => {
+        name = e.target.name;
+        value = e.target.value;
 
+        setSalesdata({...salesdata, [name]:value});
+    }
 
     return(
         <>
@@ -135,74 +146,211 @@ const Sale = () => {
                                     
                                 </Col>
                             </Row>  
-
                             {/* events modal */}
                             <Modal show={show4} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
                             <Modal.Header closeButton>
-                                <Modal.Title>Photo Gallery of Nikhil Regency, Bhilai</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                            <Pdf targetRef={ref} filename="testgst.pdf">
+                                <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC/001/2022-2023</Modal.Title>
+                                <Pdf targetRef={ref} filename="testgst.pdf">
                                     {({ toPdf }) => 
-                                    <Button variant="success" onClick={toPdf}>Print PDF</Button>
+                                    <Button variant="success" onClick={toPdf}>Save PDF</Button>
                                     }
                             </Pdf>
-                            <button onClick={() => window.print()}>PRINT</button>
+                            </Modal.Header>
+                            <Modal.Body>
+                            
+                            {/* <button onClick={() => window.print()}>PRINT</button> */}
                             <div ref={ref}>
-                                hi its fine and workin
+                                {/* hi its fine and workin 
+                                <p>{salesdata.challanNo}</p>
+                                <p>{salesdata.billdate}</p>                                 */}
+                                <Row>
+                                    <Col>
+                                        <h4>Aromist Tea Co.</h4>
+                                        <p>
+                                            Netaji Subhash Road, Subhash Pally <br/>
+                                            Siliguri - 734001<br/>
+                                            Dist : Darjeeling<br/>
+                                            GSTIN / UIN : 19ATHPP2711R1Z2<br/>
+                                            State: West Bengal, Code: 19<br/>
+                                            Ph: +91 6294811689<br/>
+                                            E-Mail: aromisttea@gmail.com<br/>
+                                            TMCO No : 8268682492<br/>
+                                            FSSAI LIC No : 8268682492 
+                                        </p>
+                                    </Col>
+                                    <Col>
+                                        <img className='m-auto' src={logo} alt="logo" width="150px"/>
+                                    </Col>
+                                    <Col>
+                                     <Row>
+                                        <Col>
+                                            <p>
+                                                Reference Date: <br/>
+                                                Reference No.:
+                                                <hr/>
+                                                <b>Buyer (Bill To)</b>: <br/>
+                                                Buyers GSTIN:  <br/>
+                                                Buyer Address: <br/><br/>
+                                                Phone:
+                                                <hr/>
+                                                Mode / Terms of Payment:
+                                            </p>
+                                        </Col>
+                                        <Col>
+                                            <p>
+                                            24-12-2022<br/>
+                                            ATC/001/2022-2023
+                                            <hr/>
+                                            Shree Shyam ea Co. <br/>
+                                            19AJKDY661171ZU <br/>
+                                            mahavir stan Siliguri - 734003<br/>
+                                            +91 873872837823
+                                            <hr/>
+                                            Cash
+                                            </p>
+                                        </Col>
+                                     </Row>
+                                    </Col>
+                                </Row>
+                                <div className='d-flex justify-content-center'>
+                                    <h6><b className='mx-auto text-dark'><u>Tax Invoice</u></b></h6>
+                                </div>
+                                <table className="tableclass table-sm" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Particulars</th>
+                                        <th>HSN / SAC</th>
+                                        <th>Invoice NO</th>
+                                        <th>B-Qty</th>
+                                        <th>B-Unit</th>
+                                        <th>A-Qty</th>
+                                        <th>A-Unit</th>
+                                        <th>Rate</th>
+                                        <th>Disc %</th>
+                                        <th>Discount</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <td>1</td>
+                                    <td>product1</td>
+                                    <td>90240</td>
+                                    <td>kmlkx9i</td>
+                                    <td>350</td>
+                                    <td>kg</td>
+                                    <td>10</td>
+                                    <td>BAG</td>
+                                    <td>100</td>
+                                    <td>10%</td>
+                                    <td>10</td>
+                                    <td>90</td>
+                                    </tr>
+                                    <tr>
+                                    <td>2</td>
+                                    <td>product2</td>
+                                    <td>90240</td>
+                                    <td>kmlkx9i</td>
+                                    <td>350</td>
+                                    <td>kg</td>
+                                    <td>10</td>
+                                    <td>BAG</td>
+                                    <td>100</td>
+                                    <td>10%</td>
+                                    <td>10</td>
+                                    <td>90</td>
+                                    </tr>
+                                    <tr>
+                                    <td>3</td>
+                                    <td>product3</td>
+                                    <td>90240</td>
+                                    <td>kmlkx9i</td>
+                                    <td>350</td>
+                                    <td>kg</td>
+                                    <td>10</td>
+                                    <td>BAG</td>
+                                    <td>100</td>
+                                    <td>10%</td>
+                                    <td>10</td>
+                                    <td>90</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                <Row style={{padding:'0 12px 0 12px'}} className='text-dark'>
+                                <Col md={8} className='border border-2 border-dark'>
+                                    <p className='text-dark'>Total Base Quantity : count bqty &nbsp;&nbsp; unit<br/>
+                                    Total Alt. Quantity : count aqty &nbsp;&nbsp; unit</p><br/>
+                                    <h5><b>Rupees Fourteen Lakhs Sixty Two housand hre Haundred Forty Nine Only</b></h5>
+                                </Col>
+                                <Col md={2} className='border border-dark border-2'>
+                                <table>
+                                        <tr><td>Taxable Amount</td></tr>
+                                        <tr><td>CGST 2.50</td></tr>
+                                        <tr><td>SGST 2.50</td></tr>
+                                        <tr><td>IGST 5.00</td></tr>
+                                        <tr><td>Transport</td></tr>
+                                        <tr><td>Round Off</td></tr>
+                                        <tr><td>Grand Total</td></tr>
+                                </table>
+                                </Col>
+                                <Col md={2} className='border border-2 border-dark text-right' style={{paddingLeft:'110px'}}>
+                                    <table>
+                                        <tr><td>94,40,332.20</td></tr>
+                                        <tr><td>1,11,0008.31</td></tr>
+                                        <tr><td>1,11,0008.31</td></tr>
+                                        <tr><td>2,22,0016.31</td></tr>
+                                        <tr><td>8.933</td></tr>
+                                        <tr><td>0.19</td></tr>
+                                        <tr><td>100,22,313.00</td></tr>
+                                    </table>
+                                </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <small>
+                                            <p>Terms & Condition</p>
+                                            <ol>
+                                                <li>Payment condition shall be 100% in advance</li>
+                                                <li>Minimum purchase quantity should be 50kg</li>
+                                                <li>The validity of this quotation is for 10 days</li>
+                                                <li>Transpotation depends on sate wise</li>
+                                                <li>Office is closed on Sunday and National Holidays</li>
+                                                <li>All condition reserved within Siliguri Jurisdiction only</li>
+                                                <li>Goods Once sold cant be return</li>
+                                            </ol>
+                                        </small>
+                                    </Col>
+                                    <Col>
+                                        <small>
+                                            <p>Aromist ea Co.</p>
+                                            <ul>
+                                                <li>Bank Name: ICICI Bank</li>
+                                                <li>Account No: 387005500180</li>
+                                                <li>IFSC Code: ICIC0003870</li>
+                                            </ul>
+                                        </small>
+                                    </Col>
+                                    <Col> pay qr code</Col>
+                                    <Col>
+                                        <p>For Aromist Tea Co.</p>
+                                        {/* <img src={} alt="sign"/> */}
+                                        <p>Authorised Signature</p> 
+                                    </Col>
+                                </Row>
+                                <p className='d-flex justify-content-center'>This is computer generated invoice</p>
                             </div>
                             </Modal.Body>
                             </Modal>
                             {/* events modal */}
-
-                            {/* <Row>
-                                <Col md={3}>
-                                <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                    <Form.Label>Doc.No.</Form.Label>
-                                    <Form.Control 
-                                        disabled
-                                        readOnly
-                                        type="text" 
-                                    />
-                                </Form.Group>
-                                <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                    <Form.Label>Select Party</Form.Label>
-                                    <Form.Control type="text" />
-                                </Form.Group>
-                                </Col>
-                                <Col md={6} className="px-4">
-                                    <Row className="d-flex justify-content-between">
-                                        <Col md={5}>
-                                        <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Form.Label>Date</Form.Label>
-
-                                            <Form.Control type="date" defaultValue={datee}/>
-                                        </Form.Group>
-                                        </Col>
-                                        <Col md={6}>
-                                        <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Form.Label>Ref. No.</Form.Label>
-                                            <Form.Control type="text" />
-                                        </Form.Group>
-                                        </Col>
-                                    </Row>
-                                    <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                        <Form.Label>Remark</Form.Label>
-                                        <Form.Control type="text" />
-                                    </Form.Group>
-                                </Col>
-                                <Col md={3}>
-                                    <Form.Group as={Row}  style={{paddingTop:'28px'}} controlId="formPlaintextVnumber">
-                                        <Form.Label>Barcode Entry</Form.Label>
-                                        <Form.Control type="text" />
-                                    </Form.Group>
-                                </Col>
-                            </Row> */}
                             <Row>
                                 <Col md={3}>
                                     <Form.Label>Invoice No : </Form.Label><br/>
                                     
-                                    {checked? (<label>ATCN/001/2022-23</label>):(<label>ATC/001/2022-23</label>)}
+                                    {checked? (
+                                        <label>ATCN/001/2022-23</label>
+                                    ):(
+                                        <label>ATC/001/2022-23</label>)}
                                 </Col>
                                 <Col md={3}>
                                 <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -226,13 +374,20 @@ const Sale = () => {
                                 </Col>
                                 <Col md={3}>
                                     <Form.Label>Date : </Form.Label>
-                                    <Form.Control type="date" defaultValue={datee}/>
+                                    <Form.Control type="date" defaultValue={datee}
+                                        name="billdate"
+                                        value={salesdata.billdate}
+                                        onChange={handleInputs}
+                                    />
                                 </Col>
                             </Row>
                             <Row>
                                 <Col md={3}>
                                     <Form.Label>Challan No : </Form.Label>
-                                    <Form.Control type="text" name='challanNo'/>
+                                    <Form.Control type="text" name='challanNo' 
+                                        value={salesdata.challanNo}
+                                        onChange={handleInputs}
+                                    />
                                 </Col>
                                 <Col md={3}>
                                     <Form.Label>Date : </Form.Label>
@@ -250,19 +405,19 @@ const Sale = () => {
                                     <Form.Label>Destination : </Form.Label>
                                     <Form.Control type="text" name='destination'/>
                                 </Col>
-                                <Col md={4}>
+                                <Col md={3}>
                                     <Form.Label>Despatch Through : </Form.Label>
                                     <Form.Control type="text" name='despatchThrough'/>
                                 </Col>
-                                <Col md={4}>
+                                <Col md={3}>
                                     <Form.Label>Vehicle No : </Form.Label>
                                     <Form.Control type="text" name='vehicleNo'/>
                                 </Col>
-                                {/*<Col md={7}>
-                                             <Form.Label>TMCO No : 8268682492</Form.Label><br/>
-                                            <Form.Label>FSSAI LIC No : 8268682492</Form.Label> 
-                                        </Col>*/}
-                                <Col md={4}>
+                                <Col md={3}>
+                                    <Form.Label>Transport Cost : </Form.Label>
+                                    <Form.Control type="text" name='transportCost'/>
+                                </Col>
+                                <Col md={3}>
                                     <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
                                     <Form.Select aria-label="Default select example">
                                         <option value="cash">Cash</option>
@@ -314,238 +469,10 @@ const Sale = () => {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {/* <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber" onClick={prohandleShow}>
-                                                <Form.Control type="text" name="productName"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="text" name="hsn" value="90240"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="text" name="invoiceNo"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" name="baseQty"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Select aria-label="Default select example" name="baseUnit">
-                                                    <option value="kg">KG</option>
-                                                    <option value="gm">GM</option>
-                                                </Form.Select>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                        <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" name="altQty"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Select aria-label="Default select example" name="altUnit">
-                                                    <option value="bag">BAG</option>
-                                                    <option value="pac">PAC</option>
-                                                </Form.Select>
-                                            </Form.Group>
-                                        </td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" name="rate"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" name="discountPercentage"/>
-                                            </Form.Group>
-                                        </td>
-                                        <td>
-                                            <label>121231</label>
-                                        </td>
-                                        <td>
-                                        <label>121231</label>
-                                        </td>
-                                    </tr> */}
                                     <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
                                     </tbody>
                                 </Table>
                                 </Tab>
-                                {/* <Tab eventKey="exchange" title="Exchange">
-                                <Table size="sm" className="tableclass">
-                                    <thead>
-                                    <tr className="bg-info">
-                                        <th>SL</th>
-                                        <th >Barcode</th>
-                                        <th>Product</th>
-                                        <th>HSN / SAC</th>
-                                        <th>MRP</th>
-                                        <th>Quantity</th>
-                                        <th>Prd. Val.</th>
-                                        <th>CDisc %</th>
-                                        <th>CD-Amount</th>
-                                        <th>Tax</th>
-                                        <th>Net</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>123456789074396</td>
-                                        <td>
-                                            <Form.Group controlId="formPlaintextVnumber" onClick={prohandleShow}>
-                                                <Form.Control type="text" />
-                                            </Form.Group>
-                                        </td>
-                                        <td>102322</td>
-                                        <td>10765</td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
-                                            </Form.Group>
-                                        </td>
-                                        <td>687658</td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
-                                            </Form.Group>
-                                        </td>
-                                        <td style={{width:'8%'}}>
-                                            <Form.Group controlId="formPlaintextVnumber">
-                                                <Form.Control type="number" />
-                                            </Form.Group>
-                                        </td>
-                                        <td>77687</td>
-                                        <td>8756587</td>
-                                    </tr>
-                                    
-                                    
-                                    </tbody>
-                                </Table>
-                                </Tab>
-                                <Tab eventKey="term_detail" title="Term Detail">
-                                <Table size="sm" className="tableclass">
-                                    <thead>
-                                    <tr className="bg-warning">
-                                        <th>SL</th>
-                                        <th >Sign</th>
-                                        <th>Percent %</th>
-                                        <th>amount</th>
-                                        <th>Ledger</th>
-                                        <th>Description</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>DR</td>
-                                        <td>0.00</td>
-                                        <td>0.00</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </Table>
-                                <h6>Auto Round Off</h6>
-                                <Row>
-                                    <Col>
-                                        <Form.Group controlId="formPlaintextVnumber">
-                                            <Form.Label>amount</Form.Label>
-                                            <Form.Control type="text" value="0.45" disabled />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group controlId="formPlaintextVnumber">
-                                            <Form.Label>Ledger</Form.Label>
-                                            <Form.Control type="text" disabled value="Round Off" />
-                                        </Form.Group>
-                                        </Col>
-                                    </Row>
-                                    <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                        <Form.Label>Remark</Form.Label>
-                                        <Form.Control type="text" />
-                                    </Form.Group>
-                                
-                                <Col md={3}>
-                                    <Col className="d-flex justify-content-between">
-                                        <Button variant="danger">
-                                            <i className="fa fa-times"></i> Cancel (F2)
-                                        </Button>
-                                        <Button variant="success" onClick={handleShow}>
-                                        <i className="fa fa-check"></i> Save (F10)
-                                        </Button>
-                                    </Col>
-                                </Col>
-                                </Tab>
-                                <Tab eventKey="disc_tax" title="Disc & Tax">
-                                <Table size="sm" className="tableclass">
-                                    <thead>
-                                    <tr className="bg-danger">
-                                        <th>SL</th>
-                                        <th >Percent %</th>
-                                        <th>+/-</th>
-                                        <th>amount</th>
-                                        <th>Ledger</th>
-                                        <th>Description</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>100</td>
-                                        <td>
-                                        <Badge bg="success">
-                                            (+)
-                                        </Badge>
-                                        <Badge bg="danger">
-                                            (-)
-                                        </Badge>
-                                        </td>
-                                        <td>767</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </Table>
-                                </Tab>
-                                <Tab eventKey="journal_view" title="Journal View">
-                                <Table size="sm" className="tableclass">
-                                    <thead>
-                                    <tr className="bg-primary">
-                                        <th>SL</th>
-                                        <th >Ledger</th>
-                                        <th>DR / CR</th>
-                                        <th>Debit</th>
-                                        <th>Credit</th>
-                                        <th>Description</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>sdfefef wf</td>
-                                        <td>
-                                        <Badge bg="success">
-                                            DR
-                                        </Badge>
-                                        <Badge bg="danger">
-                                            CR
-                                        </Badge>
-                                        </td>
-                                        <td>767</td>
-                                        <td>342</td>
-                                        <td>dfbfb bb df kdfbfb</td>
-                                    </tr>
-                                    </tbody>
-                                </Table>
-                                </Tab> */}
                             </Tabs>
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header className="bg-primary text-white" closeButton>
