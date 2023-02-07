@@ -11,7 +11,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
     return(
         
         rowsData.map((data, index)=>{
-            const {sl, product, hsn, invNo, bQty, bUnit, aQty, aUnit, rate, DiscPercent, Disc, amount }= data;
+            const {sl, productName, hsn, invoiceNo, baseQty, baseUnit, altQty, altUnit, rate, discountPercentage, Disc, amount }= data;
             return(
             //     <tr key={index}>
             //     <td>
@@ -25,27 +25,27 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             <td>1</td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber" onClick={prohandleShow}>
-                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="productName"/>
+                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="productName" value={productName}/>
                 </Form.Group>
             </td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="hsn" value="90240"/>
+                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="hsn" value={hsn} />
                 </Form.Group>
             </td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="invoiceNo"/>
+                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="invoiceNo" value={invoiceNo} />
                 </Form.Group>
             </td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} name="baseQty"/>
+                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} name="baseQty" value={baseQty} />
                 </Form.Group>
             </td>
             <td style={{width:'8%'}}>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Select aria-label="Default select example" name="baseUnit" onChange={(evnt)=>(handleChange(index, evnt))}>
+                    <Form.Select aria-label="Default select example" name="baseUnit" value={baseUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
                         <option value="kg">KG</option>
                         <option value="gm">GM</option>
                     </Form.Select>
@@ -53,12 +53,12 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             </td>
             <td>
             <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} name="altQty"/>
+                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} value={altQty} name="altQty"/>
                 </Form.Group>
             </td>
             <td style={{width:'8%'}}>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Select aria-label="Default select example" name="altUnit" onChange={(evnt)=>(handleChange(index, evnt))}>
+                    <Form.Select aria-label="Default select example" name="altUnit" value={altUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
                         <option value="bag">BAG</option>
                         <option value="pac">PAC</option>
                     </Form.Select>
@@ -66,12 +66,12 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             </td>
             <td style={{width:'8%'}}>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} name="rate"/>
+                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} value={rate} name="rate"/>
                 </Form.Group>
             </td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} name="discountPercentage"/>
+                    <Form.Control type="number" onChange={(evnt)=>(handleChange(index, evnt))} value={discountPercentage} name="discountPercentage"/>
                 </Form.Group>
             </td>
             <td>
