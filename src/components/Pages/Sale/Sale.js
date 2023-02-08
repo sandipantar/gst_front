@@ -214,56 +214,67 @@ const Sale = () => {
 
                                         {/* <button onClick={() => window.print()}>PRINT</button> */}
                                         <div ref={ref}>
-                                            {/* hi its fine and workin 
-                                <p>{salesdata.challanNo}</p>
-                                <p>{salesdata.billdate}</p>                                 */}
-                                            <Row>
-                                                <Col>
-                                                    <h4>Aromist Tea Co.</h4>
-                                                    <p>
-                                                        Netaji Subhash Road, Subhash Pally <br />
-                                                        Siliguri - 734001<br />
-                                                        Dist : Darjeeling<br />
-                                                        GSTIN / UIN : 19ATHPP2711R1Z2<br />
-                                                        State: West Bengal, Code: 19<br />
-                                                        Ph: +91 6294811689<br />
-                                                        E-Mail: aromisttea@gmail.com<br />
-                                                        TMCO No : 8268682492<br />
-                                                        FSSAI LIC No : 8268682492
-                                                    </p>
-                                                </Col>
-                                                <Col>
+                                            <Row className='d-flex justify-content-center'>
+                                                <Col md={3}>
                                                     <img className='m-auto' src={logo} alt="logo" width="150px" />
                                                 </Col>
-                                                <Col>
-                                                    <Row>
+                                                <Col md={7} className='text-center text-dark'>
+                                                <h3><b>Aromist Tea Co.</b></h3>
+                                                        <p>
+                                                            GSTIN / UIN : 19ATHPP2711R1Z2<br/>
+                                                            Netaji Subhash Road, Subhash Pally
+                                                            Siliguri - 734001
+                                                            Dist : Darjeeling
+                                                            State: West Bengal, Code: 19<br />
+                                                            Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
+                                                        </p>                
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Row className='border border-bottom-0'>
                                                         <Col>
+                                                            <p className='m-0'><small>Bill To:</small></p>
                                                             <p>
-                                                                Reference Date: <br />
-                                                                Reference No.:
-                                                                <hr />
-                                                                <b>Buyer (Bill To)</b>: <br />
-                                                                Buyers GSTIN:  <br />
-                                                                Buyer Address: <br /><br />
-                                                                Phone:
-                                                                <hr />
-                                                                Mode / Terms of Payment:
-                                                            </p>
-                                                        </Col>
-                                                        <Col>
-                                                            <p>
-                                                                {finalPreviewObj.billdate}<br />
-                                                                {finalPreviewObj.invno}
-                                                                <hr />
-                                                                {finalPreviewObj?.billto?.label} <br />
-                                                                19AJKDY661171ZU <br />
-                                                                mahavir stan Siliguri - 734003<br /><br />
-                                                                +91 873872837823
-                                                                <hr />
-                                                                Cash
+                                                                {finalPreviewObj?.billto?.label}<br/>
+                                                                19AJKDY661171ZU  (dynamic from json)
+                                                                <span className='float-right'>+91 873872837823(dynamic from json)</span>
                                                             </p>
                                                         </Col>
                                                     </Row>
+                                                    <Row className='border'>
+                                                        <Col>
+                                                            <p className='m-0'><small>Shipped To:</small></p>
+                                                            <p>
+                                                                mahavir stan Siliguri - 734003 (Dynamic shipp to data from the form) 
+                                                            </p>
+                                                            <p className='float-left'>TMCO No : 8268682492</p>
+                                                            <p className='float-right'>FSSAI LIC No : 8268682492</p>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col md={6}>
+                                                    
+                                                            <Row className='border border-bottom-0'>
+                                                                <Col className='border-right'>Invoice No.:<br/>{finalPreviewObj.invno}</Col>
+                                                                <Col>Reference Date: <br /> {finalPreviewObj.billdate}</Col>
+                                                            </Row>
+                                                            <Row className='border border-bottom-0'>
+                                                                <Col className='border-right'>Challan No: (dynamic)</Col>
+                                                                <Col>Date : (dynamic)</Col>
+                                                            </Row>
+                                                            <Row className='border border-bottom-0'>
+                                                                <Col className='border-right'>Place Of Supply : <br/>(dynamic)</Col>
+                                                                <Col>Destination:<br/> (dynamic)</Col>
+                                                            </Row>
+                                                            <Row className='border border-bottom-0'>
+                                                                <Col className='border-right'>Despatch Through :<br/> (dynamic)</Col>
+                                                                <Col>Vehicle No :<br/> (Dynamic)</Col>
+                                                            </Row>
+                                                            <Row className='border'>
+                                                                <Col className='border-right'>Mode / Terms of Payment :</Col>
+                                                                <Col>Dynamic from dropdown</Col>
+                                                            </Row>
                                                 </Col>
                                             </Row>
                                             <div className='d-flex justify-content-center'>
@@ -324,7 +335,7 @@ const Sale = () => {
                                                         <tr><td>Grand Total</td></tr>
                                                     </table>
                                                 </Col>
-                                                <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '110px' }}>
+                                                <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '70px' }}>
                                                     <table>
                                                         <tr><td>94,40,332.20</td></tr>
                                                         <tr><td>1,11,0008.31</td></tr>
