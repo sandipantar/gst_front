@@ -11,7 +11,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
     return(
         
         rowsData.map((data, index)=>{
-            const {sl, productName, hsn, invoiceNo, baseQty, baseUnit, altQty, altUnit, rate, discountPercentage, Disc, amount }= data;
+            const {sl, productName, hsn, invoiceNo, baseQty, baseUnit, altQty, altUnit, rate, discountPercentage, discount, amount }= data;
             return(
             //     <tr key={index}>
             //     <td>
@@ -30,7 +30,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             </td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber">
-                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="hsn" value={hsn} />
+                    <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="hsn" value={hsn} disabled />
                 </Form.Group>
             </td>
             <td>
@@ -75,10 +75,10 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
                 </Form.Group>
             </td>
             <td>
-                <label>121231</label>
+                <label>{discount}</label>
             </td>
             <td>
-            <label>121231</label>
+            <label>{amount}</label>
             </td>
             <td>
                 <a className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>x</a>

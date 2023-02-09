@@ -14,6 +14,11 @@ const party = [
     {
         value: 'ab',
         label: 'A&B Co.',
+        companyDetails: {
+            contactNo: "9876543210",
+            gst: "19zmajjnksbdj",
+            address: "address 6"
+        },
         shippingAddress: [{
             value: 'add1',
             label: 'Address 1'
@@ -23,7 +28,13 @@ const party = [
         }]
     },
     {
-        value: 'cd', label: 'C&D Co.',
+        value: 'cd',
+        label: 'C&D Co.',
+        companyDetails: {
+            contactNo: "9776543210",
+            gst: "19zmajjnjksl",
+            address: "address 7"
+        },
         shippingAddress: [{
             value: 'add3',
             label: 'Address 3'
@@ -33,7 +44,13 @@ const party = [
         }]
     },
     {
-        value: 'ef', label: 'E&F Co.',
+        value: 'ef',
+        label: 'E&F Co.',
+        companyDetails: {
+            contactNo: "9876566210",
+            gst: "19zmajjnkslk6",
+            address: "address 7"
+        },
         shippingAddress: [{
             value: 'add5',
             label: 'Address 5'
@@ -41,11 +58,11 @@ const party = [
     }
 ];
 const locationData = [
-    { value: 1, label: "Raipur", image: "imh" },
-    { value: 2, label: "Kolkata", image: "imh" },
-    { value: 3, label: "New Delhi", image: "imh" },
-    { value: 4, label: "Indore", image: "imh" },
-    { value: 5, label: "Chennai", image: "imh" },
+    { value: 1, label: "Raipur" },
+    { value: 2, label: "Kolkata" },
+    { value: 3, label: "New Delhi" },
+    { value: 4, label: "Indore" },
+    { value: 5, label: "Chennai" }
 ];
 
 const Sale = () => {
@@ -55,6 +72,7 @@ const Sale = () => {
     const [fullscreen, setFullscreen] = useState(true);
     const [show4, setShow4] = useState(false);
     const [checked, setChecked] = useState(false);
+    const [gsthecked, setGstChecked] = useState(true);
 
     // var today = new Date(),
     // datee = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -94,14 +112,16 @@ const Sale = () => {
 
         const rowsInput = {
             productName: '',
-            hsn: '',
+            hsn: '90240',
             invoiceNo: '',
             baseQty: '',
             baseUnit: 'kg',
             altQty: '',
             altUnit: 'bag',
             rate: '',
-            discountPercentage: ''
+            discountPercentage: '',
+            discount: 0,
+            amount: 0
         }
         setRowsData([...rowsData, rowsInput])
 
@@ -114,8 +134,33 @@ const Sale = () => {
 
     const handleChange = (index, evnt) => {
         const { name, value } = evnt.target;
+        let discount = 0;
+        let amount = 0;
+        let discountPercentage = 0;
         const rowsInput = [...rowsData];
         rowsInput[index][name] = value;
+
+        if (name === "baseQty" && rowsInput[index].rate) {
+            if (!rowsInput[index].discountPercentage) {
+                discountPercentage = 0;
+            }
+            discount = (Number(value) * Number(rowsInput[index].rate) * Number(discountPercentage)) / 100;
+            amount = (Number(value) * Number(rowsInput[index].rate)) - discount;
+        } else if (name === "rate" && rowsInput[index].baseQty) {
+            if (!rowsInput[index].discountPercentage) {
+                discountPercentage = 0;
+            }
+            discount = (Number(value) * Number(rowsInput[index].baseQty) * Number(discountPercentage)) / 100;
+            amount = (Number(value) * Number(rowsInput[index].baseQty)) - discount;
+        } else if (name === "discountPercentage" && rowsInput[index].baseQty && rowsInput[index].rate) {
+            discount = (Number(rowsInput[index].rate) * Number(rowsInput[index].baseQty) * Number(value)) / 100;
+            amount = (Number(rowsInput[index].rate) * Number(rowsInput[index].baseQty)) - discount;
+        }
+
+        rowsInput[index].discount = discount.toFixed(2);
+        rowsInput[index].amount = amount.toFixed(2);
+
+
         setRowsData(rowsInput);
     }
 
@@ -133,20 +178,57 @@ const Sale = () => {
     };
 
     const seePreview = () => {
-        console.log("sales ", salesdata, rowsData, selectedOption, selectedPlace, selectedShippingAddress)
+        
+        let totalAmount = 0;
+        let totalBaseQty = 0;
+        let totalAltQty = 0;
+        let grandTotal = 0;
+
+        if (rowsData.length) {
+            rowsData.forEach(each => {
+                if (each.amount) {
+                    totalAmount += Number(each.amount);
+                }
+                if (each.baseQty) {
+                    totalBaseQty += Number(each.baseQty);
+                }
+                if (each.altQty) {
+                    totalAltQty += Number(each.altQty);
+                }
+            });
+        }
+        
+        const totalGst = totalAmount * 0.05;
+        const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost))%1).toFixed(2));
+
+        if (roundOff > 0.49) {
+            grandTotal = Math.ceil((totalAmount + totalGst + Number(salesdata.transportCost)));
+        } else {
+            grandTotal = Math.floor((totalAmount + totalGst + Number(salesdata.transportCost)));
+            
+        }
+        // grandTotal = (totalAmount + totalGst + Number(salesdata.transportCost)) - (roundOff > 0.49 ? 0 : roundOff.toFixed(2));
+
+        console.log("sales ",  totalAmount)
         updateFinalPreviewObj({
             ...salesdata,
             products: [...rowsData],
             billto: selectedOption,
             shipto: selectedShippingAddress,
-            placeOfSupply: selectedPlace
+            placeOfSupply: selectedPlace,
+            totalAmount: totalAmount.toFixed(2),
+            totalBaseQty: totalBaseQty.toFixed(2),
+            totalAltQty: totalAltQty.toFixed(2),
+            totalGst: totalGst,
+            roundOff: roundOff > 0.49 ? "0.00" : roundOff.toFixed(2),
+            grandTotal: grandTotal.toFixed(2)
         });
         handleShow4();
     };
     const options = {
         orientation: 'landscape',
         unit: 'in',
-        format: [4,2]
+        format: [4, 2]
     };
     return (
         <>
@@ -184,7 +266,25 @@ const Sale = () => {
                                         </div>
                                     </Col>
                                     <Col>
-
+                                    <div className="text-center">
+                                            <Form.Check
+                                                inline
+                                                label="CGST + SGST"
+                                                name="gst_type"
+                                                type="radio"
+                                                defaultChecked={true}
+                                                id="checked"
+                                                onChange={(e) => {setGstChecked(true);}}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="IGST"
+                                                name="gst_type"
+                                                type="radio"
+                                                id="Gst"
+                                                onChange={(e) => {setGstChecked(false);}}
+                                            />
+                                        </div>
                                     </Col>
                                     <Col>
                                         <Button variant="danger" size="sm">
@@ -203,7 +303,7 @@ const Sale = () => {
                                 {/* events modal */}
                                 <Modal show={show4 && Object.keys(finalPreviewObj).length} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
                                     <Modal.Header closeButton>
-                                        <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC/001/2022-2023</Modal.Title>
+                                        <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC{checked ? "N" : ""}/001/2022-2023</Modal.Title>
                                         <Pdf targetRef={ref} filename="testgst.pdf">
                                             {({ toPdf }) =>
                                                 <Button variant="success" onClick={toPdf}>Save PDF</Button>
@@ -219,15 +319,15 @@ const Sale = () => {
                                                     <img className='m-auto' src={logo} alt="logo" width="150px" />
                                                 </Col>
                                                 <Col md={7} className='text-center text-dark'>
-                                                <h3><b>Aromist Tea Co.</b></h3>
-                                                        <p>
-                                                            GSTIN / UIN : 19ATHPP2711R1Z2<br/>
-                                                            Netaji Subhash Road, Subhash Pally
-                                                            Siliguri - 734001
-                                                            Dist : Darjeeling
-                                                            State: West Bengal, Code: 19<br />
-                                                            Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
-                                                        </p>                
+                                                    <h3><b>Aromist Tea Co.</b></h3>
+                                                    <p>
+                                                        GSTIN / UIN : 19ATHPP2711R1Z2<br />
+                                                        Netaji Subhash Road, Subhash Pally
+                                                        Siliguri - 734001
+                                                        Dist : Darjeeling
+                                                        State: West Bengal, Code: 19<br />
+                                                        Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
+                                                    </p>
                                                 </Col>
                                             </Row>
                                             <Row>
@@ -236,9 +336,10 @@ const Sale = () => {
                                                         <Col>
                                                             <p className='m-0'><small>Bill To:</small></p>
                                                             <p>
-                                                                {finalPreviewObj?.billto?.label}<br/>
-                                                                19AJKDY661171ZU  (dynamic from json)
-                                                                <span className='float-right'>+91 873872837823(dynamic from json)</span>
+                                                                {finalPreviewObj?.billto?.label}<br />
+                                                                {finalPreviewObj?.billto?.companyDetails.address} <br/>
+                                                                {finalPreviewObj?.billto?.companyDetails.gst}
+                                                                <span className='float-right'>+91 {finalPreviewObj?.billto?.companyDetails.contactNo}</span>
                                                             </p>
                                                         </Col>
                                                     </Row>
@@ -246,7 +347,7 @@ const Sale = () => {
                                                         <Col>
                                                             <p className='m-0'><small>Shipped To:</small></p>
                                                             <p>
-                                                                mahavir stan Siliguri - 734003 (Dynamic shipp to data from the form) 
+                                                                {finalPreviewObj?.shipto?.label}
                                                             </p>
                                                             <p className='float-left'>TMCO No : 8268682492</p>
                                                             <p className='float-right'>FSSAI LIC No : 8268682492</p>
@@ -254,82 +355,85 @@ const Sale = () => {
                                                     </Row>
                                                 </Col>
                                                 <Col md={6}>
-                                                    
-                                                            <Row className='border border-bottom-0'>
-                                                                <Col className='border-right'>Invoice No.:<br/>{finalPreviewObj.invno}</Col>
-                                                                <Col>Reference Date: <br /> {finalPreviewObj.billdate}</Col>
-                                                            </Row>
-                                                            <Row className='border border-bottom-0'>
-                                                                <Col className='border-right'>Challan No: (dynamic)</Col>
-                                                                <Col>Date : (dynamic)</Col>
-                                                            </Row>
-                                                            <Row className='border border-bottom-0'>
-                                                                <Col className='border-right'>Place Of Supply : <br/>(dynamic)</Col>
-                                                                <Col>Destination:<br/> (dynamic)</Col>
-                                                            </Row>
-                                                            <Row className='border border-bottom-0'>
-                                                                <Col className='border-right'>Despatch Through :<br/> (dynamic)</Col>
-                                                                <Col>Vehicle No :<br/> (Dynamic)</Col>
-                                                            </Row>
-                                                            <Row className='border'>
-                                                                <Col className='border-right'>Mode / Terms of Payment :</Col>
-                                                                <Col>Dynamic from dropdown</Col>
-                                                            </Row>
+
+                                                    <Row className='border border-bottom-0'>
+                                                        <Col className='border-right'>Invoice No.:<br />ATC{checked ? "N" : ""}/001/2022-2023</Col>
+                                                        <Col>Reference Date: <br /> {finalPreviewObj.billdate}</Col>
+                                                    </Row>
+                                                    <Row className='border border-bottom-0'>
+                                                        <Col className='border-right'>Challan No: {finalPreviewObj.challanNo}</Col>
+                                                        <Col>Date : {finalPreviewObj.challanDate}</Col>
+                                                    </Row>
+                                                    <Row className='border border-bottom-0'>
+                                                        <Col className='border-right'>Place Of Supply : <br />{finalPreviewObj?.placeOfSupply?.label}</Col>
+                                                        <Col>Destination:<br /> {finalPreviewObj.destination}</Col>
+                                                    </Row>
+                                                    <Row className='border border-bottom-0'>
+                                                        <Col className='border-right'>Despatch Through :<br /> {finalPreviewObj.despatchThrough}</Col>
+                                                        <Col>Vehicle No :<br /> {finalPreviewObj.vehicleNo}</Col>
+                                                    </Row>
+                                                    <Row className='border'>
+                                                        <Col className='border-right'>Mode / Terms of Payment :</Col>
+                                                        <Col>{finalPreviewObj.paymentMode}</Col>
+                                                    </Row>
                                                 </Col>
                                             </Row>
                                             <div className='d-flex justify-content-center'>
                                                 <h6><b className='mx-auto text-dark'><u>Tax Invoice</u></b></h6>
                                             </div>
                                             {finalPreviewObj?.products?.length ?
-                                            <table className="tableclass table-sm" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>SL</th>
-                                                        <th>Particulars</th>
-                                                        <th>HSN / SAC</th>
-                                                        <th>Invoice NO</th>
-                                                        <th>B-Qty</th>
-                                                        <th>B-Unit</th>
-                                                        <th>A-Qty</th>
-                                                        <th>A-Unit</th>
-                                                        <th>Rate</th>
-                                                        <th>Disc %</th>
-                                                        <th>Discount</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {finalPreviewObj?.products.map((product, ind) => {
-                                                        return <tr key={ind}>
-                                                        <td>{ind + 1}</td>
-                                                        <td>{product.productName}</td>
-                                                        <td>{product.hsn}</td>
-                                                        <td>{product.invoiceNo}</td>
-                                                        <td>{product.baseQty}</td>
-                                                        <td>{product.baseUnit}</td>
-                                                        <td>{product.altQty}</td>
-                                                        <td>{product.altUnit}</td>
-                                                        <td>{product.rate}</td>
-                                                        <td>{product.discountPercentage}</td>
-                                                        <td>10</td>
-                                                        <td>90</td>
-                                                    </tr>
-                                                    })}
-                                                    
-                                                </tbody>
-                                            </table> : null}
+                                                <table className="tableclass table-sm" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SL</th>
+                                                            <th>Particulars</th>
+                                                            <th>HSN / SAC</th>
+                                                            <th>Invoice NO</th>
+                                                            <th>B-Qty</th>
+                                                            <th>B-Unit</th>
+                                                            <th>A-Qty</th>
+                                                            <th>A-Unit</th>
+                                                            <th>Rate</th>
+                                                            <th>Disc %</th>
+                                                            <th>Discount</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {finalPreviewObj?.products.map((product, ind) => {
+                                                            return <tr key={ind}>
+                                                                <td>{ind + 1}</td>
+                                                                <td>{product.productName}</td>
+                                                                <td>{product.hsn}</td>
+                                                                <td>{product.invoiceNo}</td>
+                                                                <td>{product.baseQty}</td>
+                                                                <td>{product.baseUnit}</td>
+                                                                <td>{product.altQty}</td>
+                                                                <td>{product.altUnit}</td>
+                                                                <td>{product.rate}</td>
+                                                                <td>{product.discountPercentage}</td>
+                                                                <td>{product.discount}</td>
+                                                                <td>{product.amount}</td>
+                                                            </tr>
+                                                        })}
+
+                                                    </tbody>
+                                                </table> : null}
                                             <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
                                                 <Col md={8} className='border border-2 border-dark'>
-                                                    <p className='text-dark'>Total Base Quantity : count bqty &nbsp;&nbsp; unit<br />
-                                                        Total Alt. Quantity : count aqty &nbsp;&nbsp; unit</p><br />
+                                                    <p className='text-dark'>Total Base Quantity : count bqty {finalPreviewObj.totalBaseQty} unit<br />
+                                                        Total Alt. Quantity : count aqty {finalPreviewObj.totalAltQty} unit</p><br />
                                                     <h5><b>Rupees Fourteen Lakhs Sixty Two housand hre Haundred Forty Nine Only</b></h5>
                                                 </Col>
                                                 <Col md={2} className='border border-dark border-2'>
                                                     <table>
                                                         <tr><td>Taxable Amount</td></tr>
+                                                        {gsthecked ?
+                                                        <>
                                                         <tr><td>CGST 2.50</td></tr>
                                                         <tr><td>SGST 2.50</td></tr>
-                                                        <tr><td>IGST 5.00</td></tr>
+                                                        </> :
+                                                        <tr><td>IGST 5.00</td></tr>}
                                                         <tr><td>Transport</td></tr>
                                                         <tr><td>Round Off</td></tr>
                                                         <tr><td>Grand Total</td></tr>
@@ -337,13 +441,16 @@ const Sale = () => {
                                                 </Col>
                                                 <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '70px' }}>
                                                     <table>
-                                                        <tr><td>94,40,332.20</td></tr>
-                                                        <tr><td>1,11,0008.31</td></tr>
-                                                        <tr><td>1,11,0008.31</td></tr>
-                                                        <tr><td>2,22,0016.31</td></tr>
-                                                        <tr><td>8.933</td></tr>
-                                                        <tr><td>0.19</td></tr>
-                                                        <tr><td>100,22,313.00</td></tr>
+                                                        <tr><td>{finalPreviewObj.totalAmount}</td></tr>
+                                                        {gsthecked ?
+                                                        <> 
+                                                        <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
+                                                        <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
+                                                        </> :
+                                                        <tr><td>{finalPreviewObj.totalGst.toFixed(2)}</td></tr>}
+                                                        <tr><td>{Number(finalPreviewObj.transportCost).toFixed(2)}</td></tr>
+                                                        <tr><td>{finalPreviewObj.roundOff}</td></tr>
+                                                        <tr><td>{finalPreviewObj.grandTotal}</td></tr>
                                                     </table>
                                                 </Col>
                                             </Row>
@@ -388,10 +495,7 @@ const Sale = () => {
                                     <Col md={3}>
                                         <Form.Label>Invoice No : </Form.Label><br />
 
-                                        {checked ? (
-                                            <label>ATCN/001/2022-23</label>
-                                        ) : (
-                                            <label>ATC/001/2022-23</label>)}
+                                            <label>ATC{checked ? "N" : ""}/001/2022-23</label>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -461,7 +565,7 @@ const Sale = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Transport Cost : </Form.Label>
-                                        <Form.Control type="text" name='transportCost' value={salesdata.transportCost}
+                                        <Form.Control type="number" name='transportCost' value={salesdata.transportCost}
                                             onChange={handleInputs} />
                                     </Col>
                                     <Col md={3}>
