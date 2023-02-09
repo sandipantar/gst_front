@@ -177,8 +177,63 @@ const Sale = () => {
         setSelectedShippingAddress(obj.shippingAddress[0])
     };
 
+    const wordify = (num) => {
+        const single = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+        const double = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+        const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+        const formatTenth = (digit, prev) => {
+            return 0 == digit ? "" : " " + (1 == digit ? double[prev] : tens[digit])
+        };
+        const formatOther = (digit, next, denom) => {
+            return (0 != digit && 1 != next ? " " + single[digit] : "") + (0 != next || digit > 0 ? " " + denom : "")
+        };
+        let res = "";
+        let index = 0;
+        let digit = 0;
+        let next = 0;
+        let words = [];
+        if (num += "", isNaN(parseInt(num))) {
+            res = "";
+        }
+        else if (parseInt(num) > 0 && num.length <= 10) {
+            for (index = num.length - 1; index >= 0; index--) switch (digit = num[index] - 0, next = index > 0 ? num[index - 1] - 0 : 0, num.length - index - 1) {
+                case 0:
+                    words.push(formatOther(digit, next, ""));
+                    break;
+                case 1:
+                    words.push(formatTenth(digit, num[index + 1]));
+                    break;
+                case 2:
+                    words.push(0 != digit ? " " + single[digit] + " Hundred" + (0 != num[index + 1] && 0 != num[index + 2] ? " and" : "") : "");
+                    break;
+                case 3:
+                    words.push(formatOther(digit, next, "Thousand"));
+                    break;
+                case 4:
+                    words.push(formatTenth(digit, num[index + 1]));
+                    break;
+                case 5:
+                    words.push(formatOther(digit, next, "Lakh"));
+                    break;
+                case 6:
+                    words.push(formatTenth(digit, num[index + 1]));
+                    break;
+                case 7:
+                    words.push(formatOther(digit, next, "Crore"));
+                    break;
+                case 8:
+                    words.push(formatTenth(digit, num[index + 1]));
+                    break;
+                case 9:
+                    words.push(0 != digit ? " " + single[digit] + " Hundred" + (0 != num[index + 1] || 0 != num[index + 2] ? " and" : " Crore") : "")
+            };
+            res = words.reverse().join("")
+        } else res = "";
+        return res
+    };
+
     const seePreview = () => {
-        
+
         let totalAmount = 0;
         let totalBaseQty = 0;
         let totalAltQty = 0;
@@ -197,19 +252,19 @@ const Sale = () => {
                 }
             });
         }
-        
+
         const totalGst = totalAmount * 0.05;
-        const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost))%1).toFixed(2));
+        const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost)) % 1).toFixed(2));
 
         if (roundOff > 0.49) {
             grandTotal = Math.ceil((totalAmount + totalGst + Number(salesdata.transportCost)));
         } else {
             grandTotal = Math.floor((totalAmount + totalGst + Number(salesdata.transportCost)));
-            
+
         }
         // grandTotal = (totalAmount + totalGst + Number(salesdata.transportCost)) - (roundOff > 0.49 ? 0 : roundOff.toFixed(2));
 
-        console.log("sales ",  totalAmount)
+        console.log("sales ", totalAmount)
         updateFinalPreviewObj({
             ...salesdata,
             products: [...rowsData],
@@ -266,7 +321,7 @@ const Sale = () => {
                                         </div>
                                     </Col>
                                     <Col>
-                                    <div className="text-center">
+                                        <div className="text-center">
                                             <Form.Check
                                                 inline
                                                 label="CGST + SGST"
@@ -274,7 +329,7 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="checked"
-                                                onChange={(e) => {setGstChecked(true);}}
+                                                onChange={(e) => { setGstChecked(true); }}
                                             />
                                             <Form.Check
                                                 inline
@@ -282,7 +337,7 @@ const Sale = () => {
                                                 name="gst_type"
                                                 type="radio"
                                                 id="Gst"
-                                                onChange={(e) => {setGstChecked(false);}}
+                                                onChange={(e) => { setGstChecked(false); }}
                                             />
                                         </div>
                                     </Col>
@@ -304,7 +359,7 @@ const Sale = () => {
                                 <Modal show={show4 && Object.keys(finalPreviewObj).length} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
                                     <Modal.Header closeButton>
                                         <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC{checked ? "N" : ""}/001/2022-2023</Modal.Title>
-                                        <Pdf targetRef={ref} filename="testgst.pdf">
+                                        <Pdf targetRef={ref} filename="testgst.pdf" scale={0.5}>
                                             {({ toPdf }) =>
                                                 <Button variant="success" onClick={toPdf}>Save PDF</Button>
                                             }
@@ -337,7 +392,7 @@ const Sale = () => {
                                                             <p className='m-0'><small>Bill To:</small></p>
                                                             <p>
                                                                 {finalPreviewObj?.billto?.label}<br />
-                                                                {finalPreviewObj?.billto?.companyDetails.address} <br/>
+                                                                {finalPreviewObj?.billto?.companyDetails.address} <br />
                                                                 {finalPreviewObj?.billto?.companyDetails.gst}
                                                                 <span className='float-right'>+91 {finalPreviewObj?.billto?.companyDetails.contactNo}</span>
                                                             </p>
@@ -423,17 +478,17 @@ const Sale = () => {
                                                 <Col md={8} className='border border-2 border-dark'>
                                                     <p className='text-dark'>Total Base Quantity : count bqty {finalPreviewObj.totalBaseQty} unit<br />
                                                         Total Alt. Quantity : count aqty {finalPreviewObj.totalAltQty} unit</p><br />
-                                                    <h5><b>Rupees Fourteen Lakhs Sixty Two housand hre Haundred Forty Nine Only</b></h5>
+                                                    <h5><b>Rupees {wordify(Number(finalPreviewObj.grandTotal))} Only</b></h5>
                                                 </Col>
                                                 <Col md={2} className='border border-dark border-2'>
                                                     <table>
                                                         <tr><td>Taxable Amount</td></tr>
                                                         {gsthecked ?
-                                                        <>
-                                                        <tr><td>CGST 2.50</td></tr>
-                                                        <tr><td>SGST 2.50</td></tr>
-                                                        </> :
-                                                        <tr><td>IGST 5.00</td></tr>}
+                                                            <>
+                                                                <tr><td>CGST 2.50</td></tr>
+                                                                <tr><td>SGST 2.50</td></tr>
+                                                            </> :
+                                                            <tr><td>IGST 5.00</td></tr>}
                                                         <tr><td>Transport</td></tr>
                                                         <tr><td>Round Off</td></tr>
                                                         <tr><td>Grand Total</td></tr>
@@ -443,11 +498,11 @@ const Sale = () => {
                                                     <table>
                                                         <tr><td>{finalPreviewObj.totalAmount}</td></tr>
                                                         {gsthecked ?
-                                                        <> 
-                                                        <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
-                                                        <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
-                                                        </> :
-                                                        <tr><td>{finalPreviewObj.totalGst.toFixed(2)}</td></tr>}
+                                                            <>
+                                                                <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
+                                                                <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
+                                                            </> :
+                                                            <tr><td>{finalPreviewObj.totalGst.toFixed(2)}</td></tr>}
                                                         <tr><td>{Number(finalPreviewObj.transportCost).toFixed(2)}</td></tr>
                                                         <tr><td>{finalPreviewObj.roundOff}</td></tr>
                                                         <tr><td>{finalPreviewObj.grandTotal}</td></tr>
@@ -495,7 +550,7 @@ const Sale = () => {
                                     <Col md={3}>
                                         <Form.Label>Invoice No : </Form.Label><br />
 
-                                            <label>ATC{checked ? "N" : ""}/001/2022-23</label>
+                                        <label>ATC{checked ? "N" : ""}/001/2022-23</label>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
