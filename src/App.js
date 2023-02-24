@@ -5,6 +5,7 @@ import Dashboard from './components/Pages/Dashboard/Dashboard';
 // import Unit from './components/Pages/Unit/Unit';
 // import Category from './components/Pages/Category/Category';
 import Purchase from './components/Pages/Purchase/Purchase';
+import DeliveryOrder from './components/Pages/DeliveryOrder/DeliveryOrder';
 import Sale from './components/Pages/Sale/Sale';
 import Product from './components/Pages/Product/Product';
 import Report from './components/Pages/Report/Report';
@@ -32,6 +33,7 @@ function App() {
         <Route exact path="/units" element={<Unit />}/>*/}
         <Route exact path="/tr" element={<Submitmodal />}/> 
         <Route exact path="/purchase" element={<Purchase />}/>
+        <Route exact path="/DeliveryOrder" element={<DeliveryOrder/>}/>
         <Route exact path="/sale" element={<Sale />}/>
         <Route exact path="/product" element={<Product />}/>
         <Route exact path="/report" element={<Report />}/>
