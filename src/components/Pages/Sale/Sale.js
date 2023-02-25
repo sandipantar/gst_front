@@ -308,7 +308,7 @@ const Sale = () => {
                                 <Row>
                                     <Col>
                                         <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
-                                        <button type='button' onClick={() => add("/users", {
+                                        {/* <button type='button' onClick={() => add("/users", {
                                             firstName: "Sou",
                                             lastName: "Sadhu",
                                             email: "a@b.com"
@@ -320,7 +320,7 @@ const Sale = () => {
                                             lastName: "Sadhu",
                                             email: "a@bd.com"
                                         })}>Update</button>
-                                        <button type='button' onClick={() => deleteById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Delete</button>
+                                        <button type='button' onClick={() => deleteById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Delete</button> */}
                                     </Col>
                                     <Col>
                                         <div className="text-center">
