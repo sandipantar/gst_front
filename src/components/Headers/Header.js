@@ -44,7 +44,7 @@ const Header = (props) => {
                 <div className="sidebar-brand-icon rotate-n-15">
                     <i className="fa fa-laugh-wink"></i>
                 </div>
-                <div className="sidebar-brand-text mx-3"><sup>new</sup>Gandeshwari</div>
+                <div className="sidebar-brand-text mx-3"><sup>Gan</sup>Book</div>
             </a>
             
             <hr className="sidebar-divider my-0"/>
@@ -99,6 +99,12 @@ const Header = (props) => {
                 <a className="nav-link" href="/sale">
                     <i className="fa fa-area-chart"></i>
                     <span>Sale</span></a>
+            </li>
+
+            <li className="nav-item">
+                <a className="nav-link" href="/DeliveryOrder">
+                    <i className="fa fa-area-chart"></i>
+                    <span>Delivery Order</span></a>    
             </li>
             
             <li className="nav-item">

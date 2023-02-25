@@ -59,6 +59,12 @@ body {
   background-color: #fff;
 }
 
+@media print
+{
+    .non-printable { display: none; }
+    .printable { display: block; }
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }

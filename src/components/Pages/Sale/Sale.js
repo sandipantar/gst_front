@@ -7,6 +7,8 @@ import TableRows from "../test/TableRows";
 import Pdf from 'react-to-pdf';
 import printable from 'react-print';
 import logo from '../../../img/AROMIST_LOGO.png';
+import payQr from '../../../img/payment.png';
+import sign from '../../../img/sign.jpeg';
 import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
 import { add, deleteById, fetchAll, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
 
@@ -286,6 +288,14 @@ const Sale = () => {
         unit: 'in',
         format: [4, 2]
     };
+      // State to store count value
+  const [count, setCount] = useState(0);
+
+  // Function to increment count by 1
+  const incrementCount = () => {
+    // Update state with incremented value
+    setCount(count + 1);
+  };
     return (
         <>
             <div id="wrapper">
@@ -356,7 +366,7 @@ const Sale = () => {
                                         </div>
                                     </Col>
                                     <Col>
-                                        <Button variant="danger" size="sm">
+                                        <Button variant="danger" size="sm" onClick={incrementCount}>
                                             <i className="fa fa-times"></i> Cancel (F2)
                                         </Button>
                                     </Col>
@@ -369,34 +379,41 @@ const Sale = () => {
 
                                     </Col>
                                 </Row>
-                                {/* events modal */}
+                                {/* print modal */}
                                 <Modal show={show4 && Object.keys(finalPreviewObj).length} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
-                                    <Modal.Header closeButton>
+                                    {/* <Modal.Header closeButton>
                                         <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC{checked ? "N" : ""}/001/2022-2023</Modal.Title>
                                         <Pdf targetRef={ref} filename="testgst.pdf" scale={0.5}>
                                             {({ toPdf }) =>
                                                 <Button variant="success" onClick={toPdf}>Save PDF</Button>
                                             }
                                         </Pdf>
-                                    </Modal.Header>
+                                    </Modal.Header> */}
                                     <Modal.Body>
 
-                                        {/* <button onClick={() => window.print()}>PRINT</button> */}
-                                        <div ref={ref}>
+                                        <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
+                                        <div className='printable'>
                                             <Row className='d-flex justify-content-center'>
                                                 <Col md={3}>
                                                     <img className='m-auto' src={logo} alt="logo" width="150px" />
                                                 </Col>
-                                                <Col md={7} className='text-center text-dark'>
+                                                <Col md={7} className=' text-dark'>
                                                     <h3><b>Aromist Tea Co.</b></h3>
                                                     <p>
                                                         GSTIN / UIN : 19ATHPP2711R1Z2<br />
+                                                        FSSAI LIC No : 8268682492<br/>
                                                         Netaji Subhash Road, Subhash Pally
                                                         Siliguri - 734001
                                                         Dist : Darjeeling
                                                         State: West Bengal, Code: 19<br />
                                                         Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
                                                     </p>
+                                                </Col>
+                                                <Col md={2}>
+                                                    generate 3 copy <br/> 
+                                                    Original Copy<br/>
+                                                    Duplicate Copy<br/>
+                                                    Triplicate Copy<br/>
                                                 </Col>
                                             </Row>
                                             <Row>
@@ -407,8 +424,8 @@ const Sale = () => {
                                                             <p>
                                                                 {finalPreviewObj?.billto?.label}<br />
                                                                 {finalPreviewObj?.billto?.companyDetails.address} <br />
-                                                                {finalPreviewObj?.billto?.companyDetails.gst}
-                                                                <span className='float-right'>+91 {finalPreviewObj?.billto?.companyDetails.contactNo}</span>
+                                                                GSTIN: {finalPreviewObj?.billto?.companyDetails.gst}
+                                                                <span className='float-right'>PH: +91 {finalPreviewObj?.billto?.companyDetails.contactNo}</span>
                                                             </p>
                                                         </Col>
                                                     </Row>
@@ -418,8 +435,8 @@ const Sale = () => {
                                                             <p>
                                                                 {finalPreviewObj?.shipto?.label}
                                                             </p>
-                                                            <p className='float-left'>TMCO No : 8268682492</p>
-                                                            <p className='float-right'>FSSAI LIC No : 8268682492</p>
+                                                            {/* <p className='float-left'>TMCO No : 8268682492</p>
+                                                            <p className='float-right'>FSSAI LIC No : 8268682492</p> */}
                                                         </Col>
                                                     </Row>
                                                 </Col>
@@ -427,7 +444,7 @@ const Sale = () => {
 
                                                     <Row className='border border-bottom-0'>
                                                         <Col className='border-right'>Invoice No.:<br />ATC{checked ? "N" : ""}/001/2022-2023</Col>
-                                                        <Col>Reference Date: <br /> {finalPreviewObj.billdate}</Col>
+                                                        <Col>Date: <br /> {finalPreviewObj.billdate}</Col>
                                                     </Row>
                                                     <Row className='border border-bottom-0'>
                                                         <Col className='border-right'>Challan No: {finalPreviewObj.challanNo}</Col>
@@ -490,8 +507,8 @@ const Sale = () => {
                                                 </table> : null}
                                             <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
                                                 <Col md={8} className='border border-2 border-dark'>
-                                                    <p className='text-dark'>Total Base Quantity : count bqty {finalPreviewObj.totalBaseQty} unit<br />
-                                                        Total Alt. Quantity : count aqty {finalPreviewObj.totalAltQty} unit</p><br />
+                                                    <p className='text-dark'>Total Base Quantity : count bqty {finalPreviewObj.totalBaseQty} KG<br />
+                                                        Total Alt. Quantity : count aqty {finalPreviewObj.totalAltQty} PAC</p><br />
                                                     <h5><b>Rupees {wordify(Number(finalPreviewObj.grandTotal))} Only</b></h5>
                                                 </Col>
                                                 <Col md={2} className='border border-dark border-2'>
@@ -499,13 +516,13 @@ const Sale = () => {
                                                         <tr><td>Taxable Amount</td></tr>
                                                         {gsthecked ?
                                                             <>
-                                                                <tr><td>CGST 2.50</td></tr>
-                                                                <tr><td>SGST 2.50</td></tr>
+                                                                <tr><td>CGST 2.50%</td></tr>
+                                                                <tr><td>SGST 2.50%</td></tr>
                                                             </> :
-                                                            <tr><td>IGST 5.00</td></tr>}
+                                                            <tr><td>IGST 5.00%</td></tr>}
                                                         <tr><td>Transport</td></tr>
-                                                        <tr><td>Round Off</td></tr>
-                                                        <tr><td>Grand Total</td></tr>
+                                                        <tr className='border-bottom border-dark'><td>Round Off</td></tr>
+                                                        <tr><td><b>Grand Total</b></td></tr>
                                                     </table>
                                                 </Col>
                                                 <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '70px' }}>
@@ -518,8 +535,8 @@ const Sale = () => {
                                                             </> :
                                                             <tr><td>{finalPreviewObj.totalGst.toFixed(2)}</td></tr>}
                                                         <tr><td>{Number(finalPreviewObj.transportCost).toFixed(2)}</td></tr>
-                                                        <tr><td>{finalPreviewObj.roundOff}</td></tr>
-                                                        <tr><td>{finalPreviewObj.grandTotal}</td></tr>
+                                                        <tr className='border-bottom border-dark'><td>{finalPreviewObj.roundOff}</td></tr>
+                                                        <tr><td><b>{finalPreviewObj.grandTotal}</b></td></tr>
                                                     </table>
                                                 </Col>
                                             </Row>
@@ -548,23 +565,26 @@ const Sale = () => {
                                                         </ul>
                                                     </small>
                                                 </Col>
-                                                <Col> pay qr code</Col>
+                                                <Col>
+                                                    <img src={payQr} width="180px" alt="paymentQr"/>
+                                                </Col>
                                                 <Col>
                                                     <p>For Aromist Tea Co.</p>
-                                                    {/* <img src={} alt="sign"/> */}
+                                                    <img src={sign} width="150px" alt="sign"/>
                                                     <p>Authorised Signature</p>
                                                 </Col>
                                             </Row>
                                             <p className='d-flex justify-content-center'>This is computer generated invoice</p>
+                                            
                                         </div>
                                     </Modal.Body>
                                 </Modal>
-                                {/* events modal */}
+                                {/* print modal */}
                                 <Row>
                                     <Col md={3}>
                                         <Form.Label>Invoice No : </Form.Label><br />
 
-                                        <label>ATC{checked ? "N" : ""}/001/2022-23</label>
+                                        <label>ATC{checked ? "N" : ""}/00{count}/2022-23</label>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -604,10 +624,10 @@ const Sale = () => {
                                         />
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Label>Date : </Form.Label>
+                                        <Form.Label>DO. Date : </Form.Label>
                                         <Form.Control type="date" defaultValue={datee} name="challanDate"
                                             value={salesdata.challanDate}
-                                            onChange={handleInputs} />
+                                            onChange={handleInputs}/>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Place of Supply : </Form.Label>
@@ -640,7 +660,9 @@ const Sale = () => {
                                     <Col md={3}>
                                         <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
                                         <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
+                                            <option>Select</option>
                                             <option value="cash">Cash</option>
+                                            <option value="bank">Bank</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>
