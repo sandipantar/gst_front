@@ -8,6 +8,7 @@ import Pdf from 'react-to-pdf';
 import printable from 'react-print';
 import logo from '../../../img/AROMIST_LOGO.png';
 import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
+import { add, deleteById, fetchAll, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
 
 const ref = React.createRef();
 const party = [
@@ -103,10 +104,10 @@ const Sale = () => {
     const prohandleClose = () => setProShow(false);
     const prohandleShow = () => setProShow(true);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // alert(`The name you entered was: ${name}`);
-    }
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     // alert(`The name you entered was: ${name}`);
+    // }
 
     const addTableRows = () => {
 
@@ -297,6 +298,19 @@ const Sale = () => {
                                 <Row>
                                     <Col>
                                         <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
+                                        <button type='button' onClick={() => add("/users", {
+                                            firstName: "Sou",
+                                            lastName: "Sadhu",
+                                            email: "a@b.com"
+                                        })}>Add</button>
+                                        <button type='button' onClick={() => fetchAll("/users")}>Fetch all</button>
+                                        <button type='button' onClick={() => fetchById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Fetch by id</button>
+                                        <button type='button' onClick={() => fetchByIdAndUpdate("/users", "gKrGZfZqW0SvUmQc1W9X", {
+                                            firstName: "Sou1",
+                                            lastName: "Sadhu",
+                                            email: "a@bd.com"
+                                        })}>Update</button>
+                                        <button type='button' onClick={() => deleteById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Delete</button>
                                     </Col>
                                     <Col>
                                         <div className="text-center">
