@@ -1,18 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Timestamp } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../Headers/Header';
 import Topnav from '../../Headers/Topnav';
 import AutoSelect from 'react-select';
 import TableRows from "../test/TableRows";
-import Pdf from 'react-to-pdf';
-import printable from 'react-print';
 import logo from '../../../img/AROMIST_LOGO.png';
-import payQr from '../../../img/payment.png';
-import sign from '../../../img/sign.jpeg';
-import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
-import { add, deleteById, fetchAll, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
 
-const ref = React.createRef();
+import sign from '../../../img/sign.jpeg';
+import DeliveryModal from './delivery-modal';
+import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
+import { add, getCount, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
+import InvoiceModal from './invoice-modal';
+
+const invoiceCollectionName = "/invoice";
+
 const party = [
     {
         value: 'ab',
@@ -61,21 +63,62 @@ const party = [
     }
 ];
 const locationData = [
-    { value: 1, label: "Raipur" },
-    { value: 2, label: "Kolkata" },
-    { value: 3, label: "New Delhi" },
-    { value: 4, label: "Indore" },
-    { value: 5, label: "Chennai" }
+    {
+        value: 1,
+        label: "Raipur",
+        otherDetails: {
+            address: "abcd",
+            pin: "700015",
+            phone: "9865741203"
+        }
+    },
+    {
+        value: 2,
+        label: "Kolkata",
+        otherDetails: {
+            address: "efgh",
+            pin: "700085",
+            phone: "9865941203"
+        }
+    },
+    {
+        value: 3,
+        label: "New Delhi",
+        otherDetails: {
+            address: "ijkl",
+            pin: "700045",
+            phone: "9865741653"
+        }
+    },
+    {
+        value: 4,
+        label: "Indore",
+        otherDetails: {
+            address: "mnop",
+            pin: "700054",
+            phone: "9865796203"
+        }
+    },
+    {
+        value: 5,
+        label: "Chennai",
+        otherDetails: {
+            address: "qrst",
+            pin: "700063",
+            phone: "9866741203"
+        }
+    }
 ];
 
 const Sale = () => {
-    const barcodeEntryFocusInput = useRef();
+    const navigate = useNavigate();
+    const params = useParams();
     const [key, setKey] = useState('sale');
     const [show, setShow] = useState(false);
-    const [fullscreen, setFullscreen] = useState(true);
     const [show4, setShow4] = useState(false);
+    const [deliveryModal, handleDeliveryModal] = useState(false);
     const [checked, setChecked] = useState(false);
-    const [gsthecked, setGstChecked] = useState(true);
+    const [gstChecked, setGstChecked] = useState(true);
 
     // var today = new Date(),
     // datee = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -91,9 +134,10 @@ const Sale = () => {
 
     const [rowsData, setRowsData] = useState([]);
     const [salesdata, setSalesdata] = useState({
-        invno: "ATC/001/2022-2023", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", destination: "", despatchThrough: "", vehicleNo: "", paymentMode: "",
+        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", destination: "", despatchThrough: "", vehicleNo: "", paymentMode: "",
     });
     const [finalPreviewObj, updateFinalPreviewObj] = useState({});
+    const [count, setCount] = useState(0);
 
     let name, value;
 
@@ -101,15 +145,57 @@ const Sale = () => {
     const handleShow4 = () => setShow4(true);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     const prohandleClose = () => setProShow(false);
-    const prohandleShow = () => setProShow(true);
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     // alert(`The name you entered was: ${name}`);
-    // }
+    const getInputDisplayFullDateFormat = (date) => {
+        const day = date.getDate().toString().length === 1 ? "0" + date.getDate() : date.getDate();
+        const month = date.getMonth().toString().length === 1 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        const year = date.getFullYear();
+
+        return year + '-' + month + '-' + day;
+    };
+
+    const getInvoiceCount = async (type) => {
+        const localCount = await getCount(invoiceCollectionName, type);
+        setSalesdata({
+            ...salesdata,
+            invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2022-23`
+        })
+        setCount(localCount + 1);
+    };
+
+    const openDetails = async (id) => {
+        const detailsRes = await fetchById(invoiceCollectionName, id);
+        console.log("detailsRes ", detailsRes)
+        if (detailsRes.success) {
+            setSalesdata({
+                ...detailsRes.data,
+                challanDate: getInputDisplayFullDateFormat(new Date(detailsRes.data?.challanDate?.seconds * 1000)),
+                billdate: getInputDisplayFullDateFormat(new Date(detailsRes.data?.billdate?.seconds * 1000))
+            });
+            party.forEach(each => {
+                if (each.value === detailsRes.data.billto.value) {
+                    setSelectedOption(each);
+                    updateShippingAddresses(each.shippingAddress);
+                }
+            });
+            setSelectedShippingAddress(detailsRes.data.shipto);
+            setSelectedPlace(detailsRes.data.placeOfSupply);
+            if (detailsRes.data.products) {
+                setRowsData([...detailsRes.data.products]);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (!params.id) {
+            getInvoiceCount(checked);
+        } else {
+            openDetails(params.id);
+        }
+        
+    }, [checked]);
 
     const addTableRows = () => {
 
@@ -117,6 +203,7 @@ const Sale = () => {
             productName: '',
             hsn: '90240',
             invoiceNo: '',
+            bagNo: '',
             baseQty: '',
             baseUnit: 'kg',
             altQty: '',
@@ -146,18 +233,25 @@ const Sale = () => {
         if (name === "baseQty" && rowsInput[index].rate) {
             if (!rowsInput[index].discountPercentage) {
                 discountPercentage = 0;
+            } else {
+                discountPercentage = rowsInput[index].discountPercentage;
             }
             discount = (Number(value) * Number(rowsInput[index].rate) * Number(discountPercentage)) / 100;
             amount = (Number(value) * Number(rowsInput[index].rate)) - discount;
         } else if (name === "rate" && rowsInput[index].baseQty) {
             if (!rowsInput[index].discountPercentage) {
                 discountPercentage = 0;
+            } else {
+                discountPercentage = rowsInput[index].discountPercentage;
             }
             discount = (Number(value) * Number(rowsInput[index].baseQty) * Number(discountPercentage)) / 100;
             amount = (Number(value) * Number(rowsInput[index].baseQty)) - discount;
         } else if (name === "discountPercentage" && rowsInput[index].baseQty && rowsInput[index].rate) {
             discount = (Number(rowsInput[index].rate) * Number(rowsInput[index].baseQty) * Number(value)) / 100;
             amount = (Number(rowsInput[index].rate) * Number(rowsInput[index].baseQty)) - discount;
+        } else {
+            discount = rowsInput[index].discount ? Number(rowsInput[index].discount) : 0;
+            amount = rowsInput[index].amount ? Number(rowsInput[index].amount) : 0;
         }
 
         rowsInput[index].discount = discount.toFixed(2);
@@ -180,62 +274,7 @@ const Sale = () => {
         setSelectedShippingAddress(obj.shippingAddress[0])
     };
 
-    const wordify = (num) => {
-        const single = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-        const double = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-        const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-        const formatTenth = (digit, prev) => {
-            return 0 == digit ? "" : " " + (1 == digit ? double[prev] : tens[digit])
-        };
-        const formatOther = (digit, next, denom) => {
-            return (0 != digit && 1 != next ? " " + single[digit] : "") + (0 != next || digit > 0 ? " " + denom : "")
-        };
-        let res = "";
-        let index = 0;
-        let digit = 0;
-        let next = 0;
-        let words = [];
-        if (num += "", isNaN(parseInt(num))) {
-            res = "";
-        }
-        else if (parseInt(num) > 0 && num.length <= 10) {
-            for (index = num.length - 1; index >= 0; index--) switch (digit = num[index] - 0, next = index > 0 ? num[index - 1] - 0 : 0, num.length - index - 1) {
-                case 0:
-                    words.push(formatOther(digit, next, ""));
-                    break;
-                case 1:
-                    words.push(formatTenth(digit, num[index + 1]));
-                    break;
-                case 2:
-                    words.push(0 != digit ? " " + single[digit] + " Hundred" + (0 != num[index + 1] && 0 != num[index + 2] ? " and" : "") : "");
-                    break;
-                case 3:
-                    words.push(formatOther(digit, next, "Thousand"));
-                    break;
-                case 4:
-                    words.push(formatTenth(digit, num[index + 1]));
-                    break;
-                case 5:
-                    words.push(formatOther(digit, next, "Lakh"));
-                    break;
-                case 6:
-                    words.push(formatTenth(digit, num[index + 1]));
-                    break;
-                case 7:
-                    words.push(formatOther(digit, next, "Crore"));
-                    break;
-                case 8:
-                    words.push(formatTenth(digit, num[index + 1]));
-                    break;
-                case 9:
-                    words.push(0 != digit ? " " + single[digit] + " Hundred" + (0 != num[index + 1] || 0 != num[index + 2] ? " and" : " Crore") : "")
-            };
-            res = words.reverse().join("")
-        } else res = "";
-        return res
-    };
-
-    const seePreview = () => {
+    const seePreview = async () => {
 
         let totalAmount = 0;
         let totalBaseQty = 0;
@@ -266,9 +305,9 @@ const Sale = () => {
 
         }
         // grandTotal = (totalAmount + totalGst + Number(salesdata.transportCost)) - (roundOff > 0.49 ? 0 : roundOff.toFixed(2));
+        // const current_timestamp = Timestamp.fromDate(new Date());
 
-        console.log("sales ", totalAmount)
-        updateFinalPreviewObj({
+        const reqBody = {
             ...salesdata,
             products: [...rowsData],
             billto: selectedOption,
@@ -280,22 +319,48 @@ const Sale = () => {
             totalGst: totalGst,
             roundOff: roundOff > 0.49 ? "0.00" : roundOff.toFixed(2),
             grandTotal: grandTotal.toFixed(2)
-        });
-        handleShow4();
+        };
+        const apiReq = {
+            ...salesdata,
+            billto: {
+                label: selectedOption.label,
+                value: selectedOption.value,
+                companyDetails: selectedOption.companyDetails
+            },
+            shipto: selectedShippingAddress,
+            placeOfSupply: selectedPlace,
+            isNonGst: checked,
+            isNotIgst: gstChecked,
+            products: [...rowsData],
+            totalAmount: totalAmount,
+            totalBaseQty: totalBaseQty,
+            totalAltQty: totalAltQty,
+            totalGst: totalGst,
+            roundOff: roundOff > 0.49 ? 0: roundOff,
+            grandTotal: grandTotal,
+            billdate: Timestamp.fromDate(new Date(salesdata.billdate)),
+            challanDate: Timestamp.fromDate(new Date(salesdata.challanDate)),
+        }
+        console.log("reqBody ", apiReq);
+        if (!params.id) {
+            const addRes = await add(invoiceCollectionName, apiReq);
+            if (addRes.success) {
+                updateFinalPreviewObj(reqBody);
+                handleShow4();
+            }
+        } else {
+            const updateRes = await fetchByIdAndUpdate(invoiceCollectionName,params.id, apiReq);
+            if (updateRes.success) {
+                updateFinalPreviewObj(reqBody);
+                handleShow4();
+            }
+        }
     };
-    const options = {
-        orientation: 'landscape',
-        unit: 'in',
-        format: [4, 2]
-    };
-      // State to store count value
-  const [count, setCount] = useState(0);
 
-  // Function to increment count by 1
-  const incrementCount = () => {
-    // Update state with incremented value
-    setCount(count + 1);
-  };
+    const cancel = () => {
+        navigate("/sale");
+    };
+
     return (
         <>
             <div id="wrapper">
@@ -308,19 +373,6 @@ const Sale = () => {
                                 <Row>
                                     <Col>
                                         <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
-                                        {/* <button type='button' onClick={() => add("/users", {
-                                            firstName: "Sou",
-                                            lastName: "Sadhu",
-                                            email: "a@b.com"
-                                        })}>Add</button>
-                                        <button type='button' onClick={() => fetchAll("/users")}>Fetch all</button>
-                                        <button type='button' onClick={() => fetchById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Fetch by id</button>
-                                        <button type='button' onClick={() => fetchByIdAndUpdate("/users", "gKrGZfZqW0SvUmQc1W9X", {
-                                            firstName: "Sou1",
-                                            lastName: "Sadhu",
-                                            email: "a@bd.com"
-                                        })}>Update</button>
-                                        <button type='button' onClick={() => deleteById("/users", "gKrGZfZqW0SvUmQc1W9X")}>Delete</button> */}
                                     </Col>
                                     <Col>
                                         <div className="text-center">
@@ -331,6 +383,7 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="Gst"
+                                                disabled={params.id}
                                                 onChange={(e) => setChecked(false)}
                                             />
                                             <Form.Check
@@ -339,6 +392,7 @@ const Sale = () => {
                                                 name="bill_type"
                                                 type="radio"
                                                 id="checked"
+                                                disabled={params.id}
                                                 onChange={(e) => setChecked(e.target.id)}
                                             />
                                             {/* <button type="reset">Reset form</button> */}
@@ -353,6 +407,7 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="checked"
+                                                disabled={params.id}
                                                 onChange={(e) => { setGstChecked(true); }}
                                             />
                                             <Form.Check
@@ -361,12 +416,13 @@ const Sale = () => {
                                                 name="gst_type"
                                                 type="radio"
                                                 id="Gst"
+                                                disabled={params.id}
                                                 onChange={(e) => { setGstChecked(false); }}
                                             />
                                         </div>
                                     </Col>
                                     <Col>
-                                        <Button variant="danger" size="sm" onClick={incrementCount}>
+                                        <Button variant="danger" size="sm" onClick={cancel}>
                                             <i className="fa fa-times"></i> Cancel (F2)
                                         </Button>
                                     </Col>
@@ -379,218 +435,34 @@ const Sale = () => {
 
                                     </Col>
                                 </Row>
+                                {deliveryModal ?
+                                    <DeliveryModal
+                                        deliveryModal={deliveryModal}
+                                        handleDeliveryModal={handleDeliveryModal}
+                                        finalPreviewObj={finalPreviewObj}
+                                        checked={checked}
+                                    /> : null}
                                 {/* print modal */}
-                                <Modal show={show4 && Object.keys(finalPreviewObj).length} onHide={handleClose4} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
-                                    {/* <Modal.Header closeButton>
-                                        <Modal.Title>Quotation / Bill / Tax Invoice || Invoice No : ATC{checked ? "N" : ""}/001/2022-2023</Modal.Title>
-                                        <Pdf targetRef={ref} filename="testgst.pdf" scale={0.5}>
-                                            {({ toPdf }) =>
-                                                <Button variant="success" onClick={toPdf}>Save PDF</Button>
-                                            }
-                                        </Pdf>
-                                    </Modal.Header> */}
-                                    <Modal.Body>
-
-                                        <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
-                                        <div className='printable'>
-                                            <Row className='d-flex justify-content-center'>
-                                                <Col md={3}>
-                                                    <img className='m-auto' src={logo} alt="logo" width="150px" />
-                                                </Col>
-                                                <Col md={7} className=' text-dark'>
-                                                    <h3><b>Aromist Tea Co.</b></h3>
-                                                    <p>
-                                                        GSTIN / UIN : 19ATHPP2711R1Z2<br />
-                                                        FSSAI LIC No : 8268682492<br/>
-                                                        Netaji Subhash Road, Subhash Pally
-                                                        Siliguri - 734001
-                                                        Dist : Darjeeling
-                                                        State: West Bengal, Code: 19<br />
-                                                        Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
-                                                    </p>
-                                                </Col>
-                                                <Col md={2}>
-                                                    generate 3 copy <br/> 
-                                                    Original Copy<br/>
-                                                    Duplicate Copy<br/>
-                                                    Triplicate Copy<br/>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col md={6}>
-                                                    <Row className='border border-bottom-0'>
-                                                        <Col>
-                                                            <p className='m-0'><small>Bill To:</small></p>
-                                                            <p>
-                                                                {finalPreviewObj?.billto?.label}<br />
-                                                                {finalPreviewObj?.billto?.companyDetails.address} <br />
-                                                                GSTIN: {finalPreviewObj?.billto?.companyDetails.gst}
-                                                                <span className='float-right'>PH: +91 {finalPreviewObj?.billto?.companyDetails.contactNo}</span>
-                                                            </p>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='border'>
-                                                        <Col>
-                                                            <p className='m-0'><small>Shipped To:</small></p>
-                                                            <p>
-                                                                {finalPreviewObj?.shipto?.label}
-                                                            </p>
-                                                            {/* <p className='float-left'>TMCO No : 8268682492</p>
-                                                            <p className='float-right'>FSSAI LIC No : 8268682492</p> */}
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                                <Col md={6}>
-
-                                                    <Row className='border border-bottom-0'>
-                                                        <Col className='border-right'>Invoice No.:<br />ATC{checked ? "N" : ""}/001/2022-2023</Col>
-                                                        <Col>Date: <br /> {finalPreviewObj.billdate}</Col>
-                                                    </Row>
-                                                    <Row className='border border-bottom-0'>
-                                                        <Col className='border-right'>Challan No: {finalPreviewObj.challanNo}</Col>
-                                                        <Col>Date : {finalPreviewObj.challanDate}</Col>
-                                                    </Row>
-                                                    <Row className='border border-bottom-0'>
-                                                        <Col className='border-right'>Place Of Supply : <br />{finalPreviewObj?.placeOfSupply?.label}</Col>
-                                                        <Col>Destination:<br /> {finalPreviewObj.destination}</Col>
-                                                    </Row>
-                                                    <Row className='border border-bottom-0'>
-                                                        <Col className='border-right'>Despatch Through :<br /> {finalPreviewObj.despatchThrough}</Col>
-                                                        <Col>Vehicle No :<br /> {finalPreviewObj.vehicleNo}</Col>
-                                                    </Row>
-                                                    <Row className='border'>
-                                                        <Col className='border-right'>Mode / Terms of Payment :</Col>
-                                                        <Col>{finalPreviewObj.paymentMode}</Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                            <div className='d-flex justify-content-center'>
-                                                <h6><b className='mx-auto text-dark'><u>Tax Invoice</u></b></h6>
-                                            </div>
-                                            {finalPreviewObj?.products?.length ?
-                                                <table className="tableclass table-sm" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>SL</th>
-                                                            <th>Particulars</th>
-                                                            <th>HSN / SAC</th>
-                                                            <th>Invoice NO</th>
-                                                            <th>B-Qty</th>
-                                                            <th>B-Unit</th>
-                                                            <th>A-Qty</th>
-                                                            <th>A-Unit</th>
-                                                            <th>Rate</th>
-                                                            <th>Disc %</th>
-                                                            <th>Discount</th>
-                                                            <th>Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {finalPreviewObj?.products.map((product, ind) => {
-                                                            return <tr key={ind}>
-                                                                <td>{ind + 1}</td>
-                                                                <td>{product.productName}</td>
-                                                                <td>{product.hsn}</td>
-                                                                <td>{product.invoiceNo}</td>
-                                                                <td>{product.baseQty}</td>
-                                                                <td>{product.baseUnit}</td>
-                                                                <td>{product.altQty}</td>
-                                                                <td>{product.altUnit}</td>
-                                                                <td>{product.rate}</td>
-                                                                <td>{product.discountPercentage}</td>
-                                                                <td>{product.discount}</td>
-                                                                <td>{product.amount}</td>
-                                                            </tr>
-                                                        })}
-
-                                                    </tbody>
-                                                </table> : null}
-                                            <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
-                                                <Col md={8} className='border border-2 border-dark'>
-                                                    <p className='text-dark'>Total Base Quantity : count bqty {finalPreviewObj.totalBaseQty} KG<br />
-                                                        Total Alt. Quantity : count aqty {finalPreviewObj.totalAltQty} PAC</p><br />
-                                                    <h5><b>Rupees {wordify(Number(finalPreviewObj.grandTotal))} Only</b></h5>
-                                                </Col>
-                                                <Col md={2} className='border border-dark border-2'>
-                                                    <table>
-                                                        <tr><td>Taxable Amount</td></tr>
-                                                        {gsthecked ?
-                                                            <>
-                                                                <tr><td>CGST 2.50%</td></tr>
-                                                                <tr><td>SGST 2.50%</td></tr>
-                                                            </> :
-                                                            <tr><td>IGST 5.00%</td></tr>}
-                                                        <tr><td>Transport</td></tr>
-                                                        <tr className='border-bottom border-dark'><td>Round Off</td></tr>
-                                                        <tr><td><b>Grand Total</b></td></tr>
-                                                    </table>
-                                                </Col>
-                                                <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '70px' }}>
-                                                    <table>
-                                                        <tr><td>{finalPreviewObj.totalAmount}</td></tr>
-                                                        {gsthecked ?
-                                                            <>
-                                                                <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
-                                                                <tr><td>{(finalPreviewObj.totalGst / 2).toFixed(2)}</td></tr>
-                                                            </> :
-                                                            <tr><td>{finalPreviewObj.totalGst.toFixed(2)}</td></tr>}
-                                                        <tr><td>{Number(finalPreviewObj.transportCost).toFixed(2)}</td></tr>
-                                                        <tr className='border-bottom border-dark'><td>{finalPreviewObj.roundOff}</td></tr>
-                                                        <tr><td><b>{finalPreviewObj.grandTotal}</b></td></tr>
-                                                    </table>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col>
-                                                    <small>
-                                                        <p>Terms & Condition</p>
-                                                        <ol>
-                                                            <li>Payment condition shall be 100% in advance</li>
-                                                            <li>Minimum purchase quantity should be 50kg</li>
-                                                            <li>The validity of this quotation is for 10 days</li>
-                                                            <li>Transpotation depends on sate wise</li>
-                                                            <li>Office is closed on Sunday and National Holidays</li>
-                                                            <li>All condition reserved within Siliguri Jurisdiction only</li>
-                                                            <li>Goods Once sold cant be return</li>
-                                                        </ol>
-                                                    </small>
-                                                </Col>
-                                                <Col>
-                                                    <small>
-                                                        <p>Aromist ea Co.</p>
-                                                        <ul>
-                                                            <li>Bank Name: ICICI Bank</li>
-                                                            <li>Account No: 387005500180</li>
-                                                            <li>IFSC Code: ICIC0003870</li>
-                                                        </ul>
-                                                    </small>
-                                                </Col>
-                                                <Col>
-                                                    <img src={payQr} width="180px" alt="paymentQr"/>
-                                                </Col>
-                                                <Col>
-                                                    <p>For Aromist Tea Co.</p>
-                                                    <img src={sign} width="150px" alt="sign"/>
-                                                    <p>Authorised Signature</p>
-                                                </Col>
-                                            </Row>
-                                            <p className='d-flex justify-content-center'>This is computer generated invoice</p>
-                                            
-                                        </div>
-                                    </Modal.Body>
-                                </Modal>
+                                {show4 ?
+                                    <InvoiceModal
+                                        show4={show4}
+                                        finalPreviewObj={finalPreviewObj}
+                                        handleClose4={handleClose4}
+                                        gstChecked={gstChecked}
+                                        checked={checked}
+                                    /> : null}
                                 {/* print modal */}
                                 <Row>
                                     <Col md={3}>
                                         <Form.Label>Invoice No : </Form.Label><br />
 
-                                        <label>ATC{checked ? "N" : ""}/00{count}/2022-23</label>
+                                        <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2022-23` : salesdata.invno}</label>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
                                             <Form.Label>Bill To : </Form.Label>
                                             <AutoSelect
-                                                defaultValue={selectedOption}
+                                                value={selectedOption}
                                                 onChange={changeSelectedOption}
                                                 options={party}
                                             />
@@ -600,7 +472,7 @@ const Sale = () => {
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
                                             <Form.Label>Shipped To : </Form.Label>
                                             <AutoSelect
-                                                defaultValue={selectedShippingAddress}
+                                                value={selectedShippingAddress}
                                                 onChange={setSelectedShippingAddress}
                                                 options={shippingAddress}
                                             />
@@ -627,12 +499,12 @@ const Sale = () => {
                                         <Form.Label>DO. Date : </Form.Label>
                                         <Form.Control type="date" defaultValue={datee} name="challanDate"
                                             value={salesdata.challanDate}
-                                            onChange={handleInputs}/>
+                                            onChange={handleInputs} />
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Place of Supply : </Form.Label>
                                         <AutoSelect
-                                            defaultValue={selectedPlace}
+                                            value={selectedPlace}
                                             onChange={setSelectedPlace}
                                             options={locationData}
                                         />
@@ -684,6 +556,7 @@ const Sale = () => {
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
+                                                    <th></th>
                                                     <th className='bg-success' colSpan={2}>Base Qty</th>
 
                                                     <th className='bg-success' colSpan={2}>Alt.Qty</th>
@@ -699,6 +572,7 @@ const Sale = () => {
                                                     <th>Particulars</th>
                                                     <th>HSN / SAC</th>
                                                     <th>Invoice NO</th>
+                                                    <th>Bag NO</th>
                                                     <th>Qty</th>
                                                     <th>Unit</th>
                                                     <th>Qty</th>

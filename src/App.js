@@ -6,7 +6,8 @@ import Dashboard from './components/Pages/Dashboard/Dashboard';
 // import Category from './components/Pages/Category/Category';
 import Purchase from './components/Pages/Purchase/Purchase';
 import DeliveryOrder from './components/Pages/DeliveryOrder/DeliveryOrder';
-import Sale from './components/Pages/Sale/Sale';
+import Sale from './components/Pages/Sale/list';
+import InvoiceDetails from './components/Pages/Sale/Sale';
 import Product from './components/Pages/Product/Product';
 import Report from './components/Pages/Report/Report';
 import Logout from './components/Pages/Logout'; 
@@ -35,6 +36,8 @@ function App() {
         <Route exact path="/purchase" element={<Purchase />}/>
         <Route exact path="/DeliveryOrder" element={<DeliveryOrder/>}/>
         <Route exact path="/sale" element={<Sale />}/>
+        <Route exact path="/add-invoice" element={<InvoiceDetails />}/>
+        <Route exact path="/edit-invoice/:id" element={<InvoiceDetails />}/>
         <Route exact path="/product" element={<Product />}/>
         <Route exact path="/report" element={<Report />}/>
         <Route exact path="/logout" element={<Logout />}/>
