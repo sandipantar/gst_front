@@ -95,7 +95,7 @@ const SaleList = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <table className="tableclass table-sm" width="100%">
+                                <table id="Salebill" class=" display" width="100%">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
