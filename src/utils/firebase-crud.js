@@ -30,9 +30,9 @@ export const fetchAll = async (collectionName) => {
                 res.docs.forEach(doc => {
                     obj.id = doc.id;
                     obj.otherDetails = doc.data();
+                    arr.push({...obj});
+                    obj = {};
                 });
-                arr.push({...obj});
-                obj = {};
             }
             return {success: true, data: arr};
         })
