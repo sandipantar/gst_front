@@ -12,13 +12,11 @@ const DeliveryModal = (props) => {
                     <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
                     <div className='printable'>
                         <Row className='d-flex justify-content-center'>
-                            <Col md={12}>
-                                <h4 className='text-center'>Delivery Order</h4>
-                            </Col>
+                            
                             <Col md={3}>
                                 <img className='m-auto' src={logo} alt="logo" width="150px" />
                             </Col>
-                            <Col md={9} className=' text-dark'>
+                            <Col md={7} className=' text-dark text-center'>
                                 <h3><b>Aromist Tea Co.</b></h3>
                                 <p>
                                     GSTIN / UIN : 19ATHPP2711R1Z2<br />
@@ -30,10 +28,13 @@ const DeliveryModal = (props) => {
                                     Ph: +91 6294811689 || E-Mail: aromisttea@gmail.com
                                 </p>
                             </Col>
+                            <Col md={2}>
+                            <h4 className='text-center'>Delivery Order</h4>
+                            </Col>
                         </Row>
                         <Row>
                             <Col md={6}>
-                                <b>Delivery Order No.: ATC{props.checked ? "N" : ""}/001/2022-2023</b>
+                                <b>Delivery Order No : {props.checked ? "DN" : "DG"}/001</b>
                             </Col>
                             <Col md={6} className="text-right mb-2">
                                 <b>Date: {props.finalPreviewObj.challanDate}</b>
@@ -109,13 +110,13 @@ const DeliveryModal = (props) => {
                             {/* <Col>
                                                     <img src={payQr} width="180px" alt="paymentQr" />
                                                 </Col> */}
-                            <Col md={4}>
+                            <Col md={4} className='text-right'>
                                 <p>For Aromist Tea Co.</p>
                                 <img src={sign} width="150px" alt="sign" />
                                 <p>Authorised Signature</p>
                             </Col>
                         </Row>
-                        <p className='d-flex justify-content-center'>This is computer generated invoice</p>
+                        <p className='d-flex justify-content-center'>This is computer generated receipt</p>
 
                     </div>
                 </Modal.Body>

@@ -15,102 +15,131 @@ import InvoiceModal from './invoice-modal';
 
 const invoiceCollectionName = "/invoice";
 
+
 const party = [
     {
-        value: 'ab',
-        label: 'A&B Co.',
+        value: 'AshapuraGruhUshyog',
+        label: 'Ashapura Gruh Ushyog',
         companyDetails: {
-            contactNo: "9876543210",
-            gst: "19zmajjnksbdj",
-            address: "address 6"
+            contactNo: "+91-9772980074",
+            gst: "08FRDPB4061F1Z4",
+            address: "Rajasthan"
         },
         shippingAddress: [{
             value: 'add1',
-            label: 'Address 1'
+            label: 'Rajasthan'
         }, {
             value: 'add2',
-            label: 'Address 2'
+            label: 'Rajasthan 1'
         }]
     },
     {
-        value: 'cd',
-        label: 'C&D Co.',
+        value: 'M.Kannan',
+        label: 'M. Kannan',
         companyDetails: {
-            contactNo: "9776543210",
-            gst: "19zmajjnjksl",
-            address: "address 7"
+            contactNo: "+91 9894685818, +91 7550014224",
+            gst: "N/A",
+            address: "Namakkal, Tamil Nadu - 637002"
         },
         shippingAddress: [{
-            value: 'add3',
-            label: 'Address 3'
+            value: 'Namakkal, Tamil Nadu - 637002',
+            label: 'Namakkal, Tamil Nadu - 637002'
         }, {
-            value: 'add4',
-            label: 'Address 4'
+            value: ' Tamil Nadu - 637002',
+            label: ' Tamil Nadu - 637002'
         }]
     },
     {
-        value: 'ef',
-        label: 'E&F Co.',
+        value: 'Shree Shyam Tea Co.',
+        label: 'Shree Shyam Tea Co.',
+        companyDetails: {
+            contactNo: "+91 9126840029",
+            gst: "19AJFPS5165G1ZU",
+            address: "Mahavir Sthan Siliguri - 734001 Siliguri- 734003"
+        },
+        shippingAddress: [{
+            value: 'Mahavir Sthan Siliguri - 734001 Siliguri- 734003',
+            label: 'Mahavir Sthan Siliguri - 734001 Siliguri- 734003'
+        },]
+    },
+    {
+        value: 'Sunil Kumar Jha',
+        label: 'Sunil Kumar Jha',
+        companyDetails: {
+            contactNo: "+91 9167319691",
+            gst: "10AFHPJ5612B1ZA",
+            address: "Madhubani, Bihar - 847403"
+        },
+        shippingAddress: [{
+            value: 'Village + Post - Rataul Via- Jhanjharpur (R S) Dist - Madhubani, Bihar - 847403',
+            label: 'Village + Post - Rataul Via- Jhanjharpur (R S) Dist - Madhubani, Bihar - 847403'
+        }, ]
+    },
+    {
+        value: 'R.S Traders',
+        label: 'R.S Traders',
         companyDetails: {
             contactNo: "9876566210",
             gst: "19zmajjnkslk6",
-            address: "address 7"
+            address: "Nawada"
         },
         shippingAddress: [{
-            value: 'add5',
-            label: 'Address 5'
+            value: 'Nawada',
+            label: 'Nawada 2'
         }]
     }
 ];
 const locationData = [
     {
         value: 1,
-        label: "Raipur",
+        label: "SREEMA TEA WAREHOUSING PVT.LTD.",
         otherDetails: {
-            address: "abcd",
-            pin: "700015",
-            phone: "9865741203"
+            address: "CHAMPASARI, SILIGURI",
+            pin: "734003",
+            phone: "6294811689"
         }
     },
-    {
-        value: 2,
-        label: "Kolkata",
-        otherDetails: {
-            address: "efgh",
-            pin: "700085",
-            phone: "9865941203"
-        }
-    },
-    {
-        value: 3,
-        label: "New Delhi",
-        otherDetails: {
-            address: "ijkl",
-            pin: "700045",
-            phone: "9865741653"
-        }
-    },
-    {
-        value: 4,
-        label: "Indore",
-        otherDetails: {
-            address: "mnop",
-            pin: "700054",
-            phone: "9865796203"
-        }
-    },
-    {
-        value: 5,
-        label: "Chennai",
-        otherDetails: {
-            address: "qrst",
-            pin: "700063",
-            phone: "9866741203"
-        }
-    }
+    // {
+    //     value: 2,
+    //     label: "Kolkata",
+    //     otherDetails: {
+    //         address: "efgh",
+    //         pin: "700085",
+    //         phone: "9865941203"
+    //     }
+    // },
+    // {
+    //     value: 3,
+    //     label: "New Delhi",
+    //     otherDetails: {
+    //         address: "ijkl",
+    //         pin: "700045",
+    //         phone: "9865741653"
+    //     }
+    // },
+    // {
+    //     value: 4,
+    //     label: "Indore",
+    //     otherDetails: {
+    //         address: "mnop",
+    //         pin: "700054",
+    //         phone: "9865796203"
+    //     }
+    // },
+    // {
+    //     value: 5,
+    //     label: "Chennai",
+    //     otherDetails: {
+    //         address: "qrst",
+    //         pin: "700063",
+    //         phone: "9866741203"
+    //     }
+    // }
 ];
 
 const Sale = () => {
+
+
     const navigate = useNavigate();
     const params = useParams();
     const [key, setKey] = useState('sale');
@@ -373,6 +402,7 @@ const Sale = () => {
                                 <Row>
                                     <Col>
                                         <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
+                                        
                                     </Col>
                                     <Col>
                                         <div className="text-center">
@@ -444,7 +474,7 @@ const Sale = () => {
                                     /> : null}
                                 {/* print modal */}
                                 {show4 ?
-                                    <InvoiceModal
+                                    <InvoiceModal style={{overflow:'hidden'}}
                                         show4={show4}
                                         finalPreviewObj={finalPreviewObj}
                                         handleClose4={handleClose4}

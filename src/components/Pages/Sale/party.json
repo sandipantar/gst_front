@@ -1,0 +1,49 @@
+{
+    "party": [
+        {
+            "value": "ab",
+            "label": "Ashapura Gruh Ushyog",
+            "companyDetails": {
+                "contactNo": "+91-9772980074",
+                "gst": "08FRDPB4061F1Z4",
+                "address": "Rajasthan"
+            },
+            "shippingAddress": [{
+                "value": "add1",
+                "label": "Rajasthan"
+            }, {
+                "value": "add2",
+                "label": "Rajasthan 1"
+            }]
+        },
+        {
+            "value": "cd",
+            "label": "C&D Co.",
+            "companyDetails": {
+                "contactNo": "9776543210",
+                "gst": "19zmajjnjksl",
+                "address": "address 7"
+            },
+            "shippingAddress": [{
+                "value": "add3",
+                "label": "Address 3"
+            }, {
+                "value": "add4",
+                "label": "Address 4"
+            }]
+        },
+        {
+            "value": "ef",
+            "label": "E&F Co.",
+            "companyDetails": {
+                "contactNo": "9876566210",
+                "gst": "19zmajjnkslk6",
+                "address": "address 7"
+            },
+            "shippingAddress": [{
+                "value": "add5",
+                "label": "Address 5"
+            }]
+        }
+    ]
+}
