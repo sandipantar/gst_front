@@ -10,13 +10,13 @@ import logo from '../../../img/AROMIST_LOGO.png';
 import sign from '../../../img/sign.jpeg';
 import DeliveryModal from './delivery-modal';
 import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
-import { add, getCount, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
+import { add, getCount, fetchById, fetchByIdAndUpdate, fetchAll } from '../../../utils/firebase-crud';
 import InvoiceModal from './invoice-modal';
 
 const invoiceCollectionName = "/invoice";
+const billToCollectionName = "/billTo"; 
 
-
-const party = [
+const xparty = [
     {
         value: 'AshapuraGruhUshyog',
         label: 'Ashapura Gruh Ushyog',
@@ -148,6 +148,7 @@ const Sale = () => {
     const [deliveryModal, handleDeliveryModal] = useState(false);
     const [checked, setChecked] = useState(false);
     const [gstChecked, setGstChecked] = useState(true);
+    const [party, updateParty] = useState([]);
 
     // var today = new Date(),
     // datee = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -176,6 +177,28 @@ const Sale = () => {
     const handleClose = () => setShow(false);
 
     const prohandleClose = () => setProShow(false);
+
+    const fetchList = async () => {
+        const listRes = await fetchAll(billToCollectionName);
+        if (listRes.success) {
+            const localArr = [];
+            if (listRes.data && listRes.data.length) {
+                listRes.data.forEach(each => {
+                    localArr.push({
+                        value: each.id,
+                        label: each.otherDetails.name,
+                        companyDetails: {
+                            contactNo: each.otherDetails.phone,
+                            gst: each.otherDetails.gst,
+                            address: each.otherDetails.address,
+                        },
+                        shippingAddress: each.otherDetails.shippingAddresses
+                    });
+                });
+            }
+            updateParty([...localArr]);
+        }
+    };
 
     const getInputDisplayFullDateFormat = (date) => {
         const day = date.getDate().toString().length === 1 ? "0" + date.getDate() : date.getDate();
@@ -389,6 +412,10 @@ const Sale = () => {
     const cancel = () => {
         navigate("/sale");
     };
+
+    useEffect(() => {
+        fetchList();
+    }, []);
 
     return (
         <>

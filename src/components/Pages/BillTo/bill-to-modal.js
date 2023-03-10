@@ -43,7 +43,10 @@ const BillToModal = (props) => {
     const addAddress = () => {
         if (shippingAddress.trim().length) {
             const localCompanyData = { ...companyData };
-            localCompanyData.shippingAddresses.push(shippingAddress);
+            localCompanyData.shippingAddresses.push({
+                value: shippingAddress,
+                label: shippingAddress
+            });
             setCompanyData({ ...localCompanyData });
             updateShipping("");
         }
@@ -152,7 +155,7 @@ const BillToModal = (props) => {
                                         {companyData.shippingAddresses.map((product, ind) => {
                                             return <tr key={ind}>
                                                 <td>{ind + 1}</td>
-                                                <td>{product}</td>
+                                                <td>{product.label}</td>
                                                 <td>
                                                     <i className="fa fa-trash cursor-pointer mr-3" onClick={() => removeAddress(ind)}></i>
                                                 </td>
