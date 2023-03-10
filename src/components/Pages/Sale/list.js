@@ -95,12 +95,12 @@ const SaleList = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <table className="tableclass table-sm" width="100%">
+                                <table id="Salebill" class="table table-bordered display" width="100%">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
                                             <th>Invoice NO</th>
-                                            <th>Invoice Type</th>
+                                            {/* <th>Invoice Type</th> */}
                                             <th>Bill To</th>
                                             <th>DO Date</th>
                                             <th>Amount</th>
@@ -112,7 +112,7 @@ const SaleList = () => {
                                             return <tr key={ind}>
                                                 <td>{ind + 1}</td>
                                                 <td>{product.invoiceNo}</td>
-                                                <td>{product.typeOfInvoice}</td>
+                                                {/* <td>{product.typeOfInvoice}</td> */}
                                                 <td>{product.billTo.label}</td>
                                                 <td>{product.challanDate}</td>
                                                 <td>{product.grandTotal}</td>
