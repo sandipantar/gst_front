@@ -422,6 +422,13 @@ const Sale = () => {
                                         </div>
                                     </Col>
                                     <Col>
+
+                                        <Button variant="info" size="sm" onClick={() => navigate("/bill-to")}>
+                                             Bill To
+                                        </Button>
+
+                                    </Col>
+                                    <Col>
                                         <Button variant="danger" size="sm" onClick={cancel}>
                                             <i className="fa fa-times"></i> Cancel (F2)
                                         </Button>

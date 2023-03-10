@@ -17,6 +17,7 @@ import ForgotPassword from './components/Pages/ForgotPassword/ForgotPassword';
 import Card from './components/Pages/Card/Card';
 import Submitmodal from './components/Pages/test/Submitmodal';
 import '../src/components/Assets/sb-admin-2.css'; 
+import BillToList from './components/Pages/BillTo/list';
 
 function App() { 
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route exact path="/purchase" element={<Purchase />}/>
         <Route exact path="/DeliveryOrder" element={<DeliveryOrder/>}/>
         <Route exact path="/sale" element={<Sale />}/>
+        <Route exact path="/bill-to" element={<BillToList />}/>
         <Route exact path="/add-invoice" element={<InvoiceDetails />}/>
         <Route exact path="/edit-invoice/:id" element={<InvoiceDetails />}/>
         <Route exact path="/product" element={<Product />}/>
