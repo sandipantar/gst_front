@@ -51,8 +51,8 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             <td style={{width:'8%'}}>
                 <Form.Group controlId="formPlaintextVnumber">
                     <Form.Select aria-label="Default select example" name="baseUnit" value={baseUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
-                        <option value="kg">KG</option>
-                        <option value="gm">GM</option>
+                        <option value="Kg">KG</option>
+                        <option value="Gm">GM</option>
                     </Form.Select>
                 </Form.Group>
             </td>
@@ -64,8 +64,8 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             <td style={{width:'8%'}}>
                 <Form.Group controlId="formPlaintextVnumber">
                     <Form.Select aria-label="Default select example" name="altUnit" value={altUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
-                        <option value="bag">BAG</option>
-                        <option value="pac">PAC</option>
+                        <option value="Bag">BAG</option>
+                        <option value="Pac">PAC</option>
                     </Form.Select>
                 </Form.Group>
             </td>

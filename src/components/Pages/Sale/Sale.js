@@ -94,9 +94,9 @@ const locationData = [
         value: 1,
         label: "SREEMA TEA WAREHOUSING PVT.LTD.",
         otherDetails: {
-            address: "CHAMPASARI, SILIGURI",
-            pin: "734003",
-            phone: "6294811689"
+            address: "EASTERN BYPASS, THAKURNAGAR, SAHUDANGI",
+            pin: "735135",
+            phone: "7699999475"
         }
     },
     // {
@@ -257,9 +257,9 @@ const Sale = () => {
             invoiceNo: '',
             bagNo: '',
             baseQty: '',
-            baseUnit: 'kg',
+            baseUnit: 'Kg',
             altQty: '',
-            altUnit: 'bag',
+            altUnit: 'Bag',
             rate: '',
             discountPercentage: '',
             discount: 0,
@@ -479,13 +479,6 @@ const Sale = () => {
                                         </div>
                                     </Col>
                                     <Col>
-
-                                        <Button variant="info" size="sm" onClick={() => navigate("/bill-to")}>
-                                             Bill To
-                                        </Button>
-
-                                    </Col>
-                                    <Col>
                                         <Button variant="danger" size="sm" onClick={cancel}>
                                             <i className="fa fa-times"></i> Cancel (F2)
                                         </Button>
@@ -524,7 +517,14 @@ const Sale = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Form.Label>Bill To : </Form.Label>
+                                            <Row>
+                                                <Col><Form.Label>Bill To : </Form.Label></Col>
+                                                <Col >
+                                                    <Button style={{float:'right'}} className="fs-4 mb-1 py-0 px-2" variant="info" size="sm" onClick={() => navigate("/bill-to")}>
+                                                    +
+                                                    </Button>
+                                                </Col>
+                                            </Row>
                                             <AutoSelect
                                                 value={selectedOption}
                                                 onChange={changeSelectedOption}
@@ -597,8 +597,8 @@ const Sale = () => {
                                         <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
                                         <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
                                             <option>Select</option>
-                                            <option value="cash">Cash</option>
-                                            <option value="bank">Bank</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Bank">Bank</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>

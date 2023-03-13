@@ -4,11 +4,14 @@ import sign from '../../../img/sign.jpeg';
 import { Row, Col, Modal } from 'react-bootstrap-v5';
 
 const DeliveryModal = (props) => {
+
+    const input = props.finalPreviewObj?.billto?.companyDetails.gst;
+    const o1 = input.replace(input.slice(0, 2), '');
+    const o2 = o1.replace(input.slice(11, 14), '');
     return (
         <div id="wrapper">
             <Modal show={props.deliveryModal && Object.keys(props.finalPreviewObj).length} onHide={() => props.handleDeliveryModal(false)} fullscreen={true} aria-labelledby="example-modal-sizes-title-sm">
                 <Modal.Body>
-
                     <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
                     <div className='printable'>
                         <Row className='d-flex justify-content-center'>
@@ -42,7 +45,7 @@ const DeliveryModal = (props) => {
                             <Col md={6}>
                                 <Row className='border border-right-0'>
                                     <Col>
-                                        <p className='m-0'><small>To:</small></p>
+                                        <p className='m-0'><small>TO:</small></p>
                                         <p>
                                             {props.finalPreviewObj?.placeOfSupply?.label}<br />
                                             {props.finalPreviewObj?.placeOfSupply?.otherDetails.address} <br />
@@ -55,11 +58,12 @@ const DeliveryModal = (props) => {
                             <Col md={6}>
                                 <Row className='border'>
                                     <Col>
-                                        <p className='m-0'><small>Delivery To:</small></p>
+                                        <p className='m-0'><small>DELIVERY TO:</small></p>
                                         <p>
                                             {props.finalPreviewObj?.billto?.label}<br />
                                             {props.finalPreviewObj?.billto?.companyDetails.address} <br />
-                                            GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}
+                                            GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}<br/>
+                                            PAN: {o2}
                                             <span className='float-right'>PH: +91 {props.finalPreviewObj?.billto?.companyDetails.contactNo}</span>
                                         </p>
                                     </Col>
@@ -70,7 +74,7 @@ const DeliveryModal = (props) => {
                             <table className="tableclass table-sm" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>MARK</th>
+                                        <th className='text-left'>MARK</th>
                                         <th>INV NO</th>
                                         <th>KGS/BAG</th>
                                         <th>BAGS</th>
@@ -81,7 +85,7 @@ const DeliveryModal = (props) => {
                                 <tbody>
                                     {props.finalPreviewObj?.products.map((product, ind) => {
                                         return <tr key={ind}>
-                                            <td>{product.productName}</td>
+                                            <td className='text-left'>{product.productName}</td>
                                             <td>{product.invoiceNo}</td>
                                             <td>{Number(product.baseQty / product.altQty).toFixed(2)}</td>
                                             <td>{product.altQty}</td>
@@ -95,7 +99,7 @@ const DeliveryModal = (props) => {
                         <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
                             <Col md={12} className='border border-2 border-dark'>
                                 <p className='text-dark'>Total KGS : {props.finalPreviewObj?.totalBaseQty} KGS<br />
-                                    Total BAGS : {props.finalPreviewObj?.totalAltQty} BAG</p><br />
+                                    Total BAGS : {props.finalPreviewObj?.totalAltQty} BAGS</p><br />
                             </Col>
                         </Row>
                         <br />
