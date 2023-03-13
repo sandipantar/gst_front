@@ -96,18 +96,18 @@ const locationData = [
         otherDetails: {
             address: "EASTERN BYPASS, THAKURNAGAR, SAHUDANGI",
             pin: "735135",
-            phone: "7699999475"
+            phone: "+917699999475"
         }
     },
-    // {
-    //     value: 2,
-    //     label: "Kolkata",
-    //     otherDetails: {
-    //         address: "efgh",
-    //         pin: "700085",
-    //         phone: "9865941203"
-    //     }
-    // },
+    {
+        value: 2,
+        label: "Aromist Tea Co. Godown",
+        otherDetails: {
+            address: "CHAMPASARI MAIN ROAD, CHAMPASARI, SILIGURI",
+            pin: "734001",
+            phone: "+91 6294-811689, +91 9609726944"
+        }
+    },
     // {
     //     value: 3,
     //     label: "New Delhi",
