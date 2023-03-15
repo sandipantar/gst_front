@@ -573,11 +573,11 @@ const Sale = () => {
                                             options={locationData}
                                         />
                                     </Col>
-                                    <Col md={3}>
+                                    {/* <Col md={3}>
                                         <Form.Label>Destination : </Form.Label>
                                         <Form.Control type="text" name='destination' value={salesdata.destination}
                                             onChange={handleInputs} />
-                                    </Col>
+                                    </Col> */}
                                     <Col md={3}>
                                         <Form.Label>Despatch Through : </Form.Label>
                                         <Form.Control type="text" name='despatchThrough' value={salesdata.despatchThrough}

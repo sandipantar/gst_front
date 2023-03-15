@@ -7,7 +7,7 @@ const DeliveryModal = (props) => {
 
     const input = props.finalPreviewObj?.billto?.companyDetails.gst;
     const o1 = input.replace(input.slice(0, 2), '');
-    const o2 = o1.replace(input.slice(11, 14), '');
+    const o2 = o1.replace(input.slice(12, 15), '');
     return (
         <div id="wrapper">
             <Modal show={props.deliveryModal && Object.keys(props.finalPreviewObj).length} onHide={() => props.handleDeliveryModal(false)} fullscreen={true} aria-labelledby="example-modal-sizes-title-sm">
