@@ -83,7 +83,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
                 <label>{discount}</label>
             </td>
             <td>
-            <label>{amount}</label>
+            <label>{amount.toLocaleString()}</label>
             </td>
             <td>
                 <a className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>x</a>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import logo from '../../../img/AROMIST_LOGO.png';
-import sign from '../../../img/sign.jpeg';
+import sign from '../../../img/sign.png';
 import payQr from '../../../img/payment.png';
-import { Row, Col, Modal } from 'react-bootstrap-v5';
+import { Row, Col, Modal , Dropdown, Button, ButtonGroup,DropdownButton} from 'react-bootstrap-v5';
 import DeliveryModal from './delivery-modal';
 
 const InvoiceModal = (props) => {
@@ -66,6 +66,10 @@ const InvoiceModal = (props) => {
         return res
     };
 
+    const [value,setValue]=useState('Original Copy');
+    const handleSelect=(e)=>{
+    setValue(e)
+    }
     return (
         <div id="wrapper">
             {deliveryModal ?
@@ -85,9 +89,20 @@ const InvoiceModal = (props) => {
                                         </Pdf>
                                     </Modal.Header> */}
                 <Modal.Body>
+                    <div className='non-printable'>                                         
+                        <Dropdown as={ButtonGroup} onSelect={handleSelect}>
+                            <Button variant="success" onClick={() => window.print()}>PRINT</Button>
 
-                    <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
-                    <button className='non-printable btn-default ml-3 mb-3' onClick={() => handleDeliveryModal(true)}>Generate DO</button>
+                            <Dropdown.Toggle split variant="success" id="dropdown-split-basic"/>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item eventKey="Duplicate Copy">Duplicate Copy</Dropdown.Item>
+                                <Dropdown.Item eventKey="Triplicate Copy">Triplicate Copy</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>                                          
+                        
+                        <Button className='btn-default ml-3' onClick={() => handleDeliveryModal(true)}>Generate DO</Button>
+                    </div>
                      <div className='printable'>
                         <div className='original'>
                         <Row className='d-flex justify-content-center'>
@@ -107,7 +122,7 @@ const InvoiceModal = (props) => {
                                 </p>
                             </Col>
                             <Col md={2}>
-                                Original Copy
+                                {value}
                             </Col>
                         </Row>
                         <div className='d-flex justify-content-center'>
@@ -129,7 +144,7 @@ const InvoiceModal = (props) => {
                                                 GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}<br />
                                                 Phone: +91 {props.finalPreviewObj?.billto?.companyDetails.contactNo}
                                                 </div>
-                                            </Col>
+                                        </Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -147,7 +162,7 @@ const InvoiceModal = (props) => {
                             <Col md={6} className="border-top border-right border-left-0 border-bottom-0 border-dark">
 
                                 <Row className='border border-bottom-0 '>
-                                    <Col className='border-right border-dark' md={4} lg={4} xl={4}><b>INVOICE NO.:</b><br />ATC{props.checked ? "N" : ""}/001/2022-{year}</Col>
+                                    <Col className='border-right border-dark' md={4} lg={4} xl={4}><b>INVOICE NO.:</b><br />{props.finalPreviewObj.invno}</Col>
                                     <Col><b>DATE:</b> <br /> {props.finalPreviewObj.billdate}</Col>
                                     <Col className='border-left border-dark'>CHALLAN NO: {props.finalPreviewObj.challanNo}</Col>
                                 </Row>
@@ -198,8 +213,8 @@ const InvoiceModal = (props) => {
                                             <td>{product.altUnit}</td>
                                             <td>{product.rate}</td>
                                             <td>{product.discountPercentage}</td>
-                                            <td>{product.discount}</td>
-                                            <td>{product.amount}</td>
+                                            <td>{Number(product.discount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                            <td>{Number(product.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         </tr>
                                     })}
 
@@ -227,16 +242,16 @@ const InvoiceModal = (props) => {
                             </Col>
                             <Col md={2} className='border border-2 border-dark text-right' style={{ paddingLeft: '70px', fontSize:'14px'}}>
                                 <table>
-                                    <tr><td>{Number(props?.finalPreviewObj?.totalAmount).toFixed(2)}</td></tr>
+                                    <tr><td>{Number(props?.finalPreviewObj?.totalAmount).toLocaleString(undefined, {maximumFractionDigits:2})}</td></tr>
                                     {props.gstChecked ?
                                         <>
-                                            <tr><td>{(props?.finalPreviewObj?.totalGst / 2).toFixed(2)}</td></tr>
-                                            <tr><td>{(props?.finalPreviewObj?.totalGst / 2).toFixed(2)}</td></tr>
+                                            <tr><td>{(props?.finalPreviewObj?.totalGst / 2).toLocaleString(undefined, {maximumFractionDigits:2})}</td></tr>
+                                            <tr><td>{(props?.finalPreviewObj?.totalGst / 2).toLocaleString(undefined, {maximumFractionDigits:2})}</td></tr>
                                         </> :
-                                        <tr><td>{props?.finalPreviewObj?.totalGst.toFixed(2)}</td></tr>}
-                                    <tr><td>{Number(props?.finalPreviewObj?.transportCost).toFixed(2)}</td></tr>
+                                        <tr><td>{props?.finalPreviewObj?.totalGst.toLocaleString(undefined, {maximumFractionDigits:2})}</td></tr>}
+                                    <tr><td>{Number(props?.finalPreviewObj?.transportCost).toLocaleString(undefined, {maximumFractionDigits:2})}</td></tr>
                                     <tr className='border-bottom border-dark'><td>{props?.finalPreviewObj?.roundOff}</td></tr>
-                                    <tr><td><b>{props?.finalPreviewObj?.grandTotal}</b></td></tr>
+                                    <tr><td><b>{Number(props?.finalPreviewObj?.grandTotal).toLocaleString(undefined, {maximumFractionDigits:2})}</b></td></tr>
                                 </table>
                             </Col>
                         </Row>

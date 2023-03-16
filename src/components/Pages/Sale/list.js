@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../Headers/Header';
-import { Row, Col } from 'react-bootstrap-v5';
+import { Row, Col, Button } from 'react-bootstrap-v5';
 import InvoiceModal from './invoice-modal';
 import { deleteById, fetchAll, fetchById } from '../../../utils/firebase-crud';
 
@@ -90,7 +90,7 @@ const SaleList = () => {
                                 </h3>
                             </Col>
                             <Col md={2} className="text-right">
-                                <button className='non-printable btn-primary' onClick={redirect}>Create</button>
+                                <Button className='non-printable btn-primary' onClick={redirect}>Create</Button>
                             </Col>
                         </Row>
                         <Row>

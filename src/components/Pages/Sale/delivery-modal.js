@@ -1,18 +1,21 @@
 import React from 'react';
 import logo from '../../../img/AROMIST_LOGO.png';
-import sign from '../../../img/sign.jpeg';
-import { Row, Col, Modal } from 'react-bootstrap-v5';
+import sign from '../../../img/sign.png';
+import { Row, Col, Modal, Button } from 'react-bootstrap-v5';
 
 const DeliveryModal = (props) => {
 
     const input = props.finalPreviewObj?.billto?.companyDetails.gst;
     const o1 = input.replace(input.slice(0, 2), '');
     const o2 = o1.replace(input.slice(12, 15), '');
+
+    const i1 = props.finalPreviewObj.invno;
+    const i2 = i1.replace(i1.slice(0, 4), '');
     return (
         <div id="wrapper">
             <Modal show={props.deliveryModal && Object.keys(props.finalPreviewObj).length} onHide={() => props.handleDeliveryModal(false)} fullscreen={true} aria-labelledby="example-modal-sizes-title-sm">
                 <Modal.Body>
-                    <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
+                    <Button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</Button>
                     <div className='printable'>
                         <Row className='d-flex justify-content-center'>
                             
@@ -35,43 +38,54 @@ const DeliveryModal = (props) => {
                             <h4 className='text-center'>Delivery Order</h4>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row style={{fontSize:'14px', padding:'0 12px'}}>
                             <Col md={6}>
-                                <b>Delivery Order No : {props.checked ? "DN" : "DG"}/001</b>
+                                <b>Delivery Order No : {props.checked ? "DN" : "DG"}/{i2}</b>
                             </Col>
                             <Col md={6} className="text-right mb-2">
                                 <b>Date: {props.finalPreviewObj.challanDate}</b>
                             </Col>
                             <Col md={6}>
-                                <Row className='border border-right-0'>
+                                <Row className='border border-dark border-right-0'>
                                     <Col>
-                                        <p className='m-0'><small>TO:</small></p>
-                                        <p>
-                                            {props.finalPreviewObj?.placeOfSupply?.label}<br />
-                                            {props.finalPreviewObj?.placeOfSupply?.otherDetails.address} <br />
-                                            Pin: {props.finalPreviewObj?.placeOfSupply?.otherDetails.pin}
-                                            <span className='float-right'>PH: +91 {props.finalPreviewObj?.placeOfSupply?.otherDetails.phone}</span>
-                                        </p>
+                                        <p className='m-0'><b>TO:</b></p>
+                                        <Row>
+                                            <Col>
+                                            <b>
+                                                {props.finalPreviewObj?.placeOfSupply?.label}</b><br />
+                                                {props.finalPreviewObj?.placeOfSupply?.otherDetails.address} <br />
+                                            </Col>
+                                            <Col className='float-right'>
+                                                Pin: {props.finalPreviewObj?.placeOfSupply?.otherDetails.pin}<br/>
+                                                PH: +91 {props.finalPreviewObj?.placeOfSupply?.otherDetails.phone}
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col md={6}>
-                                <Row className='border'>
+                                <Row className='border border-dark'>
                                     <Col>
-                                        <p className='m-0'><small>DELIVERY TO:</small></p>
-                                        <p>
-                                            {props.finalPreviewObj?.billto?.label}<br />
-                                            {props.finalPreviewObj?.billto?.companyDetails.address} <br />
-                                            GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}<br/>
-                                            PAN: {o2}
-                                            <span className='float-right'>PH: +91 {props.finalPreviewObj?.billto?.companyDetails.contactNo}</span>
-                                        </p>
+                                        <Row>
+                                            <Col md={8} lg={8} xl={8}>
+                                            <p className='m-0'><b>DELIVERY TO: </b></p>
+                                                <b>{props.finalPreviewObj?.billto?.label}</b><br />
+                                                {props.finalPreviewObj?.billto?.companyDetails.address} 
+                                            </Col>
+                                            <Col>
+                                                <div className='float-right'>
+                                                    GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}<br/>
+                                                    PAN: {o2}<br/>
+                                                    PH: +91 {props.finalPreviewObj?.billto?.companyDetails.contactNo}
+                                                </div>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
                         {props.finalPreviewObj?.products?.length ?
-                            <table className="tableclass table-sm" width="100%">
+                            <table className="tableclass table-sm" width="100%"  style={{fontSize:'14px'}}>
                                 <thead>
                                     <tr>
                                         <th className='text-left'>MARK</th>
@@ -115,8 +129,8 @@ const DeliveryModal = (props) => {
                                                     <img src={payQr} width="180px" alt="paymentQr" />
                                                 </Col> */}
                             <Col md={4} className='text-right'>
-                                <p>For Aromist Tea Co.</p>
-                                <img src={sign} width="150px" alt="sign" />
+                                <p>For Aromist Tea Co.</p><br/>
+                                <img src={sign} width="150px" alt="sign" /><br/><br/>
                                 <p>Authorised Signature</p>
                             </Col>
                         </Row>
