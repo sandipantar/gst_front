@@ -134,13 +134,13 @@ const InvoiceModal = (props) => {
                                     <Col>
                                         {/* <p className='m-0'></p> */}
                                         <Row>
-                                        <Col md={8} lg={8} xl={8}>
+                                        <Col md={8} lg={8} xl={8} style={{height:'63px'}}>
                                             <b>BILL TO: 
                                             &nbsp;&nbsp;{props.finalPreviewObj?.billto?.label}</b><br />
                                             {props.finalPreviewObj?.billto?.companyDetails.address} <br />
                                         </Col>
-                                        <Col>
-                                            <div  className='float-right'>
+                                        <Col className='p-0'>
+                                            <div>
                                                 GSTIN: {props.finalPreviewObj?.billto?.companyDetails.gst}<br />
                                                 Phone: +91 {props.finalPreviewObj?.billto?.companyDetails.contactNo}
                                                 </div>
@@ -149,7 +149,7 @@ const InvoiceModal = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className='border border-dark'>
-                                    <Col md={8} lg={8} xl={8}>
+                                    <Col md={8} lg={8} xl={8} style={{height:'64px'}}>
                                         {/* <p className='m-0'><b>SHIPPED TO:</b></p> */}
                                         <b>SHIPPED TO: 
                                             &nbsp;&nbsp;{props.finalPreviewObj?.billto?.label}</b><br />
@@ -167,7 +167,7 @@ const InvoiceModal = (props) => {
                                     <Col className='border-left border-dark'>CHALLAN NO: {props.finalPreviewObj.challanNo}</Col>
                                 </Row>
                                 <Row className='border border-bottom-0 border-left-0 border-right-0 border-dark'>
-                                    <Col className='border-right' md={4} lg={4} xl={4}>PLACE OF SUPPLY :<br />{props.finalPreviewObj?.placeOfSupply?.label}</Col>
+                                    <Col className='border-right' md={4} lg={4} xl={4} style={{height:'62px'}}>PLACE OF SUPPLY :<br />{props.finalPreviewObj?.placeOfSupply?.label}</Col>
                                     {/* <Col>Destination:<br /> {props.finalPreviewObj.destination}</Col> */}
                                 {/* </Row>
                                 <Row className='border border-bottom-0'> */}
@@ -220,10 +220,10 @@ const InvoiceModal = (props) => {
 
                                 </tbody>
                             </table> : null}
-                        <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
+                        <Row style={{ padding: '0 12px 0 12px' }}>
                             <Col md={8} className='border border-2 border-dark'>
-                                <p className='text-dark'>Total Base Quantity : count bqty {props?.finalPreviewObj?.totalBaseQty} KGS<br />
-                                    Total Alt. Quantity : count aqty {props?.finalPreviewObj?.totalAltQty} BAGS / PAC</p><br />
+                                <p>Total Base Quantity : {props?.finalPreviewObj?.totalBaseQty} KGS<br />
+                                    Total Alt. Quantity : {props?.finalPreviewObj?.totalAltQty} BAGS / PAC</p><br />
                                 <h5><b>Rupees {wordify(Number(props?.finalPreviewObj?.grandTotal))} Only</b></h5>
                             </Col>
                             <Col md={2} className='border border-dark border-2' style={{fontSize:'14px'}}>

@@ -15,14 +15,14 @@ const DeliveryModal = (props) => {
         <div id="wrapper">
             <Modal show={props.deliveryModal && Object.keys(props.finalPreviewObj).length} onHide={() => props.handleDeliveryModal(false)} fullscreen={true} aria-labelledby="example-modal-sizes-title-sm">
                 <Modal.Body>
-                    <Button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</Button>
+                    <button className='non-printable btn-primary' onClick={() => window.print()}>PRINT</button>
                     <div className='printable'>
                         <Row className='d-flex justify-content-center'>
                             
                             <Col md={3}>
                                 <img className='m-auto' src={logo} alt="logo" width="150px" />
                             </Col>
-                            <Col md={7} className=' text-dark text-center'>
+                            <Col md={7} className='text-black text-center'>
                                 <h3><b>Aromist Tea Co.</b></h3>
                                 <p>
                                     GSTIN / UIN : 19ATHPP2711R1Z2<br />
@@ -40,34 +40,33 @@ const DeliveryModal = (props) => {
                         </Row>
                         <Row style={{fontSize:'14px', padding:'0 12px'}}>
                             <Col md={6}>
-                                <b>Delivery Order No : {props.checked ? "DN" : "DG"}/{i2}</b>
+                                <b>Delivery Order No : {props.checked ? "DN" : "DG"}{i2}</b>
                             </Col>
                             <Col md={6} className="text-right mb-2">
                                 <b>Date: {props.finalPreviewObj.challanDate}</b>
                             </Col>
-                            <Col md={6}>
+                            <Col md={5}>
                                 <Row className='border border-dark border-right-0'>
                                     <Col>
                                         <p className='m-0'><b>TO:</b></p>
                                         <Row>
-                                            <Col>
-                                            <b>
-                                                {props.finalPreviewObj?.placeOfSupply?.label}</b><br />
-                                                {props.finalPreviewObj?.placeOfSupply?.otherDetails.address} <br />
+                                            <Col md={8} style={{height:'63px'}}>
+                                            <b>{props.finalPreviewObj?.placeOfSupply?.label}</b><br />
+                                                {props.finalPreviewObj?.placeOfSupply?.otherDetails.address},  
+                                                Pin: {props.finalPreviewObj?.placeOfSupply?.otherDetails.pin}
                                             </Col>
-                                            <Col className='float-right'>
-                                                Pin: {props.finalPreviewObj?.placeOfSupply?.otherDetails.pin}<br/>
-                                                PH: +91 {props.finalPreviewObj?.placeOfSupply?.otherDetails.phone}
+                                            <Col md={4} className='p-0'>
+                                                PH:  {props.finalPreviewObj?.placeOfSupply?.otherDetails.phone}
                                             </Col>
                                         </Row>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col md={6}>
+                            <Col md={7}>
                                 <Row className='border border-dark'>
                                     <Col>
                                         <Row>
-                                            <Col md={8} lg={8} xl={8}>
+                                            <Col md={8} lg={8} xl={8} style={{height:'84px'}}>
                                             <p className='m-0'><b>DELIVERY TO: </b></p>
                                                 <b>{props.finalPreviewObj?.billto?.label}</b><br />
                                                 {props.finalPreviewObj?.billto?.companyDetails.address} 
@@ -110,9 +109,9 @@ const DeliveryModal = (props) => {
 
                                 </tbody>
                             </table> : null}
-                        <Row style={{ padding: '0 12px 0 12px' }} className='text-dark'>
+                        <Row style={{ padding: '0 12px 0 12px' }}>
                             <Col md={12} className='border border-2 border-dark'>
-                                <p className='text-dark'>Total KGS : {props.finalPreviewObj?.totalBaseQty} KGS<br />
+                                <p>Total KGS : {props.finalPreviewObj?.totalBaseQty} KGS<br />
                                     Total BAGS : {props.finalPreviewObj?.totalAltQty} BAGS</p><br />
                             </Col>
                         </Row>
