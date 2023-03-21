@@ -150,7 +150,7 @@ const InvoiceModal = (props) => {
                                         <Row>
                                         <Col md={8} lg={8} xl={8} style={{height:'63px'}}>
                                             <b>BILL TO: 
-                                            &nbsp;&nbsp;{props.finalPreviewObj?.billto?.label}</b><br />
+                                            &nbsp;&nbsp;<span style={{fontSize:'15px'}}>{props.finalPreviewObj?.billto?.label}</span></b><br />
                                             {props.finalPreviewObj?.billto?.companyDetails.address} <br />
                                         </Col>
                                         <Col className='p-0'>
@@ -166,7 +166,7 @@ const InvoiceModal = (props) => {
                                     <Col md={8} lg={8} xl={8} style={{height:'64px'}}>
                                         {/* <p className='m-0'><b>SHIPPED TO:</b></p> */}
                                         <b>SHIPPED TO: 
-                                            &nbsp;&nbsp;{props.finalPreviewObj?.billto?.label}</b><br />
+                                            &nbsp;&nbsp;<span style={{fontSize:'15px'}}>{props.finalPreviewObj?.billto?.label}</span></b><br />
                                         <p style={{marginBottom:'1px'}}>
                                             {props.finalPreviewObj?.shipto?.label}
                                         </p>
@@ -287,14 +287,14 @@ const InvoiceModal = (props) => {
                                     <tr><td>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.totalAmount))}</td></tr>
                                     {props.gstChecked ?
                                         <>
-                                            <tr><td>{new Intl.NumberFormat('en-IN').format(Number((props?.finalPreviewObj?.totalGst / 2)))}</td></tr>
-                                            <tr><td>{new Intl.NumberFormat('en-IN').format(Number((props?.finalPreviewObj?.totalGst / 2)))}</td></tr>
+                                            <tr><td>{new Intl.NumberFormat('en-IN').format(Number((props?.finalPreviewObj?.totalGst / 2).toFixed(2)))}</td></tr>
+                                            <tr><td>{new Intl.NumberFormat('en-IN').format(Number((props?.finalPreviewObj?.totalGst / 2).toFixed(2)))}</td></tr>
                                         </> :
                                         <tr><td>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.totalGst))}</td></tr>}
-                                    <tr><td>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.transportCost))}</td></tr>
+                                    <tr><td>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.transportCost))}.00</td></tr>
                                     <tr className='border-bottom border-dark'><td>{props?.finalPreviewObj?.roundOff}</td></tr>
-                                    <tr><td><b>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.grandTotal))}
-                                    {/* new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(test); */}
+                                    <tr><td><b>{new Intl.NumberFormat('en-IN').format(Number(props?.finalPreviewObj?.grandTotal))}.00
+                                    
                                     </b></td></tr>
                                 </table>
                             </Col>
@@ -335,7 +335,7 @@ const InvoiceModal = (props) => {
                                 <p>Authorised Signature</p>
                             </Col>
                         </Row>
-                        <p className='d-flex justify-content-center'>This is computer generated invoice</p>
+                        <p className='d-flex justify-content-center' style={{fontSize:'13px'}}>This is computer generated invoice</p>
                         </div>
                         </div>
                     </div>
