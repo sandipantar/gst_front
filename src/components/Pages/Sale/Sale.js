@@ -518,7 +518,7 @@ const Sale = () => {
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
                                             <Row>
-                                                <Col><Form.Label>Bill To : </Form.Label></Col>
+                                                <Col><Form.Label><sub className='fs-2 text-danger'>*</sub> Bill To : </Form.Label></Col>
                                                 <Col >
                                                     <Button style={{float:'right'}} className="fs-4 mb-1 py-0 px-2" variant="info" size="sm" onClick={() => navigate("/bill-to")}>
                                                     +
@@ -529,25 +529,28 @@ const Sale = () => {
                                                 value={selectedOption}
                                                 onChange={changeSelectedOption}
                                                 options={party}
+                                                required
                                             />
                                         </Form.Group>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Form.Label>Shipped To : </Form.Label>
+                                            <Form.Label><sub className='fs-2 text-danger'>*</sub>Shipped To : </Form.Label>
                                             <AutoSelect
                                                 value={selectedShippingAddress}
                                                 onChange={setSelectedShippingAddress}
                                                 options={shippingAddress}
+                                                required
                                             />
                                         </Form.Group>
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Label>Date : </Form.Label>
+                                        <Form.Label><sub className='fs-2 text-danger'>*</sub>Date : </Form.Label>
                                         <Form.Control type="date" defaultValue={datee}
                                             name="billdate"
                                             value={salesdata.billdate}
                                             onChange={handleInputs}
+                                            required
                                         />
                                     </Col>
                                 </Row>
@@ -560,17 +563,19 @@ const Sale = () => {
                                         />
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Label>DO. Date : </Form.Label>
+                                        <Form.Label><sub className='fs-2 text-danger'>*</sub>DO. Date : </Form.Label>
                                         <Form.Control type="date" defaultValue={datee} name="challanDate"
                                             value={salesdata.challanDate}
+                                            required
                                             onChange={handleInputs} />
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Label>Place of Supply : </Form.Label>
+                                        <Form.Label><sub className='fs-2 text-danger'>*</sub>Place of Supply : </Form.Label>
                                         <AutoSelect
                                             value={selectedPlace}
                                             onChange={setSelectedPlace}
                                             options={locationData}
+                                            required
                                         />
                                     </Col>
                                     {/* <Col md={3}>
@@ -590,12 +595,12 @@ const Sale = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Transport Cost : </Form.Label>
-                                        <Form.Control type="number" name='transportCost' defaultValue={0} value={salesdata.transportCost}
+                                        <Form.Control type="number" required name='transportCost' defaultValue={0} value={salesdata.transportCost}
                                             onChange={handleInputs} />
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
-                                        <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
+                                        <Form.Label><sub className='fs-2 text-danger'>*</sub>Mode / Term of Payments: (in Days) </Form.Label>
+                                        <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs} required>
                                             <option>Select</option>
                                             <option value="Cash">Cash</option>
                                             <option value="Bank">Bank</option>
