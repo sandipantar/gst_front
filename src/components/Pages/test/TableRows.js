@@ -22,7 +22,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             //     <td><button className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>x</button></td>
             // </tr>
             <tr key={index}>
-            <td>1</td>
+            <td>{index + 1}</td>
             <td>
                 <Form.Group controlId="formPlaintextVnumber" onClick={prohandleShow}>
                     <Form.Control type="text" onChange={(evnt)=>(handleChange(index, evnt))} name="productName" value={productName}/>

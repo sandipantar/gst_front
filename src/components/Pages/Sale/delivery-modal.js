@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../../img/AROMIST_LOGO.png';
-import sign from '../../../img/sign.png';
+import sign from '../../../img/sign.jpeg';
 import { Row, Col, Modal, Button } from 'react-bootstrap-v5';
 
 const DeliveryModal = (props) => {
@@ -46,7 +46,7 @@ const DeliveryModal = (props) => {
                                 <b>Date: {props.finalPreviewObj.challanDate}</b>
                             </Col>
                             <Col md={5}>
-                                <Row className='border border-dark border-right-0'>
+                                <Row className='border border-dark border-right-0 border-bottom-0'>
                                     <Col>
                                         <p className='m-0'><b>TO:</b></p>
                                         <Row>
@@ -63,7 +63,7 @@ const DeliveryModal = (props) => {
                                 </Row>
                             </Col>
                             <Col md={7}>
-                                <Row className='border border-dark'>
+                                <Row className='border border-bottom-0 border-dark'>
                                     <Col>
                                         <Row>
                                             <Col md={8} lg={8} xl={8} style={{height:'84px'}}>
@@ -84,7 +84,7 @@ const DeliveryModal = (props) => {
                             </Col>
                         </Row>
                         {props.finalPreviewObj?.products?.length ?
-                            <table className="tableclass table-sm" width="100%"  style={{fontSize:'14px'}}>
+                            <table className="table-bordered table-sm border border-dark" width="100%"  style={{fontSize:'14px'}}>
                                 <thead>
                                     <tr>
                                         <th className='text-left'>MARK</th>
@@ -110,7 +110,7 @@ const DeliveryModal = (props) => {
                                 </tbody>
                             </table> : null}
                         <Row style={{ padding: '0 12px 0 12px' }}>
-                            <Col md={12} className='border border-2 border-dark'>
+                            <Col md={12} className='border border-top-0 border-dark'>
                                 <p>Total KGS : {props.finalPreviewObj?.totalBaseQty} KGS<br />
                                     Total BAGS : {props.finalPreviewObj?.totalAltQty} BAGS</p><br />
                             </Col>

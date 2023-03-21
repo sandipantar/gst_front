@@ -590,7 +590,7 @@ const Sale = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Transport Cost : </Form.Label>
-                                        <Form.Control type="number" name='transportCost' value={salesdata.transportCost}
+                                        <Form.Control type="number" name='transportCost' defaultValue={0} value={salesdata.transportCost}
                                             onChange={handleInputs} />
                                     </Col>
                                     <Col md={3}>

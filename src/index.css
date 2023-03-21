@@ -1,6 +1,32 @@
 *{
   color:#000;
 }
+.billView{
+  font-size:14px;
+  border-bottom-width: 0px !important;
+  /* width: 1012px;
+  position: relative;
+  left: -12px; */
+}
+table.table-border > thead > tr > th{
+  border:1px solid #000;
+  /* border-left: 0; */
+  text-align: center;
+}
+table.table-border > tbody > tr{
+  border-left: 0;
+  border-right: 0;
+}
+table.table-border > tbody > tr > td{
+  border-left:1px solid #000;
+  border-right: 1px solid #000;
+  text-align: center;
+}
+.billSummary{
+  padding: 0 12px;
+  /* padding-top: 619px; */
+  /* border-left:1px solid #000; */
+}
 body {
   margin: 0;
   color: #000;
@@ -10,7 +36,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
