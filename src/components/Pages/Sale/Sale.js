@@ -590,8 +590,12 @@ const Sale = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Transport Cost : </Form.Label>
-                                        <Form.Control type="number" name='transportCost' defaultValue={0} value={salesdata.transportCost}
+                                        {salesdata.transportCost ? (<Form.Control type="number" name='transportCost' value={salesdata.transportCost} 
+                                            onChange={handleInputs} />):(
+                                                <Form.Control type="number" name='transportCost' value={0} 
                                             onChange={handleInputs} />
+                                            )}
+                                        
                                     </Col>
                                     <Col md={3}>
                                         <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
@@ -599,9 +603,9 @@ const Sale = () => {
                                             <option>Select</option>
                                             <option value="Cash">Cash</option>
                                             <option value="Bank">Bank</option>
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
+                                            <option value="5 Days">5 Days</option>
+                                            <option value="10 Days">10 Days</option>
+                                            <option value="20 Days">20 Days</option>
                                         </Form.Select>
                                     </Col>
                                 </Row>
