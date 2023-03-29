@@ -126,18 +126,23 @@ const BillToModal = (props) => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col md={7}>Shipping Address</Col>
+                        <div className='mt-3 pt-3 mx-auto rounded shadow border border-2 border-dark bg-light'>
+                        <Row className='mx-auto'>
                             <Col>
-                                <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
+                                <label>Shipping Address</label>
+                            </Col>
+                            <Col>
+                                {/* <Form.Group className="mb-2" controlId="formPlaintextVnumber"> */}
                                     <Form.Control type="text" name='shippingAddress'
                                         value={shippingAddress}
                                         placeholder="Enter Shipping Address"
                                         onChange={(e) => updateShipping(e.target.value)}
                                     />
-                                </Form.Group>
+                                {/* </Form.Group> */}
+                            </Col>
+                            <Col>
                                 <Button variant="info" size="sm" onClick={addAddress}>
-                                    Add
+                                    +
                                 </Button>
                             </Col>
                         </Row>
@@ -166,6 +171,7 @@ const BillToModal = (props) => {
                                 </table>
                             </Col>
                         </Row>
+                        </div>
                     </div>
                 </Modal.Body>
             </Modal>

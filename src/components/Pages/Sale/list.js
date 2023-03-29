@@ -68,6 +68,9 @@ const SaleList = () => {
     const redirect = () => {
         navigate("/add-invoice");
     };
+    const newParty = () => {
+        navigate("/bill-to");
+    };
 
     return (
         <div id="wrapper">
@@ -84,13 +87,14 @@ const SaleList = () => {
                         /> : null}
                     <div className="container-fluid">
                         <Row>
-                            <Col md={10}>
+                            <Col md={8}>
                                 <h3>
                                     Invoice List
                                 </h3>
                             </Col>
-                            <Col md={2} className="text-right">
-                                <Button className='non-printable btn-primary' onClick={redirect}>Create</Button>
+                            <Col md={4} className="text-right">
+                            <Button className='non-printable btn-primary mr-1' onClick={newParty}>Add Party</Button>
+                                <Button className='non-printable btn-success' onClick={redirect}>Create Sell</Button>
                             </Col>
                         </Row>
                         <Row>

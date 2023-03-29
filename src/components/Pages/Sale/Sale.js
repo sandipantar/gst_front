@@ -164,7 +164,7 @@ const Sale = () => {
 
     const [rowsData, setRowsData] = useState([]);
     const [salesdata, setSalesdata] = useState({
-        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", destination: "", despatchThrough: "", vehicleNo: "", paymentMode: "",
+        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", transportCost: "0", despatchThrough: "", vehicleNo: "", paymentMode: "",
     });
     const [finalPreviewObj, updateFinalPreviewObj] = useState({});
     const [count, setCount] = useState(0);
@@ -347,7 +347,9 @@ const Sale = () => {
             });
         }
 
-        const totalGst = totalAmount * 0.05;
+        // const totalGst = totalAmount * 0.05;
+        var totalGst = checked ? 0 : totalAmount * 0.05;
+        console.log(totalGst);
         const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost)) % 1).toFixed(2));
 
         if (roundOff > 0.49) {
@@ -417,6 +419,7 @@ const Sale = () => {
         fetchList();
     }, []);
 
+
     return (
         <>
             <div id="wrapper">
@@ -428,7 +431,7 @@ const Sale = () => {
                             <Form>
                                 <Row>
                                     <Col>
-                                        <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
+                                        <h5 className="text-gray-800">Sell Entry Form</h5>
                                         
                                     </Col>
                                     <Col>
@@ -511,18 +514,49 @@ const Sale = () => {
                                 {/* print modal */}
                                 <Row>
                                     <Col md={3}>
-                                        <Form.Label>Invoice No : </Form.Label><br />
+                                        <Form.Label>Invoice No : &nbsp;</Form.Label>
 
                                         <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2022-23` : salesdata.invno}</label>
                                     </Col>
-                                    <Col md={3}>
+                                    <Col md={2}>
+                                        <Form.Label>Bill Date :</Form.Label>
+                                        <Form.Control type="date" defaultValue={datee}
+                                            name="billdate"
+                                            value={salesdata.billdate}
+                                            onChange={handleInputs}
+                                        />
+                                    </Col>
+                                    <Col md={2}>
+                                        <Form.Label>Challan No : </Form.Label>
+                                        <Form.Control type="text" name='challanNo'
+                                            value={salesdata.challanNo}
+                                            onChange={handleInputs}
+                                        />
+                                    </Col>
+                                    <Col md={2}>
+                                        <Form.Label>DO. Date : </Form.Label>
+                                        <Form.Control type="date" defaultValue={datee} name="challanDate"
+                                            value={salesdata.challanDate}
+                                            onChange={handleInputs} />
+                                    </Col>
+                                    <Col>
+                                        <Form.Label>Place of Supply : </Form.Label>
+                                        <AutoSelect
+                                            value={selectedPlace}
+                                            onChange={setSelectedPlace}
+                                            options={locationData}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
                                             <Row>
                                                 <Col><Form.Label>Bill To : </Form.Label></Col>
                                                 <Col >
-                                                    <Button style={{float:'right'}} className="fs-4 mb-1 py-0 px-2" variant="info" size="sm" onClick={() => navigate("/bill-to")}>
-                                                    +
-                                                    </Button>
+                                                    <a onClick={() => navigate("/bill-to")} style={{float:'right',cursor:'pointer'}} >
+                                                        <u className='text-primary'><small className='text-primary'>Add New</small></u>                                        
+                                                    </a>
                                                 </Col>
                                             </Row>
                                             <AutoSelect
@@ -532,71 +566,22 @@ const Sale = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                    <Col md={3}>
-                                        <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Form.Label>Shipped To : </Form.Label>
-                                            <AutoSelect
-                                                value={selectedShippingAddress}
-                                                onChange={setSelectedShippingAddress}
-                                                options={shippingAddress}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={3}>
-                                        <Form.Label>Date : </Form.Label>
-                                        <Form.Control type="date" defaultValue={datee}
-                                            name="billdate"
-                                            value={salesdata.billdate}
-                                            onChange={handleInputs}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={3}>
-                                        <Form.Label>Challan No : </Form.Label>
-                                        <Form.Control type="text" name='challanNo'
-                                            value={salesdata.challanNo}
-                                            onChange={handleInputs}
-                                        />
-                                    </Col>
-                                    <Col md={3}>
-                                        <Form.Label>DO. Date : </Form.Label>
-                                        <Form.Control type="date" defaultValue={datee} name="challanDate"
-                                            value={salesdata.challanDate}
-                                            onChange={handleInputs} />
-                                    </Col>
-                                    <Col md={3}>
-                                        <Form.Label>Place of Supply : </Form.Label>
-                                        <AutoSelect
-                                            value={selectedPlace}
-                                            onChange={setSelectedPlace}
-                                            options={locationData}
-                                        />
-                                    </Col>
-                                    {/* <Col md={3}>
-                                        <Form.Label>Destination : </Form.Label>
-                                        <Form.Control type="text" name='destination' value={salesdata.destination}
-                                            onChange={handleInputs} />
-                                    </Col> */}
-                                    <Col md={3}>
+                                    
+                                    <Col md={2}>
                                         <Form.Label>Despatch Through : </Form.Label>
                                         <Form.Control type="text" name='despatchThrough' value={salesdata.despatchThrough}
                                             onChange={handleInputs} />
                                     </Col>
-                                    <Col md={3}>
+                                    <Col md={2}>
                                         <Form.Label>Vehicle No : </Form.Label>
                                         <Form.Control type="text" name='vehicleNo' value={salesdata.vehicleNo}
                                             onChange={handleInputs} />
                                     </Col>
-                                    <Col md={3}>
+                                    <Col md={2}>
                                         <Form.Label>Transport Cost : </Form.Label>
-                                        {salesdata.transportCost ? (<Form.Control type="number" name='transportCost' value={salesdata.transportCost} 
-                                            onChange={handleInputs} />):(
-                                                <Form.Control type="number" name='transportCost' value={0} 
+                                        <Form.Control type="number" name='transportCost' value={salesdata.transportCost}
                                             onChange={handleInputs} />
-                                            )}
-                                        
-                                    </Col>
+                                    </Col>                                                                                                        
                                     <Col md={3}>
                                         <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
                                         <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
@@ -607,6 +592,21 @@ const Sale = () => {
                                             <option value="10 Days">10 Days</option>
                                             <option value="20 Days">20 Days</option>
                                         </Form.Select>
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
+                                            <Form.Label>Shipped To : </Form.Label>
+                                            <AutoSelect
+                                                value={selectedShippingAddress}
+                                                onChange={setSelectedShippingAddress}
+                                                options={shippingAddress}
+                                            />
+                                        </Form.Group>
+                                    </Col>  
+                                    <Col>
+                                        <Form.Label>Note : </Form.Label>
+                                        <Form.Control type="text" name='destination' value={salesdata.destination}
+                                            onChange={handleInputs} />
                                     </Col>
                                 </Row>
                                 <Tabs

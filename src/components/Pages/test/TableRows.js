@@ -53,6 +53,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
                     <Form.Select aria-label="Default select example" name="baseUnit" value={baseUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
                         <option value="Kg">KG</option>
                         <option value="Gm">GM</option>
+                        <option value="Bdl">BDL</option>
                     </Form.Select>
                 </Form.Group>
             </td>
@@ -66,6 +67,8 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
                     <Form.Select aria-label="Default select example" name="altUnit" value={altUnit} onChange={(evnt)=>(handleChange(index, evnt))}>
                         <option value="Bag">BAG</option>
                         <option value="Pac">PAC</option>
+                        <option value="Pcs">PCS</option>
+                        <option value="Dz">DZ</option>
                     </Form.Select>
                 </Form.Group>
             </td>
