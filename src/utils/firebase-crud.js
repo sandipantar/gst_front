@@ -1,5 +1,6 @@
-import { addDoc, collection, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, Timestamp, getCountFromServer } from "@firebase/firestore";
+import { addDoc, collection, getDocs, getDoc, doc, updateDoc, deleteDoc, query, orderBy, where, Timestamp, getCountFromServer } from "@firebase/firestore";
 import { firestore } from "../firebase/firebase";
+// , orderBy("billdate", "desc")
 
 export const add = async (collectionName, data) => {
     const ref = collection(firestore, collectionName);
@@ -108,7 +109,7 @@ export const deleteById = async (collectionName, id) => {
 export const getCount = async (collectionName, isGST) => {
     const ref = collection(firestore, collectionName);
     try {
-        const q = query(ref, where("isNonGst", "==", isGST));
+        const q = query(ref);
         const snapshot = await getCountFromServer(q);
         return snapshot.data().count;
     } catch(err) {

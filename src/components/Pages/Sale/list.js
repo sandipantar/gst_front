@@ -32,7 +32,8 @@ const SaleList = () => {
                         invoiceNo: each.otherDetails.invno,
                         typeOfInvoice: !each.isNonGst ? "GST" : "Non GST",
                         billTo: each.otherDetails.billto,
-                        challanDate: getDisplayFullDateFormat(new Date(each.otherDetails?.challanDate?.seconds * 1000)),
+                        billdate: getDisplayFullDateFormat(new Date(each.otherDetails?.billdate?.seconds * 1000)),
+                        // challanDate: getDisplayFullDateFormat(new Date(each.otherDetails?.challanDate?.seconds * 1000)),
                         grandTotal: each.otherDetails.grandTotal
                     });
                 });
@@ -103,10 +104,10 @@ const SaleList = () => {
                                     <thead>
                                         <tr>
                                             <th>SL</th>
+                                            <th>Bill Date</th>
                                             <th>Invoice NO</th>
                                             {/* <th>Invoice Type</th> */}
-                                            <th>Bill To</th>
-                                            <th>DO Date</th>
+                                            <th>Bill To</th>                                        
                                             <th>Amount</th>
                                             <th>Action</th>
                                         </tr>
@@ -115,14 +116,14 @@ const SaleList = () => {
                                         {dataList.map((product, ind) => {
                                             return <tr key={ind}>
                                                 <td>{ind + 1}</td>
+                                                <td>{product.billdate}</td>
                                                 <td>{product.invoiceNo}</td>
                                                 {/* <td>{product.typeOfInvoice}</td> */}
                                                 <td>{product.billTo.label}</td>
-                                                <td>{product.challanDate}</td>
                                                 <td>{product.grandTotal}</td>
-                                                <td>
+                                                <td>   
                                                     <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => navigate(`/edit-invoice/${product.id}`)}></i>
-                                                    <i className="fa fa-trash cursor-pointer mr-3" onClick={() => removeInvoice(product.id)}></i>
+                                                    <i className="fa fa-trash cursor-pointer mr-3" onClick={() => {if(window.confirm('Are you sure to delete this bill?')){ removeInvoice(product.id)}}}></i>
                                                     <i className="fa fa-eye cursor-pointer" onClick={() => openDetails(product.id)}></i>
                                                 </td>
                                             </tr>

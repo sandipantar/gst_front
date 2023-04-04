@@ -267,7 +267,7 @@ const InvoiceModal = (props) => {
                             </table> : null}
                         <Row className='billSummary'>
                             <Col md={8} className='border border-dark'>
-                                <p>Total Base Quantity : {props?.finalPreviewObj?.totalBaseQty} KGS / BDL<br />
+                                <p>Total Base Quantity : {props?.finalPreviewObj?.totalBaseQty} KGS / BDL / PAC<br />
                                     Total Alt. Quantity : {props?.finalPreviewObj?.totalAltQty} BAGS / PAC / PCS / DZ</p><br />
                                 <h5><b>Rupees {wordify(Number(props?.finalPreviewObj?.grandTotal))} Only</b></h5>
                             </Col>

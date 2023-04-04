@@ -209,10 +209,16 @@ const Sale = () => {
     };
 
     const getInvoiceCount = async (type) => {
-        const localCount = await getCount(invoiceCollectionName, type);
+        // const localCount = await getCount(invoiceCollectionName, type);
+        const localCount = await getCount(invoiceCollectionName, type).whereLike("invno","== 23-24");
+
+// var db = Firebase.firestore;
+// var productsRef = db.collection("invoice");
+// var queryProductsByColor = productsRef.whereEqualTo("invno", "red");
+
         setSalesdata({
             ...salesdata,
-            invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2022-23`
+            invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2023-24`
         })
         setCount(localCount + 1);
     };
@@ -308,7 +314,6 @@ const Sale = () => {
 
         rowsInput[index].discount = discount.toFixed(2);
         rowsInput[index].amount = amount.toFixed(2);
-
 
         setRowsData(rowsInput);
     }
@@ -419,7 +424,39 @@ const Sale = () => {
         fetchList();
     }, []);
 
+    
+    let totalAmount = 0;
+    let totalBaseQty = 0;
+    let totalAltQty = 0;
+    let grandTotal = 0;
 
+    if (rowsData.length) {
+        rowsData.forEach(each => {
+            if (each.amount) {
+                totalAmount += Number(each.amount);
+            }
+            if (each.baseQty) {
+                totalBaseQty += Number(each.baseQty);
+            }
+            if (each.altQty) {
+                totalAltQty += Number(each.altQty);
+            }
+        });
+    }
+
+    // const totalGst = totalAmount * 0.05;
+    var totalGst = checked ? 0 : totalAmount * 0.05;
+    console.log(totalGst);
+    const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost)) % 1).toFixed(2));
+
+    if (roundOff > 0.49) {
+        grandTotal = Math.ceil((totalAmount + totalGst + Number(salesdata.transportCost)));
+    } else {
+        grandTotal = Math.floor((totalAmount + totalGst + Number(salesdata.transportCost)));
+
+    }
+
+    
     return (
         <>
             <div id="wrapper">
@@ -516,7 +553,7 @@ const Sale = () => {
                                     <Col md={3}>
                                         <Form.Label>Invoice No : &nbsp;</Form.Label>
 
-                                        <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2022-23` : salesdata.invno}</label>
+                                        <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2023-24` : salesdata.invno}</label>
                                     </Col>
                                     <Col md={2}>
                                         <Form.Label>Bill Date :</Form.Label>
@@ -603,10 +640,26 @@ const Sale = () => {
                                             />
                                         </Form.Group>
                                     </Col>  
-                                    <Col>
+                                    <Col md={4}>
                                         <Form.Label>Note : </Form.Label>
                                         <Form.Control type="text" name='destination' value={salesdata.destination}
                                             onChange={handleInputs} />
+                                    </Col>
+                                    <Col>
+                                        <Row>
+                                        <Col md={3}>
+                                            <Row>Total Amount: </Row>
+                                            <Row>Total Gst: </Row>
+                                            <Row>RoundOff:</Row>
+                                            <Row>Grand Total:</Row>
+                                        </Col>
+                                        <Col md={9}>
+                                            <Row> {totalAmount}</Row>
+                                            <Row> {totalGst.toFixed(2)}</Row>
+                                            <Row> {roundOff}</Row>
+                                            <Row> {grandTotal}</Row>
+                                        </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                                 <Tabs
@@ -617,6 +670,7 @@ const Sale = () => {
                                     className="mb-3"
                                 >
                                     <Tab eventKey="sale" title="Product Detail">
+                                        
                                         <Table size="sm" className="tableclass">
                                             <thead>
                                                 <tr>
@@ -642,18 +696,18 @@ const Sale = () => {
                                                     <th>Invoice NO</th>
                                                     <th>Bag NO</th>
                                                     <th>Qty</th>
-                                                    <th>Unit</th>
+                                                    <th style={{width:'22px'}}>Unit</th>
                                                     <th>Qty</th>
                                                     <th>Unit</th>
                                                     <th>Rate</th>
-                                                    <th>Disc %</th>
+                                                    <th style={{width:'59px'}}>Disc %</th>
                                                     <th>Discount</th>
                                                     <th>Amount</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
+                                                <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />                                            
                                             </tbody>
                                         </Table>
                                     </Tab>
@@ -1250,10 +1304,12 @@ const Sale = () => {
                                     </Modal.Body>
                                 </Modal>
                             </Form>
+                    
                         </div>
                     </div>
                 </div>
             </div>
+            
         </>
     )
 }
