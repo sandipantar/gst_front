@@ -35,7 +35,9 @@ export const fetchAll = async (collectionName) => {
                     obj = {};
                 });
             }
-            return {success: true, data: arr};
+            return {success: true, data: arr.sort((a,b)=>{
+                return new Date(b.otherDetails?.billdate?.seconds * 1000) - new Date(a.otherDetails?.billdate?.seconds * 1000);
+            })};
         })
         .catch(err => {
             console.log("err at list ", err);

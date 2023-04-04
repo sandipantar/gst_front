@@ -209,12 +209,8 @@ const Sale = () => {
     };
 
     const getInvoiceCount = async (type) => {
-        // const localCount = await getCount(invoiceCollectionName, type);
-        const localCount = await getCount(invoiceCollectionName, type).whereLike("invno","== 23-24");
-
-// var db = Firebase.firestore;
-// var productsRef = db.collection("invoice");
-// var queryProductsByColor = productsRef.whereEqualTo("invno", "red");
+        const localCount = await getCount(invoiceCollectionName, type);
+        
 
         setSalesdata({
             ...salesdata,
