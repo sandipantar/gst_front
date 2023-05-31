@@ -111,7 +111,7 @@ export const deleteById = async (collectionName, id) => {
 export const getCount = async (collectionName, isGST) => {
     const ref = collection(firestore, collectionName);
     try {
-        const q = query(ref);
+        const q = query(ref, where("isNonGst", "==", isGST ? true : false));
         const snapshot = await getCountFromServer(q);
         return snapshot.data().count;
     } catch(err) {
