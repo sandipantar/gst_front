@@ -13,6 +13,7 @@ import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGrou
 import { add, getCount, fetchById, fetchByIdAndUpdate, fetchAll } from '../../../utils/firebase-crud';
 import InvoiceModal from './invoice-modal';
 
+// const invoiceCollectionName = "/invoice";
 const invoiceCollectionName = "/invoice-FY-23-24";
 const billToCollectionName = "/billTo"; 
 
