@@ -209,6 +209,7 @@ const Sale = () => {
     };
     const getInvoiceCount = async (type) => {
         const localCount = await getCount(invoiceCollectionName, type);
+        console.log("localCount ", localCount)
         setSalesdata({
             ...salesdata,
             invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2023-24`
@@ -245,7 +246,7 @@ const Sale = () => {
 
     const openDetails = async (id) => {
         const detailsRes = await fetchById(invoiceCollectionName, id);
-        console.log("detailsRes ", detailsRes)
+        // console.log("detailsRes ", detailsRes)
         if (detailsRes.success) {
             setSalesdata({
                 ...detailsRes.data,
@@ -260,6 +261,8 @@ const Sale = () => {
             });
             setSelectedShippingAddress(detailsRes.data.shipto);
             setSelectedPlace(detailsRes.data.placeOfSupply);
+            setChecked(detailsRes.data.isNonGst);
+            setGstChecked(detailsRes.data.isNotIgst);
             if (detailsRes.data.products) {
                 setRowsData([...detailsRes.data.products]);
             }
@@ -408,7 +411,7 @@ const Sale = () => {
             },
             shipto: selectedShippingAddress,
             placeOfSupply: selectedPlace,
-            isNonGst: checked,
+            isNonGst: checked ? true : false,
             isNotIgst: gstChecked,
             products: [...rowsData],
             totalAmount: totalAmount,
@@ -502,7 +505,8 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="Gst"
-                                                // disabled={params.id}
+                                                checked={!checked}
+                                                disabled={params.id}
                                                 onChange={(e) => setChecked(false)}
                                             />
                                             <Form.Check
@@ -511,8 +515,9 @@ const Sale = () => {
                                                 name="bill_type"
                                                 type="radio"
                                                 id="checked"
-                                                // disabled={params.id}
-                                                onChange={(e) => setChecked(e.target.id)}
+                                                checked={checked}
+                                                disabled={params.id}
+                                                onChange={(e) => setChecked(true)}
                                             />
                                             {/* <button type="reset">Reset form</button> */}
                                         </div>
@@ -526,7 +531,8 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="checked"
-                                                // disabled={params.id}
+                                                disabled={params.id}
+                                                checked={gstChecked}
                                                 onChange={(e) => { setGstChecked(true); }}
                                             />
                                             <Form.Check
@@ -535,7 +541,8 @@ const Sale = () => {
                                                 name="gst_type"
                                                 type="radio"
                                                 id="Gst"
-                                                // disabled={params.id}
+                                                disabled={params.id}
+                                                checked={!gstChecked}
                                                 onChange={(e) => { setGstChecked(false); }}
                                             />
                                         </div>
