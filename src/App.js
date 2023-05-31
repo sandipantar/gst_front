@@ -8,6 +8,7 @@ import Purchase from './components/Pages/Purchase/Purchase';
 import DeliveryOrder from './components/Pages/DeliveryOrder/DeliveryOrder';
 import Sale from './components/Pages/Sale/list';
 import InvoiceDetails from './components/Pages/Sale/Sale';
+import Test from './components/Pages/Sale/test';
 import Product from './components/Pages/Product/Product';
 import Report from './components/Pages/Report/Report';
 import Logout from './components/Pages/Logout'; 
@@ -25,6 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Login />}/>
+        <Route exact path="/test" element={<Test />}/>
         <Route exact path="/register" element={<Register />}/>
         <Route exact path="/forgotPassword" element={<ForgotPassword />}/>
         <Route exact path="/dashboard" element={<Dashboard />}/>

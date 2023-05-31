@@ -5,7 +5,7 @@ import { Row, Col, Button } from 'react-bootstrap-v5';
 import InvoiceModal from './invoice-modal';
 import { deleteById, fetchAll, fetchById } from '../../../utils/firebase-crud';
 
-const invoiceCollectionName = "/invoice";
+const invoiceCollectionName = "/invoice-FY-23-24";
 
 const SaleList = () => {
     const navigate = useNavigate();

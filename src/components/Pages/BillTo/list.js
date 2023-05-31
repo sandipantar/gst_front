@@ -90,8 +90,7 @@ const BillToList = () => {
                                                 <td>{product.name}</td>
                                                 <td>{product.phone}</td>
                                                 <td>
-                                                    <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => fetchBill(product
-                                                        .id)}></i>
+                                                    <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => fetchBill(product.id)}></i>
                                                     <i className="fa fa-trash cursor-pointer mr-3" onClick={() => removeBill(product.id)}></i>
                                                 </td>
                                             </tr>

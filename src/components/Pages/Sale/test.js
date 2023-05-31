@@ -10,136 +10,107 @@ import logo from '../../../img/AROMIST_LOGO.png';
 import sign from '../../../img/sign.jpeg';
 import DeliveryModal from './delivery-modal';
 import { Card, Row, Col, Form, Button, Tabs, Tab, Table, Badge, Modal, InputGroup, FormControl } from 'react-bootstrap-v5';
-import { add, getCount, fetchById, fetchByIdAndUpdate, fetchAll } from '../../../utils/firebase-crud';
+import { add, getCount, fetchById, fetchByIdAndUpdate } from '../../../utils/firebase-crud';
 import InvoiceModal from './invoice-modal';
 
 const invoiceCollectionName = "/invoice-FY-23-24";
-const billToCollectionName = "/billTo"; 
 
-const xparty = [
+const party = [
     {
-        value: 'AshapuraGruhUshyog',
-        label: 'Ashapura Gruh Ushyog',
+        value: 'ab',
+        label: 'A&B Co.',
         companyDetails: {
-            contactNo: "+91-9772980074",
-            gst: "08FRDPB4061F1Z4",
-            address: "Rajasthan"
+            contactNo: "9876543210",
+            gst: "19zmajjnksbdj",
+            address: "address 6"
         },
         shippingAddress: [{
             value: 'add1',
-            label: 'Rajasthan'
+            label: 'Address 1'
         }, {
             value: 'add2',
-            label: 'Rajasthan 1'
+            label: 'Address 2'
         }]
     },
     {
-        value: 'M.Kannan',
-        label: 'M. Kannan',
+        value: 'cd',
+        label: 'C&D Co.',
         companyDetails: {
-            contactNo: "+91 9894685818, +91 7550014224",
-            gst: "N/A",
-            address: "Namakkal, Tamil Nadu - 637002"
+            contactNo: "9776543210",
+            gst: "19zmajjnjksl",
+            address: "address 7"
         },
         shippingAddress: [{
-            value: 'Namakkal, Tamil Nadu - 637002',
-            label: 'Namakkal, Tamil Nadu - 637002'
+            value: 'add3',
+            label: 'Address 3'
         }, {
-            value: ' Tamil Nadu - 637002',
-            label: ' Tamil Nadu - 637002'
+            value: 'add4',
+            label: 'Address 4'
         }]
     },
     {
-        value: 'Shree Shyam Tea Co.',
-        label: 'Shree Shyam Tea Co.',
-        companyDetails: {
-            contactNo: "+91 9126840029",
-            gst: "19AJFPS5165G1ZU",
-            address: "Mahavir Sthan Siliguri - 734001 Siliguri- 734003"
-        },
-        shippingAddress: [{
-            value: 'Mahavir Sthan Siliguri - 734001 Siliguri- 734003',
-            label: 'Mahavir Sthan Siliguri - 734001 Siliguri- 734003'
-        },]
-    },
-    {
-        value: 'Sunil Kumar Jha',
-        label: 'Sunil Kumar Jha',
-        companyDetails: {
-            contactNo: "+91 9167319691",
-            gst: "10AFHPJ5612B1ZA",
-            address: "Madhubani, Bihar - 847403"
-        },
-        shippingAddress: [{
-            value: 'Village + Post - Rataul Via- Jhanjharpur (R S) Dist - Madhubani, Bihar - 847403',
-            label: 'Village + Post - Rataul Via- Jhanjharpur (R S) Dist - Madhubani, Bihar - 847403'
-        }, ]
-    },
-    {
-        value: 'R.S Traders',
-        label: 'R.S Traders',
+        value: 'ef',
+        label: 'E&F Co.',
         companyDetails: {
             contactNo: "9876566210",
             gst: "19zmajjnkslk6",
-            address: "Nawada"
+            address: "address 7"
         },
         shippingAddress: [{
-            value: 'Nawada',
-            label: 'Nawada 2'
+            value: 'add5',
+            label: 'Address 5'
         }]
     }
 ];
 const locationData = [
     {
         value: 1,
-        label: "SREEMA TEA WAREHOUSING PVT.LTD.",
+        label: "Raipur",
         otherDetails: {
-            address: "EASTERN BYPASS, THAKURNAGAR, SAHUDANGI",
-            pin: "735135",
-            phone: "+917699999475"
+            address: "abcd",
+            pin: "700015",
+            phone: "9865741203"
         }
     },
     {
         value: 2,
-        label: "Aromist Tea Co. Godown",
+        label: "Kolkata",
         otherDetails: {
-            address: "CHAMPASARI MAIN ROAD, CHAMPASARI, SILIGURI",
-            pin: "734001",
-            phone: "+91 6294-811689, +91 9609726944"
+            address: "efgh",
+            pin: "700085",
+            phone: "9865941203"
         }
     },
-    // {
-    //     value: 3,
-    //     label: "New Delhi",
-    //     otherDetails: {
-    //         address: "ijkl",
-    //         pin: "700045",
-    //         phone: "9865741653"
-    //     }
-    // },
-    // {
-    //     value: 4,
-    //     label: "Indore",
-    //     otherDetails: {
-    //         address: "mnop",
-    //         pin: "700054",
-    //         phone: "9865796203"
-    //     }
-    // },
-    // {
-    //     value: 5,
-    //     label: "Chennai",
-    //     otherDetails: {
-    //         address: "qrst",
-    //         pin: "700063",
-    //         phone: "9866741203"
-    //     }
-    // }
+    {
+        value: 3,
+        label: "New Delhi",
+        otherDetails: {
+            address: "ijkl",
+            pin: "700045",
+            phone: "9865741653"
+        }
+    },
+    {
+        value: 4,
+        label: "Indore",
+        otherDetails: {
+            address: "mnop",
+            pin: "700054",
+            phone: "9865796203"
+        }
+    },
+    {
+        value: 5,
+        label: "Chennai",
+        otherDetails: {
+            address: "qrst",
+            pin: "700063",
+            phone: "9866741203"
+        }
+    }
 ];
 
-const Sale = () => {
-
-
+const Test = () => {
     const navigate = useNavigate();
     const params = useParams();
     const [key, setKey] = useState('sale');
@@ -148,7 +119,6 @@ const Sale = () => {
     const [deliveryModal, handleDeliveryModal] = useState(false);
     const [checked, setChecked] = useState(false);
     const [gstChecked, setGstChecked] = useState(true);
-    const [party, updateParty] = useState([]);
 
     // var today = new Date(),
     // datee = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -164,7 +134,7 @@ const Sale = () => {
 
     const [rowsData, setRowsData] = useState([]);
     const [salesdata, setSalesdata] = useState({
-        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", transportCost: "0", despatchThrough: "", vehicleNo: "", paymentMode: "",
+        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", destination: "", despatchThrough: "", vehicleNo: "", paymentMode: "",
     });
     const [finalPreviewObj, updateFinalPreviewObj] = useState({});
     const [count, setCount] = useState(0);
@@ -178,28 +148,6 @@ const Sale = () => {
 
     const prohandleClose = () => setProShow(false);
 
-    const fetchList = async () => {
-        const listRes = await fetchAll(billToCollectionName);
-        if (listRes.success) {
-            const localArr = [];
-            if (listRes.data && listRes.data.length) {
-                listRes.data.forEach(each => {
-                    localArr.push({
-                        value: each.id,
-                        label: each.otherDetails.name,
-                        companyDetails: {
-                            contactNo: each.otherDetails.phone,
-                            gst: each.otherDetails.gst,
-                            address: each.otherDetails.address,
-                        },
-                        shippingAddress: each.otherDetails.shippingAddresses
-                    });
-                });
-            }
-            updateParty([...localArr]);
-        }
-    };
-
     const getInputDisplayFullDateFormat = (date) => {
         const day = date.getDate().toString().length === 1 ? "0" + date.getDate() : date.getDate();
         const month = date.getMonth().toString().length === 1 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
@@ -207,41 +155,15 @@ const Sale = () => {
 
         return year + '-' + month + '-' + day;
     };
+
     const getInvoiceCount = async (type) => {
         const localCount = await getCount(invoiceCollectionName, type);
         setSalesdata({
             ...salesdata,
-            invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2023-24`
+            invno: `ATC${checked ? "N" : ""}/00${localCount + 1}/2022-23`
         })
         setCount(localCount + 1);
     };
-
-    // const getInvoiceCount = async (type) => {
-    //     const localCount = await getCount(invoiceCollectionName, type);
-    //     // const newBillNo = localCount-16;
-    //     // const newBillNo = localCount;
-    //     // const nGstBillNo = 0;
-        
-    //     if(checked)
-    //     {
-    //         setSalesdata({
-    //             ...salesdata,
-    //             invno: `ATC/00${localCount + 1}/2023-24`
-    //         })
-    //         setCount(localCount + 1);
-    //     }
-    //     else
-    //     {
-    //         setSalesdata({
-    //             ...salesdata,
-    //             invno: `ATCN/00${localCount + 1}/2023-24`
-    //         })
-    //         setCount(localCount + 1);
-            
-    //     }
-
-    // };
-
 
     const openDetails = async (id) => {
         const detailsRes = await fetchById(invoiceCollectionName, id);
@@ -283,9 +205,9 @@ const Sale = () => {
             invoiceNo: '',
             bagNo: '',
             baseQty: '',
-            baseUnit: 'Kg',
+            baseUnit: 'kg',
             altQty: '',
-            altUnit: 'Bag',
+            altUnit: 'bag',
             rate: '',
             discountPercentage: '',
             discount: 0,
@@ -335,6 +257,7 @@ const Sale = () => {
         rowsInput[index].discount = discount.toFixed(2);
         rowsInput[index].amount = amount.toFixed(2);
 
+
         setRowsData(rowsInput);
     }
 
@@ -372,9 +295,7 @@ const Sale = () => {
             });
         }
 
-        // const totalGst = totalAmount * 0.05;
-        var totalGst = checked ? 0 : totalAmount * 0.05;
-        // console.log(totalGst);
+        const totalGst = totalAmount * 0.05;
         const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost)) % 1).toFixed(2));
 
         if (roundOff > 0.49) {
@@ -434,51 +355,12 @@ const Sale = () => {
                 handleShow4();
             }
         }
-    //     setEmail('')
-    // setPassword('')
     };
 
     const cancel = () => {
         navigate("/sale");
     };
 
-    useEffect(() => {
-        fetchList();
-    }, []);
-
-    
-    let totalAmount = 0;
-    let totalBaseQty = 0;
-    let totalAltQty = 0;
-    let grandTotal = 0;
-
-    if (rowsData.length) {
-        rowsData.forEach(each => {
-            if (each.amount) {
-                totalAmount += Number(each.amount);
-            }
-            if (each.baseQty) {
-                totalBaseQty += Number(each.baseQty);
-            }
-            if (each.altQty) {
-                totalAltQty += Number(each.altQty);
-            }
-        });
-    }
-
-    // const totalGst = totalAmount * 0.05;
-    var totalGst = checked ? 0 : totalAmount * 0.05;
-    // console.log(totalGst);
-    const roundOff = Number(((totalAmount + totalGst + Number(salesdata.transportCost)) % 1).toFixed(2));
-
-    if (roundOff > 0.49) {
-        grandTotal = Math.ceil((totalAmount + totalGst + Number(salesdata.transportCost)));
-    } else {
-        grandTotal = Math.floor((totalAmount + totalGst + Number(salesdata.transportCost)));
-
-    }
-
-    
     return (
         <>
             <div id="wrapper">
@@ -490,8 +372,7 @@ const Sale = () => {
                             <Form>
                                 <Row>
                                     <Col>
-                                        <h5 className="text-gray-800">Sell Entry Form</h5>
-                                        
+                                        <h6 className="h3 mb-0 text-gray-800">Sale Entry Form</h6>
                                     </Col>
                                     <Col>
                                         <div className="text-center">
@@ -502,7 +383,7 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="Gst"
-                                                // disabled={params.id}
+                                                disabled={params.id}
                                                 onChange={(e) => setChecked(false)}
                                             />
                                             <Form.Check
@@ -511,7 +392,7 @@ const Sale = () => {
                                                 name="bill_type"
                                                 type="radio"
                                                 id="checked"
-                                                // disabled={params.id}
+                                                disabled={params.id}
                                                 onChange={(e) => setChecked(e.target.id)}
                                             />
                                             {/* <button type="reset">Reset form</button> */}
@@ -526,7 +407,7 @@ const Sale = () => {
                                                 type="radio"
                                                 defaultChecked={true}
                                                 id="checked"
-                                                // disabled={params.id}
+                                                disabled={params.id}
                                                 onChange={(e) => { setGstChecked(true); }}
                                             />
                                             <Form.Check
@@ -535,7 +416,7 @@ const Sale = () => {
                                                 name="gst_type"
                                                 type="radio"
                                                 id="Gst"
-                                                // disabled={params.id}
+                                                disabled={params.id}
                                                 onChange={(e) => { setGstChecked(false); }}
                                             />
                                         </div>
@@ -563,7 +444,7 @@ const Sale = () => {
                                     /> : null}
                                 {/* print modal */}
                                 {show4 ?
-                                    <InvoiceModal style={{overflow:'hidden'}}
+                                    <InvoiceModal
                                         show4={show4}
                                         finalPreviewObj={finalPreviewObj}
                                         handleClose4={handleClose4}
@@ -573,84 +454,19 @@ const Sale = () => {
                                 {/* print modal */}
                                 <Row>
                                     <Col md={3}>
-                                        <Form.Label>Invoice No : &nbsp;</Form.Label>
+                                        <Form.Label>Invoice No : </Form.Label><br />
 
-                                        <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2023-24` : salesdata.invno}</label>
+                                        <label>{!params.id ? `ATC${checked ? "N" : ""}/00${count}/2022-23` : salesdata.invno}</label>
                                     </Col>
-                                    <Col md={2}>
-                                        <Form.Label>Bill Date :</Form.Label>
-                                        <Form.Control type="date" defaultValue={datee}
-                                            name="billdate"
-                                            value={salesdata.billdate}
-                                            onChange={handleInputs}
-                                        />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Form.Label>Challan No : </Form.Label>
-                                        <Form.Control type="text" name='challanNo'
-                                            value={salesdata.challanNo}
-                                            onChange={handleInputs}
-                                        />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Form.Label>DO. Date : </Form.Label>
-                                        <Form.Control type="date" defaultValue={datee} name="challanDate"
-                                            value={salesdata.challanDate}
-                                            onChange={handleInputs} />
-                                    </Col>
-                                    <Col>
-                                        <Form.Label>Place of Supply : </Form.Label>
-                                        <AutoSelect
-                                            value={selectedPlace}
-                                            onChange={setSelectedPlace}
-                                            options={locationData}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                <Col md={3}>
+                                    <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
-                                            <Row>
-                                                <Col><Form.Label>Bill To : </Form.Label></Col>
-                                                <Col >
-                                                    <a onClick={() => navigate("/bill-to")} style={{float:'right',cursor:'pointer'}} >
-                                                        <u className='text-primary'><small className='text-primary'>Add New</small></u>                                        
-                                                    </a>
-                                                </Col>
-                                            </Row>
+                                            <Form.Label>Bill To : </Form.Label>
                                             <AutoSelect
                                                 value={selectedOption}
                                                 onChange={changeSelectedOption}
                                                 options={party}
                                             />
                                         </Form.Group>
-                                    </Col>
-                                    
-                                    <Col md={2}>
-                                        <Form.Label>Despatch Through : </Form.Label>
-                                        <Form.Control type="text" name='despatchThrough' value={salesdata.despatchThrough}
-                                            onChange={handleInputs} />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Form.Label>Vehicle No : </Form.Label>
-                                        <Form.Control type="text" name='vehicleNo' value={salesdata.vehicleNo}
-                                            onChange={handleInputs} />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Form.Label>Transport Cost : </Form.Label>
-                                        <Form.Control type="number" name='transportCost' value={salesdata.transportCost}
-                                            onChange={handleInputs} />
-                                    </Col>                                                                                                        
-                                    <Col md={3}>
-                                        <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
-                                        <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
-                                            <option>Select</option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Bank">Bank</option>
-                                            <option value="5 Days">5 Days</option>
-                                            <option value="10 Days">10 Days</option>
-                                            <option value="20 Days">20 Days</option>
-                                        </Form.Select>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group as={Row} className="mb-2" controlId="formPlaintextVnumber">
@@ -661,27 +477,68 @@ const Sale = () => {
                                                 options={shippingAddress}
                                             />
                                         </Form.Group>
-                                    </Col>  
-                                    <Col md={4}>
-                                        <Form.Label>Note : </Form.Label>
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Date : </Form.Label>
+                                        <Form.Control type="date" defaultValue={datee}
+                                            name="billdate"
+                                            value={salesdata.billdate}
+                                            onChange={handleInputs}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md={3}>
+                                        <Form.Label>Challan No : </Form.Label>
+                                        <Form.Control type="text" name='challanNo'
+                                            value={salesdata.challanNo}
+                                            onChange={handleInputs}
+                                        />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>DO. Date : </Form.Label>
+                                        <Form.Control type="date" defaultValue={datee} name="challanDate"
+                                            value={salesdata.challanDate}
+                                            onChange={handleInputs} />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Place of Supply : </Form.Label>
+                                        <AutoSelect
+                                            value={selectedPlace}
+                                            onChange={setSelectedPlace}
+                                            options={locationData}
+                                        />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Destination : </Form.Label>
                                         <Form.Control type="text" name='destination' value={salesdata.destination}
                                             onChange={handleInputs} />
                                     </Col>
-                                    <Col>
-                                        <Row>
-                                        <Col md={3}>
-                                            <Row>Total Amount: </Row>
-                                            <Row>Total Gst: </Row>
-                                            <Row>RoundOff:</Row>
-                                            <Row>Grand Total:</Row>
-                                        </Col>
-                                        <Col md={9}>
-                                            <Row> {totalAmount}</Row>
-                                            <Row> {totalGst.toFixed(2)}</Row>
-                                            <Row> {roundOff}</Row>
-                                            <Row> {grandTotal}</Row>
-                                        </Col>
-                                        </Row>
+                                    <Col md={3}>
+                                        <Form.Label>Despatch Through : </Form.Label>
+                                        <Form.Control type="text" name='despatchThrough' value={salesdata.despatchThrough}
+                                            onChange={handleInputs} />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Vehicle No : </Form.Label>
+                                        <Form.Control type="text" name='vehicleNo' value={salesdata.vehicleNo}
+                                            onChange={handleInputs} />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Transport Cost : </Form.Label>
+                                        <Form.Control type="number" name='transportCost' value={salesdata.transportCost}
+                                            onChange={handleInputs} />
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Label>Mode / Term of Payments: (in Days) </Form.Label>
+                                        <Form.Select aria-label="Default select example" name='paymentMode' value={salesdata.paymentMode} onChange={handleInputs}>
+                                            <option>Select</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="bank">Bank</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                        </Form.Select>
                                     </Col>
                                 </Row>
                                 <Tabs
@@ -692,7 +549,6 @@ const Sale = () => {
                                     className="mb-3"
                                 >
                                     <Tab eventKey="sale" title="Product Detail">
-                                        
                                         <Table size="sm" className="tableclass">
                                             <thead>
                                                 <tr>
@@ -718,18 +574,18 @@ const Sale = () => {
                                                     <th>Invoice NO</th>
                                                     <th>Bag NO</th>
                                                     <th>Qty</th>
-                                                    <th style={{width:'22px'}}>Unit</th>
+                                                    <th>Unit</th>
                                                     <th>Qty</th>
                                                     <th>Unit</th>
                                                     <th>Rate</th>
-                                                    <th style={{width:'59px'}}>Disc %</th>
+                                                    <th>Disc %</th>
                                                     <th>Discount</th>
                                                     <th>Amount</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />                                            
+                                                <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
                                             </tbody>
                                         </Table>
                                     </Tab>
@@ -1326,13 +1182,11 @@ const Sale = () => {
                                     </Modal.Body>
                                 </Modal>
                             </Form>
-                    
                         </div>
                     </div>
                 </div>
             </div>
-            
         </>
     )
 }
-export default Sale;
+export default Test;
