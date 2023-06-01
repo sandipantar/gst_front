@@ -4,18 +4,12 @@ import Header from '../../Headers/Header';
 import { Row, Col, Button } from 'react-bootstrap-v5';
 import InvoiceModal from './invoice-modal';
 import { deleteById, fetchAll, fetchById } from '../../../utils/firebase-crud';
-import SelectFy from 'react-select';
-import FyList from './fyList';
 
-// const invoiceCollectionName = "/invoice";
-const invoiceCollectionName = "/invoice-FY-23-24";
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+const invoiceCollectionName = "/invoice";
+// const invoiceCollectionName = "/invoice-FY-23-24";
 
-const SaleList = () => {
+
+const FySaleList = () => {
     const navigate = useNavigate();
     const [dataList, updateDataList] = useState([]);
     const [show4, setShow4] = useState(false);
@@ -69,9 +63,6 @@ const SaleList = () => {
             setShow4(true);
         }
     };
-    const fyListOpen = () => {
-        navigate("/fylist");
-    }
 
     useEffect(() => {
         fetchList();
@@ -99,17 +90,10 @@ const SaleList = () => {
                         /> : null}
                     <div className="container-fluid">
                         <Row className='mt-1'>
-                            <Col md={4}>
+                            <Col md={8}>
                                 <h3>
-                                    Invoice List
+                                    Invoice List of FY 2022-23
                                 </h3>
-                            </Col>
-                            <Col md={4}>
-                                <Button href="/fylist">FY-2022-23</Button>
-                            </Col>
-                            <Col md={4} className="text-right">
-                            <Button className='non-printable btn-primary mr-1' onClick={newParty}>Add Party</Button>
-                                <Button className='non-printable btn-success' onClick={redirect}>Create Sell</Button>
                             </Col>
                         </Row>
                         <Row>
@@ -136,8 +120,8 @@ const SaleList = () => {
                                                 <td>{product.billTo.label}</td>
                                                 <td>{product.grandTotal}</td>
                                                 <td>   
-                                                    <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => navigate(`/edit-invoice/${product.id}`)}></i>
-                                                    <i className="fa fa-trash cursor-pointer mr-3" onClick={() => {if(window.confirm('Are you sure to delete this bill?')){ removeInvoice(product.id)}}}></i>
+                                                    {/* <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => navigate(`/edit-invoice/${product.id}`)}></i> */}
+                                                    {/* <i className="fa fa-trash cursor-pointer mr-3" onClick={() => {if(window.confirm('Are you sure to delete this bill?')){ removeInvoice(product.id)}}}></i> */}
                                                     <i className="fa fa-eye cursor-pointer" onClick={() => openDetails(product.id)}></i>
                                                 </td>
                                             </tr>
@@ -156,4 +140,4 @@ const SaleList = () => {
     )
 };
 
-export default SaleList;
+export default FySaleList;

@@ -5,7 +5,7 @@ import payQr from '../../../img/payment.png';
 import { Row, Col, Modal , Dropdown, Button, ButtonGroup,DropdownButton} from 'react-bootstrap-v5';
 import DeliveryModal from './delivery-modal';
 
-const InvoiceModal = (props) => {
+const Proforma = (props) => {
     let v=props.finalPreviewObj?.products.length;
     let l=22-v;
     var arr = Array.apply(null, Array(l)).map(function (y, i) { return i });
@@ -77,10 +77,6 @@ const InvoiceModal = (props) => {
     const handleSelect=(e)=>{
     setValue(e)
     }
-    const [proforma,setProforma]=useState('');
-    const handleSelectP=(e)=>{
-    setProforma(e)
-    }
 
 
     const number = props?.finalPreviewObj?.grandTotal;
@@ -120,8 +116,6 @@ const InvoiceModal = (props) => {
                                 <Dropdown.Item eventKey="Triplicate Copy">Triplicate Copy</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>                                          
-                        <Button className='btn-default ml-3' onClick={() => handleDeliveryModal(true)}>Generate DO</Button>
-                        <Button className='btn-info ml-3' onClick={handleSelectP}>Proforma invoice</Button>
                     </div>
                      <div className='printable'>
                         <div className='original'>
@@ -144,14 +138,9 @@ const InvoiceModal = (props) => {
                             <Col md={2}>
                                 {value}
                             </Col>
-                        </Row>           
-                             
+                        </Row>                
                         <div className='d-flex justify-content-center'>
-                            <h6><b className='mx-auto text-dark'><u><big>
-                            {proforma ? 'Proforma Invoice':
-                                (nongst==true)? 'Bill':'Tax Invoice'
-                            }
-                                </big></u></b></h6>
+                            <h6><b className='mx-auto text-dark'><u><big>{(nongst==true)? 'Bill':'Tax Invoice'}</big></u></b></h6>
                         </div>
                         <div>
                         <Row style={{fontSize:'14px', padding:'0 12px'}}>
@@ -357,4 +346,4 @@ const InvoiceModal = (props) => {
     )
 };
 
-export default InvoiceModal;
+export default Proforma;
