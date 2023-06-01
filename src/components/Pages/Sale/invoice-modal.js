@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../../../img/AROMIST_LOGO.png';
 import sign from '../../../img/sign.jpeg';
 import payQr from '../../../img/payment.png';
-import { Row, Col, Modal , Dropdown, Button, ButtonGroup,DropdownButton} from 'react-bootstrap-v5';
+import { Row, Col, Modal , Dropdown, Button, ButtonGroup} from 'react-bootstrap-v5';
 import DeliveryModal from './delivery-modal';
 
 const InvoiceModal = (props) => {
@@ -15,8 +15,8 @@ const InvoiceModal = (props) => {
     }
 
     const [deliveryModal, handleDeliveryModal] = useState(false);
-    const today = new Date();
-    const year = today.getFullYear();
+    // const today = new Date();
+    // const year = today.getFullYear();
 
     const wordify = (num) => {
         const single = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
@@ -87,8 +87,8 @@ const InvoiceModal = (props) => {
     }
 
 
-    const number = props?.finalPreviewObj?.grandTotal;
-    let finalPrice = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(props?.finalPreviewObj?.grandTotal);
+    // const number = props?.finalPreviewObj?.grandTotal;
+    // let finalPrice = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(props?.finalPreviewObj?.grandTotal);
 
     let ino = props.finalPreviewObj.invno;
     let substring = "N"
@@ -126,7 +126,7 @@ const InvoiceModal = (props) => {
                         </Dropdown>                                          
                         <Button className='btn-default ml-3' onClick={() => handleDeliveryModal(true)}>Generate DO</Button>
                         <Button className='btn-info ml-3' onClick={handleSelectP}>Proforma invoice</Button>
-                        <Button className='btn-danger ml-3' onClick={clearCopynProformaValue}>Set Default</Button>
+                        <Button className='btn-warning ml-3' onClick={clearCopynProformaValue}>Set Default</Button>
                     </div>
                      <div className='printable'>
                         <div className='original'>
@@ -154,7 +154,7 @@ const InvoiceModal = (props) => {
                         <div className='d-flex justify-content-center'>
                             <h6><b className='mx-auto text-dark'><u><big>
                             {proforma ? 'Proforma Invoice':
-                                (nongst==true)? 'Bill':'Tax Invoice'
+                                (nongst===true)? 'Bill':'Tax Invoice'
                             }
                                 </big></u></b></h6>
                         </div>
