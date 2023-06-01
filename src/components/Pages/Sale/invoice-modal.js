@@ -81,6 +81,10 @@ const InvoiceModal = (props) => {
     const handleSelectP=(e)=>{
     setProforma(e)
     }
+    const clearCopynProformaValue=(e)=>{
+        setProforma('');
+        setValue('Original Copy');
+    }
 
 
     const number = props?.finalPreviewObj?.grandTotal;
@@ -122,6 +126,7 @@ const InvoiceModal = (props) => {
                         </Dropdown>                                          
                         <Button className='btn-default ml-3' onClick={() => handleDeliveryModal(true)}>Generate DO</Button>
                         <Button className='btn-info ml-3' onClick={handleSelectP}>Proforma invoice</Button>
+                        <Button className='btn-danger ml-3' onClick={clearCopynProformaValue}>Set Default</Button>
                     </div>
                      <div className='printable'>
                         <div className='original'>
