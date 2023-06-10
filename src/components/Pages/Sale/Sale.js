@@ -423,6 +423,7 @@ const Sale = () => {
             grandTotal: grandTotal,
             billdate: Timestamp.fromDate(new Date(salesdata.billdate)),
             challanDate: Timestamp.fromDate(new Date(salesdata.challanDate)),
+            status: 1
         }
         console.log("reqBody ", apiReq);
         if (!params.id) {

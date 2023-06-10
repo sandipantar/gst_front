@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../Headers/Header';
 import { Row, Col, Button } from 'react-bootstrap-v5';
 import InvoiceModal from './invoice-modal';
-import { deleteById, fetchAll, fetchById } from '../../../utils/firebase-crud';
+import { fetchByIdAndUpdate, fetchAll, fetchById } from '../../../utils/firebase-crud';
 import SelectFy from 'react-select';
 import FyList from './fyList';
 
@@ -35,23 +35,26 @@ const SaleList = () => {
             const localArr = [];
             if (listRes.data && listRes.data.length) {
                 listRes.data.forEach(each => {
-                    localArr.push({
-                        id: each.id,
-                        invoiceNo: each.otherDetails.invno,
-                        typeOfInvoice: !each.isNonGst ? "GST" : "Non GST",
-                        billTo: each.otherDetails.billto,
-                        billdate: getDisplayFullDateFormat(new Date(each.otherDetails?.billdate?.seconds * 1000)),
-                        // challanDate: getDisplayFullDateFormat(new Date(each.otherDetails?.challanDate?.seconds * 1000)),
-                        grandTotal: each.otherDetails.grandTotal
-                    });
+                    if (each.otherDetails.status !== 0) {
+                        localArr.push({
+                            id: each.id,
+                            invoiceNo: each.otherDetails.invno,
+                            typeOfInvoice: !each.isNonGst ? "GST" : "Non GST",
+                            billTo: each.otherDetails.billto,
+                            billdate: getDisplayFullDateFormat(new Date(each.otherDetails?.billdate?.seconds * 1000)),
+                            // challanDate: getDisplayFullDateFormat(new Date(each.otherDetails?.challanDate?.seconds * 1000)),
+                            grandTotal: each.otherDetails.grandTotal,
+                            otherDetails: each.otherDetails
+                        });
+                    }
                 });
             }
             updateDataList([...localArr]);
         }
     };
     const handleClose4 = () => setShow4(false);
-    const removeInvoice = async (id) => {
-        const removeRes = await deleteById(invoiceCollectionName, id);
+    const removeInvoice = async (id, data) => {
+        const removeRes = await fetchByIdAndUpdate(invoiceCollectionName, id, {...data, status: 0});
         if (removeRes.success) {
             fetchList();
         }
@@ -137,7 +140,7 @@ const SaleList = () => {
                                                 <td>{product.grandTotal}</td>
                                                 <td>   
                                                     <i className="fa fa-pencil cursor-pointer mr-3" onClick={() => navigate(`/edit-invoice/${product.id}`)}></i>
-                                                    <i className="fa fa-trash cursor-pointer mr-3" onClick={() => {if(window.confirm('Are you sure to delete this bill?')){ removeInvoice(product.id)}}}></i>
+                                                    <i className="fa fa-trash cursor-pointer mr-3" onClick={() => {if(window.confirm('Are you sure to delete this bill?')){ removeInvoice(product.id, product.otherDetails)}}}></i>
                                                     <i className="fa fa-eye cursor-pointer" onClick={() => openDetails(product.id)}></i>
                                                 </td>
                                             </tr>
