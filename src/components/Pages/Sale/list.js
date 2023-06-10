@@ -69,9 +69,6 @@ const SaleList = () => {
             setShow4(true);
         }
     };
-    const fyListOpen = () => {
-        navigate("/fylist");
-    }
 
     useEffect(() => {
         fetchList();

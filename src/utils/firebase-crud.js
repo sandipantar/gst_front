@@ -36,7 +36,7 @@ export const fetchAll = async (collectionName) => {
                 });
             }
             return {success: true, data: arr.sort((a,b)=>{
-                return new Date(b.otherDetails?.billdate?.seconds * 1000) - new Date(a.otherDetails?.billdate?.seconds * 1000);
+                return (b.otherDetails?.slno) - (a.otherDetails?.slno);
             })};
         })
         .catch(err => {
