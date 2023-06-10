@@ -165,7 +165,7 @@ const Sale = () => {
 
     const [rowsData, setRowsData] = useState([]);
     const [salesdata, setSalesdata] = useState({
-        invno: "", billto: "", shipto: "", billdate: "", challanNo: "", challanDate: "", placeOfSupply: "", transportCost: "0", despatchThrough: "", vehicleNo: "", paymentMode: "",
+        invno: "", billto: "", shipto: "", billdate: "", challanNo: "",slno: "", challanDate: "", placeOfSupply: "", transportCost: "0", despatchThrough: "", vehicleNo: "", paymentMode: "",
     });
     const [finalPreviewObj, updateFinalPreviewObj] = useState({});
     const [count, setCount] = useState(0);
@@ -217,32 +217,6 @@ const Sale = () => {
         })
         setCount(localCount + 1);
     };
-
-    // const getInvoiceCount = async (type) => {
-    //     const localCount = await getCount(invoiceCollectionName, type);
-    //     // const newBillNo = localCount-16;
-    //     // const newBillNo = localCount;
-    //     // const nGstBillNo = 0;
-        
-    //     if(checked)
-    //     {
-    //         setSalesdata({
-    //             ...salesdata,
-    //             invno: `ATC/00${localCount + 1}/2023-24`
-    //         })
-    //         setCount(localCount + 1);
-    //     }
-    //     else
-    //     {
-    //         setSalesdata({
-    //             ...salesdata,
-    //             invno: `ATCN/00${localCount + 1}/2023-24`
-    //         })
-    //         setCount(localCount + 1);
-            
-    //     }
-
-    // };
 
 
     const openDetails = async (id) => {
@@ -419,6 +393,7 @@ const Sale = () => {
             totalBaseQty: totalBaseQty,
             totalAltQty: totalAltQty,
             totalGst: totalGst,
+            slno: count,
             roundOff: roundOff > 0.49 ? 0: roundOff,
             grandTotal: grandTotal,
             billdate: Timestamp.fromDate(new Date(salesdata.billdate)),
