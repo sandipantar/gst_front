@@ -393,7 +393,7 @@ const Sale = () => {
             totalBaseQty: totalBaseQty,
             totalAltQty: totalAltQty,
             totalGst: totalGst,
-            slno: count,
+            slno: !params.id ? count : salesdata.slno,
             roundOff: roundOff > 0.49 ? 0: roundOff,
             grandTotal: grandTotal,
             billdate: Timestamp.fromDate(new Date(salesdata.billdate)),
